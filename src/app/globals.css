@@ -1,26 +1,65 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+/* Brand manual palette */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-white: #feffff;
+  --color-ink: #000000;
+  --color-card: #a1abb5;
+  --color-yellow: #ffe000;
+  --color-blue: #3e9ed4;
+  --color-accent: #1c3747;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-white: var(--color-white);
+  --color-ink: var(--color-ink);
+  --color-card: var(--color-card);
+  --color-yellow: var(--color-yellow);
+  --color-blue: var(--color-blue);
+  --color-accent: var(--color-accent);
+  --font-display: var(--font-koulen);
+  --font-sans: var(--font-space-grotesk);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+/* Monochrome film grain (Figma: Noise · mono · density 60% · #000 15%) */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Continuous logo marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Shared horizontal page margin — keep hero, header and every section aligned */
+@utility page-x {
+  padding-inline: 1.5rem;
+  @media (width >= 40rem) {
+    padding-inline: 3rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 6rem;
+  }
 }
