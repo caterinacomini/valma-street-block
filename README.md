@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Valma Street Block
 
-## Getting Started
+Sito dell'evento di arrampicata urbana di Valmadrera (LC).
+Next.js 16 (App Router) + Tailwind v4, contenuti da Sanity.
 
-First, run the development server:
+## Sviluppo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Il sito parte su http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Senza credenziali Sanity il sito **funziona comunque**: ogni sezione mostra
+contenuti di fallback con i dati reali dell'evento (vedi `src/sanity/fetch.ts`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contenuti (Sanity)
 
-## Learn More
+Lo Studio **non** è dentro il sito: è ospitato da Sanity su un dominio dedicato.
+Sanity 6 e Next 16 non possono condividere lo stesso bundle — `@sanity/sdk-react`
+pubblica JSX non compilato e `swr` non espone il default export lato server.
+Gli schemi restano in `src/sanity/schemaTypes/` e si pubblicano da qui.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run studio:dev      # Studio in locale su :3333
+npm run studio:deploy   # pubblica su https://valma-street-block.sanity.studio
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Variabili d'ambiente
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copia `.env.local.example` in `.env.local` e compila:
 
-## Deploy on Vercel
+| Variabile | Descrizione |
+|---|---|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | ID del progetto Sanity |
+| `NEXT_PUBLIC_SANITY_DATASET` | Di norma `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Data della versione API, es. `2025-01-01` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Le stesse vanno impostate nel progetto Vercel per il deploy.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Struttura
+
+Una sola landing page con sezioni ancorate (`src/app/(site)/page.tsx`):
+hero → intro → programma → come arrivare → edizioni passate → regolamento →
+CTA → partner.
+
+- `src/components/sections/` — le sezioni della pagina
+- `src/components/smooth-scroll.tsx` — GSAP ScrollSmoother; l'header legge la
+  posizione via ScrollTrigger perché lo smoother sostituisce lo scroll nativo
+- `src/components/arrival-map.tsx` — mappa dei percorsi animata allo scroll
+- `src/sanity/` — client, query GROQ, schemi e contenuti di fallback
+
+## Deploy
+
+```bash
+npm run build   # deve passare prima di ogni deploy
+```

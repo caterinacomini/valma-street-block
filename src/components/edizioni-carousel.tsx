@@ -1,7 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export type EditionCard = {
   id: string;
@@ -92,12 +96,75 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
   );
 }
 
+const PHOTO_FINAL_WIDTH = 42; // % of the section, matches the lg:w-[42%] class
+
 export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
+  const pinRef = useRef<HTMLDivElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const pin = pinRef.current;
+    const photo = photoRef.current;
+    const cards = cardsRef.current;
+    if (!pin || !photo || !cards) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      // Desktop only: the shrink-then-scroll choreography needs the horizontal
+      // room, and pinning on touch devices fights the native scroll.
+      mm.add(
+        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          // Measure against the width the cards column will HAVE once the photo
+          // has shrunk, not its width right now — during phase 1 it is still
+          // collapsing, so reading it live would give a moving target.
+          const hiddenOverflow = () => {
+            const finalColumnWidth =
+              pin.clientWidth * (1 - PHOTO_FINAL_WIDTH / 100);
+            return Math.max(0, cards.scrollWidth - finalColumnWidth + 48);
+          };
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: pin,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 2.4}`,
+              pin: true,
+              // ScrollSmoother transforms the content, so the pin has to be
+              // transform-based rather than position:fixed.
+              pinType: "transform",
+              anticipatePin: 1,
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.fromTo(
+            photo,
+            { width: "100%" },
+            { width: `${PHOTO_FINAL_WIDTH}%`, ease: "none", duration: 1 },
+          ).to(
+            cards,
+            { x: () => -hiddenOverflow(), ease: "none", duration: 1.8 },
+            ">",
+          );
+        },
+      );
+    }, pin);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="relative lg:h-[100dvh]">
+    <div ref={pinRef} className="relative lg:h-[100dvh]">
       <div className="flex h-full flex-col lg:flex-row lg:items-stretch">
         {/* Photo panel */}
-        <div className="relative h-72 shrink-0 sm:h-96 lg:h-full lg:w-[42%]">
+        <div
+          ref={photoRef}
+          className="relative h-72 shrink-0 sm:h-96 lg:h-full lg:w-[42%]"
+        >
           <Image
             src="/content/urban-climbing-hand.png"
             alt="Climber in azione al Valma Street Block"
@@ -122,9 +189,12 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           </div>
         </div>
 
-        {/* Cards */}
-        <div className="flex flex-1 items-center overflow-x-auto py-8 lg:py-0">
-          <div className="flex gap-5 px-6 sm:px-8 lg:px-12">
+        {/* Cards — free horizontal scroll on mobile, GSAP-driven on desktop */}
+        <div className="flex min-w-0 flex-1 touch-pan-x items-center overflow-x-auto overscroll-x-contain py-8 lg:touch-auto lg:overflow-x-hidden lg:py-0">
+          <div
+            ref={cardsRef}
+            className="flex gap-5 px-6 will-change-transform sm:px-8 lg:px-12"
+          >
             {editions.map((edition) => (
               <EditionThumb key={edition.id} edition={edition} />
             ))}
