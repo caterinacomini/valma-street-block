@@ -9,6 +9,13 @@ import { SponsorSection } from "@/components/sections/sponsor-section";
 import { formatDateIt } from "@/lib/format";
 import { loadPastEditions, loadSiteSettings } from "@/sanity/fetch";
 
+/**
+ * Re-fetch content from Sanity at most once a minute. Without this the page is
+ * baked at build time, so publishing in the Studio would not reach the site
+ * until the next deploy.
+ */
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [settings, pastEditions] = await Promise.all([
     loadSiteSettings(),
