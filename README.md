@@ -3,6 +3,10 @@
 Sito dell'evento di arrampicata urbana di Valmadrera (LC).
 Next.js 16 (App Router) + Tailwind v4, contenuti da Sanity.
 
+- **Produzione**: https://valma-street-block.vercel.app
+- **CMS**: https://valma-street-block.vercel.app/studio
+- Ogni push su `main` fa partire un deploy su Vercel.
+
 ## Sviluppo
 
 ```bash
@@ -10,34 +14,46 @@ npm install
 npm run dev
 ```
 
-Il sito parte su http://localhost:3000.
+Serve un `.env.local` (copia `.env.local.example`):
 
-Senza credenziali Sanity il sito **funziona comunque**: ogni sezione mostra
-contenuti di fallback con i dati reali dell'evento (vedi `src/sanity/fetch.ts`).
-
-## Contenuti (Sanity)
-
-Lo Studio **non** è dentro il sito: è ospitato da Sanity su un dominio dedicato.
-Sanity 6 e Next 16 non possono condividere lo stesso bundle — `@sanity/sdk-react`
-pubblica JSX non compilato e `swr` non espone il default export lato server.
-Gli schemi restano in `src/sanity/schemaTypes/` e si pubblicano da qui.
-
-```bash
-npm run studio:dev      # Studio in locale su :3333
-npm run studio:deploy   # pubblica su https://valma-street-block.sanity.studio
-```
-
-### Variabili d'ambiente
-
-Copia `.env.local.example` in `.env.local` e compila:
-
-| Variabile | Descrizione |
+| Variabile | Valore |
 |---|---|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | ID del progetto Sanity |
-| `NEXT_PUBLIC_SANITY_DATASET` | Di norma `production` |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Data della versione API, es. `2025-01-01` |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `cxwqrzsq` |
+| `NEXT_PUBLIC_SANITY_DATASET` | `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | `2025-01-01` |
 
-Le stesse vanno impostate nel progetto Vercel per il deploy.
+Le stesse tre sono impostate su Vercel (tipo **Config**, non Secret: hanno il
+prefisso `NEXT_PUBLIC_` e devono essere leggibili dal browser).
+
+Senza credenziali il sito parte lo stesso e mostra i contenuti di fallback.
+
+## Contenuti
+
+Lo Studio è **dentro** il sito, su `/studio`. Gli schemi stanno in
+`src/sanity/schemaTypes/`, la struttura del menu in `src/sanity/structure.ts`.
+
+Flusso di pubblicazione: scrivi nello Studio → **Publish** → il sito si aggiorna
+entro ~60s (`export const revalidate = 60` sulla home). Le bozze non salvate come
+pubblicate non arrivano mai al sito.
+
+Nuovi domini vanno autorizzati in Sanity → **API → CORS origins**, con *Allow
+credentials* attivo. Già autorizzati: la produzione e `http://localhost:3000`.
+
+### Fallback: dati reali ma non tutti verificati
+
+Ogni sezione ha contenuti di fallback in `src/sanity/fetch.ts`, usati finché il
+documento corrispondente non esiste su Sanity. Servono a non mostrare mai una
+pagina vuota, e vengono sostituiti sezione per sezione appena pubblichi.
+
+Attenzione, non sono tutti verificati:
+
+- **Verificati** (da comunicati e canali ufficiali): format a 50 blocchi, 473
+  partecipanti nel 2026, 130 volontari, quote di iscrizione, orari tipo.
+- **Stimati o inventati**, da correggere con i dati reali:
+  - i tempi nella mappa dei percorsi (`arrival-map.tsx`): "35 min di treno",
+    "15 min di bus", "5 min a piedi"
+  - i partecipanti delle edizioni 2015–2024 (2025 e 2026 sono reali)
+  - i nomi dei partner nella sezione sponsor, che sono placeholder
 
 ## Struttura
 
@@ -46,13 +62,39 @@ hero → intro → programma → come arrivare → edizioni passate → regolame
 CTA → partner.
 
 - `src/components/sections/` — le sezioni della pagina
-- `src/components/smooth-scroll.tsx` — GSAP ScrollSmoother; l'header legge la
-  posizione via ScrollTrigger perché lo smoother sostituisce lo scroll nativo
-- `src/components/arrival-map.tsx` — mappa dei percorsi animata allo scroll
-- `src/sanity/` — client, query GROQ, schemi e contenuti di fallback
+- `src/components/smooth-scroll.tsx` — GSAP ScrollSmoother
+- `src/components/arrival-map.tsx` — percorsi animati allo scroll (MotionPath)
+- `src/components/edizioni-carousel.tsx` — foto che si restringe e card che
+  scorrono, pinnato allo scroll
+- `src/sanity/` — client, query GROQ, schemi e fallback
 
-## Deploy
+## Note tecniche non ovvie
+
+**Sanity va tenuto sul canale `stable`.** Il canale `latest` (6.8+) include
+`@sanity/sdk-react`, che pubblica JSX non compilato: rompe Turbopack, webpack e
+la CLI di Sanity. Se un `npm update` riporta `sanity` a `latest`, la build si
+rompe di nuovo. `sanity@stable` non ha quella dipendenza.
+
+**`serverExternalPackages: ["sanity"]`** in `next.config.ts` serve perché la
+build di `swr` per react-server non espone il default export.
+
+**Lo Studio è caricato solo lato client** (`studio-client.tsx`): la sua config
+contiene funzioni e componenti che non possono attraversare il confine
+server/client di React.
+
+**GSAP e ScrollSmoother.** Lo smoother sostituisce lo scroll nativo, quindi:
+`window.scrollY` resta a 0 (l'header legge la posizione via ScrollTrigger), gli
+anchor passano da `smoother.scrollTo`, e i pin vanno con `pinType: "transform"`.
+`SmoothScroll` chiama `ScrollTrigger.refresh()` dopo l'init, perché gli effetti
+dei figli girano prima di quelli del padre e misurerebbero male.
+
+**Env non-throwing.** `src/sanity/runtime-env.ts` non lancia se mancano le
+variabili: `next build` valuta quei moduli, e un throw fallirebbe la build.
+
+## Comandi
 
 ```bash
+npm run dev     # sviluppo
 npm run build   # deve passare prima di ogni deploy
+npm run lint
 ```
