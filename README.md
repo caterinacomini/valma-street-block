@@ -6,6 +6,8 @@ Next.js 16 (App Router) + Tailwind v4, contenuti da Sanity.
 - **Produzione**: https://valma-street-block.vercel.app
 - **CMS**: https://valma-street-block.vercel.app/studio
 - Ogni push su `main` fa partire un deploy su Vercel.
+- **Retrospettiva** (come è stato costruito, e le trappole in cui siamo caduti):
+  https://claude.ai/code/artifact/492e99ad-67e3-445d-8e71-0ff2a8db3d07
 
 ## Sviluppo
 
