@@ -50,39 +50,54 @@ const STOPS = [
   },
 ];
 
-const SEGMENTS = [
+const SEGMENTS: {
+  id: string;
+  icon: IconId;
+  path: string;
+  pill?: { x: number; y: number; text: string };
+  stop: string;
+  at: number;
+  dashed?: boolean;
+}[] = [
   {
     id: "seg-treno",
-    icon: "bus" as IconId,
+    icon: "bus",
     path: "M 200 70 L 900 70 C 980 70 1030 100 1030 150",
     pill: { x: 550, y: 70, text: "15 min di bus" },
     stop: "stop-treno",
     at: 0,
   },
   {
-    id: "seg-bus",
-    icon: "piedi" as IconId,
-    path: "M 1030 210 C 1030 262 960 250 870 250 L 655 292",
-    pill: { x: 790, y: 250, text: "5 min a piedi" },
-    stop: "stop-bus",
-    at: 1,
-    dashed: true,
-  },
-  {
     id: "seg-auto",
-    icon: "auto" as IconId,
+    icon: "auto",
     path: "M 200 550 L 900 550 C 980 550 1030 520 1030 470",
     pill: { x: 550, y: 550, text: "uscita SS36" },
     stop: "stop-auto",
     at: 0.06,
   },
+  // Both ways join before the last stretch, so the walk is stated once rather
+  // than printed twice, once per lane.
+  {
+    id: "seg-join-bus",
+    icon: "piedi",
+    path: "M 1030 210 C 1030 272 950 288 880 306",
+    stop: "stop-bus",
+    at: 1,
+  },
+  {
+    id: "seg-join-auto",
+    icon: "piedi",
+    path: "M 1030 410 C 1030 348 950 332 880 314",
+    stop: "stop-parcheggio",
+    at: 1.04,
+  },
   {
     id: "seg-piedi",
-    icon: "piedi" as IconId,
-    path: "M 1030 410 C 1030 358 960 370 870 370 L 655 328",
-    pill: { x: 790, y: 370, text: "5 min a piedi" },
-    stop: "stop-parcheggio",
-    at: 1.06,
+    icon: "piedi",
+    path: "M 880 310 L 660 310",
+    pill: { x: 776, y: 310, text: "5 min a piedi" },
+    stop: "stop-bus",
+    at: 1.95,
     dashed: true,
   },
 ];
@@ -382,11 +397,11 @@ export function ArrivalMap() {
       })}
 
       {/* Info pills */}
-      {SEGMENTS.map((segment) => (
+      {SEGMENTS.filter((segment) => segment.pill).map((segment) => (
         <g key={`pill-${segment.id}`} id={`pill-${segment.id}`}>
           <rect
-            x={segment.pill.x - 105}
-            y={segment.pill.y - 21}
+            x={segment.pill!.x - 105}
+            y={segment.pill!.y - 21}
             width="210"
             height="42"
             rx="21"
@@ -394,14 +409,14 @@ export function ArrivalMap() {
             strokeWidth="1.5"
           />
           <text
-            x={segment.pill.x}
-            y={segment.pill.y + 6}
+            x={segment.pill!.x}
+            y={segment.pill!.y + 6}
             textAnchor="middle"
             className="fill-ink"
             fontSize="16"
             fontWeight="600"
           >
-            {segment.pill.text}
+            {segment.pill!.text}
           </text>
         </g>
       ))}

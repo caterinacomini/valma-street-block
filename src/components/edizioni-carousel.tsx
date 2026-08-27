@@ -154,18 +154,31 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
     if (!viewport || !cards) return;
 
     const step = stepWidth();
-    const total = cards.scrollWidth - viewport.clientWidth;
+    const total = Math.max(0, cards.scrollWidth - viewport.clientWidth);
+
+    /**
+     * Snap to a card edge rather than nudging by a fixed amount. The scroll
+     * hands the strip over at an arbitrary offset, so adding one card width to
+     * that just carries the misalignment along and every card stays half cut.
+     */
+    const snapped = (from: number) => {
+      const index = Math.round(from / step) + direction;
+      return Math.min(total, Math.max(0, index * step));
+    };
 
     if (getComputedStyle(viewport).overflowX !== "hidden") {
-      viewport.scrollBy({ left: step * direction, behavior: "smooth" });
+      viewport.scrollTo({
+        left: snapped(viewport.scrollLeft),
+        behavior: "smooth",
+      });
       return;
     }
     // Desktop: the strip is moved by transform, so the arrow moves the same
     // property. It only appears once the pinned run is over, so nothing is
     // fighting it for control.
-    const current = Number(gsap.getProperty(cards, "x")) || 0;
+    const current = Math.abs(Number(gsap.getProperty(cards, "x")) || 0);
     gsap.to(cards, {
-      x: Math.min(0, Math.max(-total, current - step * direction)),
+      x: -snapped(current),
       duration: 0.5,
       ease: "power2.out",
     });
