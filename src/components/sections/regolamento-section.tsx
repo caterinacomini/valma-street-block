@@ -8,10 +8,10 @@ export async function RegolamentoSection() {
 
   return (
     <section id="regolamento" className="page-x scroll-mt-20 py-16 sm:py-24">
-      <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
+      <p data-reveal className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
         Valma Street Block · {new Date().getFullYear() + 1}
       </p>
-      <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+      <h2 data-reveal className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
         {regulation.title ?? "Regolamento"}
       </h2>
       {updatedAt ? (

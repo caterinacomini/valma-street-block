@@ -23,7 +23,7 @@ export async function SponsorSection() {
       id="sponsor"
       className="scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24"
     >
-      <div className="page-x">
+      <div data-reveal="stagger" className="page-x">
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
           Grazie a chi ci sostiene
         </p>
@@ -33,7 +33,10 @@ export async function SponsorSection() {
       </div>
 
       {/* Marquee — the list is duplicated so the loop is seamless */}
-      <div className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+      <div
+        data-reveal
+        className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
+      >
         <div className="marquee-track flex w-max items-center gap-16 sm:gap-24">
           {[0, 1].map((copy) => (
             <div

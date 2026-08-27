@@ -59,6 +59,26 @@ export const siteSettings = defineType({
       description: "Link esterno (es. Kronoman) usato dal pulsante Iscriviti ora",
     }),
     defineField({
+      name: "registrationOpen",
+      title: "Iscrizioni aperte",
+      type: "boolean",
+      initialValue: false,
+      description:
+        "Spegnilo e il pulsante smette di essere un link: resta visibile ma non porta da nessuna parte. Accendilo il giorno dell'apertura.",
+    }),
+    defineField({
+      name: "registrationLabel",
+      title: "Testo del pulsante, iscrizioni aperte",
+      type: "string",
+      description: "Se vuoto: Iscriviti ora",
+    }),
+    defineField({
+      name: "registrationClosedLabel",
+      title: "Testo del pulsante, iscrizioni chiuse",
+      type: "string",
+      description: "Poche parole. Se vuoto: Iscrizioni non aperte",
+    }),
+    defineField({
       name: "instagramUrl",
       title: "Instagram",
       type: "url",

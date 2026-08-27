@@ -13,11 +13,17 @@ export function SiteFooter({
   facebookUrl,
   contactEmail,
   registrationUrl,
+  registrationOpen,
+  registrationLabel,
+  registrationClosedLabel,
 }: {
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
   registrationUrl?: string;
+  registrationOpen?: boolean;
+  registrationLabel?: string;
+  registrationClosedLabel?: string;
 }) {
   const social = [
     instagramUrl ? { href: instagramUrl, label: "Instagram" } : null,
@@ -37,7 +43,7 @@ export function SiteFooter({
           </p>
         </div>
 
-        <div className="mt-4 flex items-end justify-between gap-6 border-t border-white/25 pt-3">
+        <div className="mt-1 flex items-end justify-between gap-6">
           <p className="text-xs tracking-wide text-white/70 uppercase sm:text-sm">
             Arrampicata urbana dal 2015
           </p>
@@ -57,6 +63,9 @@ export function SiteFooter({
             <div className="mt-5">
               <RegisterButton
                 registrationUrl={registrationUrl}
+                open={registrationOpen}
+                label={registrationLabel}
+                closedLabel={registrationClosedLabel}
                 variant="dark"
               />
             </div>
@@ -102,7 +111,7 @@ export function SiteFooter({
         </div>
 
         {/* Bottom row */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-white/25 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
           {contactEmail ? (
             <a
               href={`mailto:${contactEmail}`}

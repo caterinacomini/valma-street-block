@@ -16,6 +16,59 @@ import { loadPastEditions, loadSiteSettings } from "@/sanity/fetch";
  */
 export const revalidate = 60;
 
+/**
+ * Photo card on the hero's recipe: a light progressive blur rising from the
+ * bottom, black grain over it, type bottom-left.
+ *
+ * Type is sized in fixed steps rather than container units on purpose: stacked,
+ * all three cards are the same width, and proportional sizing gave the wide one
+ * a much smaller title than the square ones. Stacked they also share one aspect
+ * ratio, so the heights match; side by side each shape goes its own way.
+ */
+function PhotoCard({
+  src,
+  position,
+  title,
+  wide = false,
+}: {
+  src: string;
+  position: string;
+  title: React.ReactNode;
+  wide?: boolean;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-3xl bg-ink aspect-[3/2] ${
+        wide ? "sm:aspect-[16/6]" : "sm:aspect-square"
+      }`}
+    >
+      <Image
+        src={src}
+        alt=""
+        fill
+        className={`object-cover ${position}`}
+        sizes={
+          wide
+            ? "(min-width: 1024px) 520px, 92vw"
+            : "(min-width: 1024px) 260px, (min-width: 640px) 45vw, 92vw"
+        }
+      />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_14%,transparent_52%)]" />
+        <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_top,black_4%,transparent_34%)]" />
+      </div>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
+      <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
+
+      <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-5">
+        <p className="font-display text-4xl leading-[0.88] text-white sm:text-5xl lg:text-4xl">
+          {title}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const [settings, pastEditions] = await Promise.all([
     loadSiteSettings(),
@@ -74,6 +127,9 @@ export default async function HomePage() {
               </p>
               <RegisterButton
                 registrationUrl={settings.registrationUrl ?? undefined}
+                open={settings.registrationOpen}
+                label={settings.registrationLabel}
+                closedLabel={settings.registrationClosedLabel}
                 size="lg"
               />
             </div>
@@ -81,78 +137,68 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="page-x flex flex-col justify-center bg-white py-14 lg:min-h-[100dvh] lg:py-16">
-        <h2 className="ml-auto max-w-2xl text-right font-display text-2xl leading-tight text-ink sm:text-3xl lg:text-4xl">
-          Dal 2015 le vie di Valmadrera diventano una palestra a cielo aperto.
+      <section className="page-x flex flex-col justify-center bg-white py-14 lg:min-h-[100dvh] lg:py-12">
+        <h2
+          data-reveal
+          className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:text-6xl"
+        >
+          Le vie di Valmadrera diventano una palestra a cielo aperto.
         </h2>
 
-        <div className="mt-10 grid items-end gap-x-12 gap-y-9 lg:mt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-x-16">
-          {/* Left: the claim, then where the thing came from */}
-          <div className="flex flex-col gap-4">
-            <p className="font-display text-4xl leading-none whitespace-nowrap text-ink sm:text-5xl lg:text-6xl">
-              100% in strada
-            </p>
-            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
-              Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
-              cortili del paese.
-            </p>
+        <div className="mt-9 grid gap-x-12 gap-y-9 lg:mt-10 lg:grid-cols-2 lg:gap-x-16">
+          {/* The copy, reading straight on from the headline above it */}
+          <div data-reveal="stagger" className="flex flex-col gap-4">
             <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
               Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
               uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti
               del nord Italia.
             </p>
+            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
+              Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
+              cortili del paese.
+            </p>
           </div>
 
-          {/* Right: the two numbers as photo cards, on the hero's blur + grain recipe.
-            Sized in container units so both titles land at the same size whatever
-            the column does. Not interactive: the pill is a caption, not a button. */}
-          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-            {[
-              {
-                src: "/content/urban-climbing-2.png",
-                pos: "object-[center_35%]",
-                value: `+${lastEdition?.participantsCount ?? 470}`,
-                label: "climbers",
-                caption: "Competitivi e non",
-              },
-              {
-                src: "/content/urban-climbing-beam.png",
-                pos: "object-[center_45%]",
-                value: "+50",
-                label: "blocchi",
-                caption: "Sparsi per il paese",
-              },
-            ].map((card) => (
-              <div
-                key={card.src}
-                className="@container relative aspect-square overflow-hidden rounded-3xl bg-ink"
-              >
-                <Image
+          {/* The claim and the two numbers, all on the same card recipe.
+              Dropped a step below the copy once there are two columns. */}
+          <div
+            data-reveal="stagger"
+            className="flex flex-col gap-3 sm:gap-4 lg:ml-auto lg:w-full lg:max-w-[min(58dvh,560px)] lg:pt-6"
+          >
+            <PhotoCard
+              src="/content/urban-climbing-shoe.png"
+              position="object-[center_55%]"
+              title="100% in strada"
+              wide
+            />
+            <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+              {[
+                {
+                  src: "/content/urban-climbing-2.png",
+                  pos: "object-[center_35%]",
+                  value: `+${lastEdition?.participantsCount ?? 470}`,
+                  label: "climbers",
+                },
+                {
+                  src: "/content/urban-climbing-beam.png",
+                  pos: "object-[center_45%]",
+                  value: "+50",
+                  label: "blocchi",
+                },
+              ].map((card) => (
+                <PhotoCard
+                  key={card.src}
                   src={card.src}
-                  alt=""
-                  fill
-                  className={`object-cover ${card.pos}`}
-                  sizes="(min-width: 1024px) 330px, (min-width: 640px) 45vw, 90vw"
+                  position={card.pos}
+                  title={
+                    <>
+                      <span className="block">{card.value}</span>
+                      <span className="block">{card.label}</span>
+                    </>
+                  }
                 />
-                {/* Progressive blur rising from the bottom, where the type sits */}
-                <div className="pointer-events-none absolute inset-0">
-                  <div className="absolute inset-0 backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_14%,transparent_52%)]" />
-                  <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_top,black_4%,transparent_34%)]" />
-                </div>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
-                <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
-
-                <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-[2.5cqw] p-[5.5cqw]">
-                  <p className="font-display text-[13cqw] leading-[0.88] text-white">
-                    <span className="block">{card.value}</span>
-                    <span className="block">{card.label}</span>
-                  </p>
-                  <p className="max-w-[94%] text-[5.2cqw] leading-snug font-medium tracking-wide text-white/85">
-                    {card.caption}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -174,7 +220,7 @@ export default async function HomePage() {
         <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
         <div className="page-x relative flex min-h-[100dvh] flex-col justify-end pb-10 sm:pb-14">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div data-reveal="stagger" className="flex flex-col gap-6">
             <div className="max-w-3xl">
               <h2 className="font-display text-[9vw] leading-[0.9] text-white sm:text-[6vw] lg:text-[4.5vw]">
                 Bagai, pronti a scalare il paese?
@@ -186,8 +232,10 @@ export default async function HomePage() {
             </div>
             <RegisterButton
               registrationUrl={settings.registrationUrl ?? undefined}
-              size="lg"
-              className="shrink-0"
+              open={settings.registrationOpen}
+              label={settings.registrationLabel}
+              closedLabel={settings.registrationClosedLabel}
+              className="self-start"
             />
           </div>
         </div>

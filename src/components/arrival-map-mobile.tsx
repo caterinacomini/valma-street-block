@@ -5,153 +5,104 @@ import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { Icon, type IconId } from "./arrival-map";
+
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export type IconId = "treno" | "bus" | "auto" | "parcheggio" | "piedi";
-
-// Two snaking routes that mirror each other and meet in the middle:
-// train → bus coming down from the top, car → parking coming up from below.
+/**
+ * Stacked, the wide two-lane map has nowhere to go, so this is the same journey
+ * turned on its side: two columns dropping down the screen and meeting at the
+ * bottom. Scrolling drives the descent, which is the direction you are already
+ * moving in.
+ */
 const STOPS = [
   {
     id: "treno",
     icon: "treno" as IconId,
     title: "Treno",
     detail: "Stazione di Lecco",
-    x: 170,
-    y: 70,
-    labelAt: "below" as const,
-  },
-  {
-    id: "bus",
-    icon: "bus" as IconId,
-    title: "Bus",
-    detail: "Fermata Valmadrera",
-    x: 1030,
-    y: 180,
-    labelAt: "right" as const,
-  },
-  {
-    id: "parcheggio",
-    icon: "parcheggio" as IconId,
-    title: "Parcheggio",
-    detail: "Segnalati in centro",
-    x: 1030,
-    y: 440,
-    labelAt: "right" as const,
+    x: 80,
+    y: 50,
   },
   {
     id: "auto",
     icon: "auto" as IconId,
     title: "Auto",
     detail: "SS36, uscita Valmadrera",
-    x: 170,
-    y: 550,
-    labelAt: "above" as const,
+    x: 280,
+    y: 50,
+  },
+  {
+    id: "bus",
+    icon: "bus" as IconId,
+    title: "Bus",
+    detail: "Fermata Valmadrera",
+    x: 80,
+    y: 252,
+  },
+  {
+    id: "parcheggio",
+    icon: "parcheggio" as IconId,
+    title: "Parcheggio",
+    detail: "Segnalati in centro",
+    x: 280,
+    y: 252,
   },
 ];
 
-const SEGMENTS = [
+const SEGMENTS: {
+  id: string;
+  icon: IconId;
+  path: string;
+  pill?: { x: number; y: number; text: string };
+  stop: string;
+  at: number;
+  dashed?: boolean;
+}[] = [
   {
-    id: "seg-treno",
-    icon: "bus" as IconId,
-    path: "M 200 70 L 900 70 C 980 70 1030 100 1030 150",
-    pill: { x: 550, y: 70, text: "15 min di bus" },
-    stop: "stop-treno",
+    id: "m-seg-treno",
+    icon: "bus",
+    path: "M 80 118 L 80 218",
+    pill: { x: 80, y: 168, text: "15 min di bus" },
+    stop: "m-stop-treno",
     at: 0,
   },
   {
-    id: "seg-bus",
-    icon: "piedi" as IconId,
-    path: "M 1030 210 C 1030 262 960 250 870 250 L 655 292",
-    pill: { x: 790, y: 250, text: "5 min a piedi" },
-    stop: "stop-bus",
-    at: 1,
-    dashed: true,
-  },
-  {
-    id: "seg-auto",
-    icon: "auto" as IconId,
-    path: "M 200 550 L 900 550 C 980 550 1030 520 1030 470",
-    pill: { x: 550, y: 550, text: "uscita SS36" },
-    stop: "stop-auto",
+    id: "m-seg-auto",
+    icon: "auto",
+    path: "M 280 118 L 280 218",
+    pill: { x: 280, y: 168, text: "uscita SS36" },
+    stop: "m-stop-auto",
     at: 0.06,
   },
+  // The two ways join here. Sharing one walking leg beats printing the same
+  // "5 min a piedi" twice, once per lane.
   {
-    id: "seg-piedi",
-    icon: "piedi" as IconId,
-    path: "M 1030 410 C 1030 358 960 370 870 370 L 655 328",
-    pill: { x: 790, y: 370, text: "5 min a piedi" },
-    stop: "stop-parcheggio",
-    at: 1.06,
+    id: "m-seg-join-bus",
+    icon: "piedi",
+    path: "M 80 330 C 80 366 132 372 180 386",
+    stop: "m-stop-bus",
+    at: 1,
+  },
+  {
+    id: "m-seg-join-auto",
+    icon: "piedi",
+    path: "M 280 330 C 280 366 228 372 180 386",
+    stop: "m-stop-parcheggio",
+    at: 1.04,
+  },
+  {
+    id: "m-seg-piedi",
+    icon: "piedi",
+    path: "M 180 386 L 180 452",
+    pill: { x: 180, y: 419, text: "5 min a piedi" },
+    stop: "m-stop-bus",
+    at: 1.95,
     dashed: true,
   },
 ];
 
-export function Icon({
-  id,
-  color = "#ffffff",
-}: {
-  id: IconId;
-  color?: string;
-}) {
-  const s = {
-    fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-
-  switch (id) {
-    case "treno":
-      return (
-        <g {...s}>
-          <rect x="-8" y="-9" width="16" height="13" rx="3.5" />
-          <path d="M-8 -2.5h16" />
-          <path d="M-4.5 4l-2.5 4.5M4.5 4l2.5 4.5" />
-        </g>
-      );
-    case "bus":
-      return (
-        <g {...s}>
-          <rect x="-9" y="-8" width="18" height="12" rx="3" />
-          <path d="M-9 -1.5h18" />
-          <circle cx="-4.5" cy="6.5" r="1.8" />
-          <circle cx="4.5" cy="6.5" r="1.8" />
-        </g>
-      );
-    case "auto":
-      return (
-        <g {...s}>
-          <path d="M-9 2.5h18M-7.5 2.5l1.8-6h11.4l1.8 6" />
-          <circle cx="-4.5" cy="5.5" r="1.9" />
-          <circle cx="4.5" cy="5.5" r="1.9" />
-        </g>
-      );
-    case "parcheggio":
-      return (
-        <text
-          textAnchor="middle"
-          y="8"
-          fill={color}
-          fontSize="23"
-          fontWeight="700"
-          fontFamily="var(--font-sans)"
-        >
-          P
-        </text>
-      );
-    case "piedi":
-      return (
-        <g {...s}>
-          <circle cx="0" cy="-7" r="2.6" />
-          <path d="M0 -4v6M0 2l-4 6M0 2l4 6M-4 -1l4-1 4 1" />
-        </g>
-      );
-  }
-}
-
-export function ArrivalMap() {
+export function ArrivalMapMobile() {
   const rootRef = useRef<SVGSVGElement>(null);
 
   useLayoutEffect(() => {
@@ -162,13 +113,13 @@ export function ArrivalMap() {
       const mm = gsap.matchMedia();
 
       mm.add(
-        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
         () => {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: root,
-              start: "top 82%",
-              end: "bottom 62%",
+              start: "top 80%",
+              end: "bottom 75%",
               scrub: 0.8,
             },
           });
@@ -180,7 +131,7 @@ export function ArrivalMap() {
             );
             const pill = root.querySelector<SVGGElement>(`#pill-${segment.id}`);
             const stop = root.querySelector<SVGGElement>(`#${segment.stop}`);
-            if (!line || !vehicle || !pill || !stop) return;
+            if (!line || !vehicle || !stop) return;
 
             const length = line.getTotalLength();
             const at = segment.at;
@@ -217,19 +168,23 @@ export function ArrivalMap() {
                 at + 0.12,
               )
               .to(vehicle, { autoAlpha: 0, duration: 0.15 }, at + 0.97)
-              .fromTo(
+              .to(vehicle, { autoAlpha: 0, duration: 0.01 }, at + 0.98);
+
+            if (pill) {
+              tl.fromTo(
                 pill,
-                { autoAlpha: 0, y: 10 },
+                { autoAlpha: 0, y: 8 },
                 { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" },
                 at + 0.4,
               );
+            }
           });
 
           tl.fromTo(
-            "#meeting-point",
+            "#m-meeting-point",
             { autoAlpha: 0, scale: 0.4, transformOrigin: "50% 50%" },
             { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" },
-            ">-0.3",
+            ">-0.25",
           );
         },
       );
@@ -241,29 +196,29 @@ export function ArrivalMap() {
   return (
     <svg
       ref={rootRef}
-      viewBox="0 0 1360 620"
+      viewBox="0 0 360 578"
       className="h-auto w-full"
       role="img"
-      aria-label="Due modi per arrivare: in treno fino a Lecco e poi in bus fino a Valmadrera, oppure in auto dalla SS36 fino ai parcheggi in centro e cinque minuti a piedi fino al parco di via Leopardi"
+      aria-label="Due modi per arrivare: in treno fino a Lecco e poi in bus fino a Valmadrera, oppure in auto dalla SS36 fino ai parcheggi in centro e cinque minuti a piedi. Entrambe le vie finiscono al parco di via Leopardi"
     >
-      {/* Route family labels */}
       <text
         x="0"
-        y="24"
+        y="12"
         className="fill-blue"
-        fontSize="14"
+        fontSize="11"
         fontWeight="700"
-        letterSpacing="3"
+        letterSpacing="2.4"
       >
         MEZZI PUBBLICI
       </text>
       <text
-        x="0"
-        y="612"
+        x="360"
+        y="12"
+        textAnchor="end"
         className="fill-blue"
-        fontSize="14"
+        fontSize="11"
         fontWeight="700"
-        letterSpacing="3"
+        letterSpacing="2.4"
       >
         IN AUTO
       </text>
@@ -274,7 +229,7 @@ export function ArrivalMap() {
             rather than filled outlines — which means the width cannot swell
             through the bends the way the stripe's does. Kept to two octaves:
             the filter re-runs on every scrubbed frame. */}
-        <filter id="map-spray" x="-12%" y="-12%" width="124%" height="124%">
+        <filter id="mmap-spray" x="-12%" y="-12%" width="124%" height="124%">
           <feTurbulence
             type="fractalNoise"
             baseFrequency="1.1"
@@ -329,7 +284,7 @@ export function ArrivalMap() {
       </defs>
 
       {/* Legs */}
-      <g filter="url(#map-spray)">
+      <g filter="url(#mmap-spray)">
         {SEGMENTS.map((segment) => (
           <path
             key={segment.id}
@@ -337,7 +292,7 @@ export function ArrivalMap() {
             d={segment.path}
             fill="none"
             stroke="var(--color-blue)"
-            strokeWidth="9"
+            strokeWidth="7"
             strokeOpacity={segment.dashed ? 0.7 : 1}
             strokeLinecap="round"
           />
@@ -345,63 +300,54 @@ export function ArrivalMap() {
       </g>
 
       {/* Stops */}
-      {STOPS.map((stop) => {
-        const labelProps =
-          stop.labelAt === "right"
-            ? { x: stop.x + 46, anchor: "start" as const, dy: [-2, 22] }
-            : stop.labelAt === "above"
-              ? { x: stop.x, anchor: "middle" as const, dy: [-64, -42] }
-              : { x: stop.x, anchor: "middle" as const, dy: [58, 80] };
-
-        return (
-          <g key={stop.id} id={`stop-${stop.id}`}>
-            <circle cx={stop.x} cy={stop.y} r="30" className="fill-ink" />
-            <g transform={`translate(${stop.x} ${stop.y})`}>
-              <Icon id={stop.icon} />
-            </g>
-            <text
-              x={labelProps.x}
-              y={stop.y + labelProps.dy[0]}
-              textAnchor={labelProps.anchor}
-              className="fill-ink font-display"
-              fontSize="26"
-            >
-              {stop.title.toUpperCase()}
-            </text>
-            <text
-              x={labelProps.x}
-              y={stop.y + labelProps.dy[1]}
-              textAnchor={labelProps.anchor}
-              className="fill-ink/60"
-              fontSize="15"
-            >
-              {stop.detail}
-            </text>
+      {STOPS.map((stop) => (
+        <g key={stop.id} id={`m-stop-${stop.id}`}>
+          <circle cx={stop.x} cy={stop.y} r="22" className="fill-ink" />
+          <g transform={`translate(${stop.x} ${stop.y})`}>
+            <Icon id={stop.icon} />
           </g>
-        );
-      })}
+          <text
+            x={stop.x}
+            y={stop.y + 40}
+            textAnchor="middle"
+            className="fill-ink font-display"
+            fontSize="18"
+          >
+            {stop.title.toUpperCase()}
+          </text>
+          <text
+            x={stop.x}
+            y={stop.y + 56}
+            textAnchor="middle"
+            className="fill-ink/60"
+            fontSize="11.5"
+          >
+            {stop.detail}
+          </text>
+        </g>
+      ))}
 
       {/* Info pills */}
-      {SEGMENTS.map((segment) => (
+      {SEGMENTS.filter((segment) => segment.pill).map((segment) => (
         <g key={`pill-${segment.id}`} id={`pill-${segment.id}`}>
           <rect
-            x={segment.pill.x - 105}
-            y={segment.pill.y - 21}
-            width="210"
-            height="42"
-            rx="21"
+            x={segment.pill!.x - 70}
+            y={segment.pill!.y - 15}
+            width="140"
+            height="30"
+            rx="15"
             className="fill-white stroke-ink/25"
             strokeWidth="1.5"
           />
           <text
-            x={segment.pill.x}
-            y={segment.pill.y + 6}
+            x={segment.pill!.x}
+            y={segment.pill!.y + 5}
             textAnchor="middle"
             className="fill-ink"
-            fontSize="16"
+            fontSize="12.5"
             fontWeight="600"
           >
-            {segment.pill.text}
+            {segment.pill!.text}
           </text>
         </g>
       ))}
@@ -409,40 +355,40 @@ export function ArrivalMap() {
       {/* Travelling vehicles */}
       {SEGMENTS.map((segment) => (
         <g key={`veh-${segment.id}`} id={`veh-${segment.id}`}>
-          <circle r="19" className="fill-blue" />
+          <circle r="15" className="fill-blue" />
           <Icon id={segment.icon} />
         </g>
       ))}
 
-      {/* Meeting point, where both ways converge */}
-      <g id="meeting-point">
-        <circle cx="600" cy="310" r="46" className="fill-yellow" />
+      {/* Both ways end here */}
+      <g id="m-meeting-point">
+        <circle cx="180" cy="486" r="32" className="fill-yellow" />
         <g
-          transform="translate(600 310)"
+          transform="translate(180 486)"
           fill="none"
           stroke="var(--color-ink)"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M-10 -16v32" />
-          <path d="M-10 -15h21l-3.8 7.6L12 -0.6H-10" />
+          <path d="M-9 -14v28" />
+          <path d="M-9 -13h18l-3.2 6.5L10 -0.5H-9" />
         </g>
         <text
-          x="540"
-          y="304"
-          textAnchor="end"
+          x="180"
+          y="536"
+          textAnchor="middle"
           className="fill-ink font-display"
-          fontSize="30"
+          fontSize="22"
         >
           RITROVO
         </text>
         <text
-          x="540"
-          y="330"
-          textAnchor="end"
+          x="180"
+          y="556"
+          textAnchor="middle"
           className="fill-ink/60"
-          fontSize="16"
+          fontSize="12"
         >
           Parco di via Leopardi
         </text>

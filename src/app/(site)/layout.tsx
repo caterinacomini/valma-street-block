@@ -1,3 +1,5 @@
+import { ScrollReveals } from "@/components/scroll-reveals";
+import { SiteLoader } from "@/components/site-loader";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -12,16 +14,29 @@ export default async function SiteLayout({
 
   return (
     <>
+      <SiteLoader />
       {/* Header stays outside the smoother so it can remain fixed */}
-      <SiteHeader registrationUrl={settings.registrationUrl ?? undefined} />
+      <SiteHeader
+        registrationUrl={settings.registrationUrl ?? undefined}
+        registrationOpen={settings.registrationOpen}
+        registrationLabel={settings.registrationLabel}
+        registrationClosedLabel={settings.registrationClosedLabel}
+        instagramUrl={settings.instagramUrl ?? undefined}
+        facebookUrl={settings.facebookUrl ?? undefined}
+      />
       <SmoothScroll>
-        <main>{children}</main>
+        <main className="site-in">{children}</main>
         <SiteFooter
           instagramUrl={settings.instagramUrl ?? undefined}
           facebookUrl={settings.facebookUrl ?? undefined}
           contactEmail={settings.contactEmail ?? undefined}
           registrationUrl={settings.registrationUrl ?? undefined}
+          registrationOpen={settings.registrationOpen}
+          registrationLabel={settings.registrationLabel}
+          registrationClosedLabel={settings.registrationClosedLabel}
         />
+        {/* Last child, so its effect runs once every section is mounted */}
+        <ScrollReveals />
       </SmoothScroll>
     </>
   );

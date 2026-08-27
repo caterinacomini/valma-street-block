@@ -11,6 +11,9 @@ export const siteSettingsQuery = defineQuery(`
     location,
     intro,
     registrationUrl,
+    registrationOpen,
+    registrationLabel,
+    registrationClosedLabel,
     instagramUrl,
     facebookUrl,
     contactEmail

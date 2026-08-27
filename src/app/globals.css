@@ -33,6 +33,67 @@ body {
   background-repeat: repeat;
 }
 
+/* Loader. The shell carries a delayed fade as a fallback, so the overlay
+   always clears even if the script that dismisses it never runs; adding
+   .loader-shell-done restarts the same fade with no delay. Swapping the class
+   rather than setting inline styles avoids fighting a running animation. */
+@keyframes loader-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes loader-letter {
+  from {
+    opacity: 0;
+    transform: translateY(34%) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility loader-shell {
+  animation: loader-out 0.7s ease 4.4s forwards;
+}
+
+@utility loader-shell-done {
+  animation: loader-out 0.7s ease forwards;
+}
+
+@utility loader-letter {
+  animation: loader-letter 0.95s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-letter {
+    animation: none;
+  }
+}
+
+@keyframes site-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Delayed to sit just behind the loader's own fade, so the page arrives as the
+   overlay goes rather than snapping in behind it. */
+@utility site-in {
+  animation: site-in 0.7s ease 0.15s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-in {
+    animation: none;
+  }
+}
+
 /* Continuous logo marquee */
 @keyframes marquee {
   from {

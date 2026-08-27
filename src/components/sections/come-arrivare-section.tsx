@@ -1,4 +1,5 @@
 import { ArrivalMap } from "@/components/arrival-map";
+import { ArrivalMapMobile } from "@/components/arrival-map-mobile";
 import { loadHowToArrive } from "@/sanity/fetch";
 
 export async function ComeArrivareSection() {
@@ -7,7 +8,10 @@ export async function ComeArrivareSection() {
   return (
     <section id="come-arrivare" className="page-x scroll-mt-20 py-16 sm:py-24">
       {/* Heading + intro */}
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div
+        data-reveal="stagger"
+        className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+      >
         <div>
           <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
             Valmadrera · Lecco
@@ -25,12 +29,22 @@ export async function ComeArrivareSection() {
       </div>
 
       {/* Full-width animated routes */}
+      {/* Same journey, two shapes: wide and side-to-side once there is room,
+          vertical and scroll-driven when there is not. */}
       <div className="mt-12 lg:mt-16">
-        <ArrivalMap />
+        <div className="lg:hidden">
+          <ArrivalMapMobile />
+        </div>
+        <div className="hidden lg:block">
+          <ArrivalMap />
+        </div>
       </div>
 
       {/* Practical details */}
-      <div className="mt-12 grid gap-8 border-t border-ink/15 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        data-reveal="stagger"
+        className="mt-12 grid gap-8 border-t border-ink/15 pt-10 sm:grid-cols-2 lg:grid-cols-3"
+      >
         {info.address ? (
           <div>
             <h3 className="font-display text-lg tracking-wide text-ink">
@@ -69,13 +83,21 @@ export async function ComeArrivareSection() {
               In auto
             </h3>
             <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
+            <a
+              href="https://www.google.com/maps/search/parcheggi+Valmadrera"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
+            >
+              Scopri i parcheggi
+            </a>
           </div>
         ) : null}
 
         {info.publicTransportInfo ? (
-          <div className="border-l-2 border-yellow pl-5 sm:col-span-2 lg:col-span-1 lg:border-l-2">
+          <div>
             <h3 className="font-display text-lg tracking-wide text-ink">
-              Con i mezzi pubblici
+              Vieni con i mezzi pubblici?
             </h3>
             <p className="mt-2 text-base text-ink/75">
               {info.publicTransportInfo}

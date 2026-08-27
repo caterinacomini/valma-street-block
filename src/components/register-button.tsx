@@ -1,5 +1,11 @@
+/**
+ * Three steps, one rule: `lg` for the full-screen moments where the button is
+ * the only thing being asked (hero, open menu), `md` for a call to action
+ * sitting inside a block of content, `sm` for the bar that is always there.
+ * An `xs` step existed and was never used once — removed rather than left
+ * around as a fourth choice nobody needed to make.
+ */
 const PADDING = {
-  xs: "px-3.5 py-1.5 text-xs",
   sm: "px-4 py-2 text-sm",
   md: "px-6 py-3 text-base",
   lg: "px-8 py-4 text-xl sm:text-2xl",
@@ -11,25 +17,84 @@ const VARIANT = {
   dark: "bg-ink text-white hover:bg-ink/85",
 } as const;
 
+/**
+ * Closed styling is per variant because the grounds differ: `solid` only ever
+ * sits on the dark photos and the blurred bar, so it closes in white — ink at
+ * low opacity would disappear there.
+ */
+const CLOSED_VARIANT = {
+  solid: "bg-white/15 text-white/85 backdrop-blur-sm",
+  inverse: "bg-white/25 text-white/85",
+  dark: "bg-white/15 text-white/75",
+} as const;
+
+const BASE =
+  "inline-flex items-center justify-center gap-2 rounded-full font-sans font-bold tracking-wide whitespace-nowrap uppercase transition";
+
+function Padlock() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <rect x="4" y="10" width="16" height="11" rx="2.5" />
+      <path d="M8 10V7a4 4 0 018 0v3" />
+    </svg>
+  );
+}
+
 export function RegisterButton({
   registrationUrl,
+  open = false,
+  label,
+  closedLabel,
   size = "md",
   variant = "solid",
   className = "",
 }: {
   registrationUrl?: string;
-  size?: "xs" | "sm" | "md" | "lg";
+  open?: boolean;
+  label?: string;
+  closedLabel?: string;
+  size?: "sm" | "md" | "lg";
   variant?: "solid" | "inverse" | "dark";
   className?: string;
 }) {
+  const live = open && Boolean(registrationUrl);
+
+  /**
+   * Closed, this renders as text rather than a greyed-out button. A disabled
+   * control tells a sighted reader nothing about why it will not respond, and
+   * tells a screen reader nothing at all — so the state is carried by the words
+   * and a padlock instead, and there is simply no link to press.
+   */
+  if (!live) {
+    return (
+      <span
+        className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} ${className}`}
+      >
+        <Padlock />
+        {closedLabel || "Iscrizioni non aperte"}
+      </span>
+    );
+  }
+
   return (
     <a
-      href={registrationUrl || "#"}
-      target={registrationUrl ? "_blank" : undefined}
-      rel={registrationUrl ? "noopener noreferrer" : undefined}
-      className={`inline-flex items-center justify-center rounded-full ${PADDING[size]} ${VARIANT[variant]} font-sans font-bold tracking-wide whitespace-nowrap uppercase transition ${className}`}
+      href={registrationUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${BASE} ${PADDING[size]} ${VARIANT[variant]} ${className}`}
     >
-      Iscriviti ora
+      {label || "Iscriviti ora"}
     </a>
   );
 }

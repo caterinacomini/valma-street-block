@@ -1,55 +1,66 @@
+import { ProgramRibbon } from "@/components/program-ribbon";
 import { loadProgramItems } from "@/sanity/fetch";
-
-const CATEGORY_LABEL: Record<string, string> = {
-  gara: "Gara",
-  ritrovo: "Ritrovo",
-  premiazioni: "Premiazioni",
-  festa: "Festa",
-};
 
 export async function ProgrammaSection() {
   const items = await loadProgramItems();
 
   return (
-    <section id="programma" className="page-x scroll-mt-20 py-16 sm:py-24">
-      <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
-        Un giorno, cinquanta blocchi
-      </p>
-      <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-        Il programma della giornata
-      </h2>
+    <section
+      id="programma"
+      className="relative isolate scroll-mt-20 overflow-hidden py-16 sm:py-24"
+    >
+      <div className="page-x">
+        <p
+          data-reveal
+          className="font-mono text-sm tracking-[0.2em] text-blue uppercase"
+        >
+          Un giorno, cinquanta blocchi
+        </p>
+        <h2
+          data-reveal
+          className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl"
+        >
+          Il programma della giornata
+        </h2>
 
-      <ol className="mt-12">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
+        {/* isolate so the ribbon can sit at -z-10 behind the cards without
+            falling behind the section's own background */}
+        <div className="relative isolate mt-10 lg:mt-12">
+          <ProgramRibbon />
 
-          return (
-            <li key={item._id} className="relative">
-              <div className="flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:gap-8">
-                {/* Time + meta */}
-                <div className="sm:w-52 sm:shrink-0">
-                  <p className="font-display text-3xl leading-none text-blue sm:text-4xl">
+          <ol className="flex flex-col gap-5 sm:gap-6 lg:flex-row lg:items-stretch lg:gap-4">
+            {items.map((item) => (
+              <li key={item._id} className="lg:min-w-0 lg:flex-1">
+                <article
+                  data-reveal
+                  className="relative h-full w-full overflow-hidden rounded-3xl px-6 py-6 text-ink backdrop-blur-xl sm:px-8 sm:py-7 lg:px-6 lg:py-6"
+                  style={{
+                    // Two-layer background: the frosted pane is clipped to the
+                    // padding box, the gradient to the border box, which is how
+                    // you get an edge that lights up on one diagonal and fades
+                    // out on the other. A plain border-color cannot do this.
+                    background:
+                      "linear-gradient(rgba(254,255,255,0.5), rgba(254,255,255,0.5)) padding-box," +
+                      " linear-gradient(135deg, rgba(0,0,0,0.11), rgba(0,0,0,0) 45%," +
+                      " rgba(0,0,0,0) 60%, rgba(0,0,0,0.05)) border-box",
+                    border: "1px solid transparent",
+                  }}
+                >
+                  <div className="grain pointer-events-none absolute inset-0 opacity-12 mix-blend-multiply" />
+
+                  <p className="font-display text-3xl leading-none sm:text-4xl lg:text-2xl">
                     {item.time}
+                    {item.endTime ? (
+                      <span className="text-ink/45"> – {item.endTime}</span>
+                    ) : null}
                   </p>
-                  {item.endTime ? (
-                    <p className="mt-1.5 text-sm text-ink/55">
-                      fino alle {item.endTime}
-                    </p>
-                  ) : null}
-                  {item.category ? (
-                    <p className="mt-2 text-xs font-semibold tracking-widest text-ink/45 uppercase">
-                      {CATEGORY_LABEL[item.category] ?? item.category}
-                    </p>
-                  ) : null}
-                </div>
 
-                {/* Content card */}
-                <div className="flex-1 rounded-2xl bg-ink/5 px-6 py-5">
-                  <h3 className="font-display text-xl tracking-wide text-ink sm:text-2xl">
+                  <h3 className="mt-3 font-display text-2xl tracking-wide sm:text-3xl lg:text-xl">
                     {item.title}
                   </h3>
+
                   {item.location ? (
-                    <p className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-ink/70">
+                    <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-ink/70">
                       <svg
                         viewBox="0 0 24 24"
                         width="14"
@@ -60,6 +71,7 @@ export async function ProgrammaSection() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         aria-hidden="true"
+                        className="shrink-0"
                       >
                         <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1116 0z" />
                         <circle cx="12" cy="10" r="3" />
@@ -67,19 +79,18 @@ export async function ProgrammaSection() {
                       {item.location}
                     </p>
                   ) : null}
+
                   {item.description ? (
-                    <p className="mt-2 text-sm text-ink/70 sm:text-base">
+                    <p className="mt-3 text-sm text-ink/70 sm:text-base">
                       {item.description}
                     </p>
                   ) : null}
-                </div>
-              </div>
-
-              {!isLast ? <div aria-hidden="true" className="h-2" /> : null}
-            </li>
-          );
-        })}
-      </ol>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
     </section>
   );
 }

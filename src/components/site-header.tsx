@@ -1,65 +1,152 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { navLinks } from "./nav-links";
 import { RegisterButton } from "./register-button";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-export function SiteHeader({ registrationUrl }: { registrationUrl?: string }) {
+/** WCAG relative luminance. */
+function luminance([r, g, b]: number[]) {
+  const channel = (c: number) => {
+    const v = c / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+function contrast(a: number, b: number) {
+  const hi = Math.max(a, b);
+  const lo = Math.min(a, b);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+/** First ancestor that actually paints something, ignoring transparent ones. */
+function paintedBackground(node: Element | null): number[] | null {
+  let el: Element | null = node;
+  while (el && el !== document.documentElement) {
+    const bg = getComputedStyle(el).backgroundColor;
+    const m = bg.match(/rgba?\(([^)]+)\)/);
+    if (m) {
+      const parts = m[1].split(",").map((v) => parseFloat(v));
+      const alpha = parts.length > 3 ? parts[3] : 1;
+      if (alpha > 0.5) return parts.slice(0, 3);
+    }
+    el = el.parentElement;
+  }
+  const body = getComputedStyle(document.body).backgroundColor.match(
+    /rgba?\(([^)]+)\)/,
+  );
+  return body
+    ? body[1]
+        .split(",")
+        .map((v) => parseFloat(v))
+        .slice(0, 3)
+    : null;
+}
+
+export function SiteHeader({
+  registrationUrl,
+  registrationOpen,
+  registrationLabel,
+  registrationClosedLabel,
+  instagramUrl,
+  facebookUrl,
+}: {
+  registrationUrl?: string;
+  registrationOpen?: boolean;
+  registrationLabel?: string;
+  registrationClosedLabel?: string;
+  instagramUrl?: string;
+  facebookUrl?: string;
+}) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [onLight, setOnLight] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
+  /**
+   * Which colour the bar's type should be is not a fixed decision: it depends
+   * on whatever section happens to be under it. So it is measured — sample the
+   * painted background at three points across the bar, average the luminance,
+   * and keep whichever of white or black has the better contrast against it.
+   */
   useEffect(() => {
-    // Go solid once the hero has scrolled past, not on the first few pixels.
-    // ScrollSmoother drives the scroll position, so window.scrollY stays 0 —
-    // this has to go through ScrollTrigger.
-    const hero = document.getElementById("top");
+    const header = headerRef.current;
+    if (!header) return;
 
-    const trigger = hero
-      ? ScrollTrigger.create({
-          trigger: hero,
-          start: "bottom top",
-          end: "max",
-          onToggle: (self) => setScrolled(self.isActive),
-          onRefresh: (self) => setScrolled(self.isActive),
-        })
-      : ScrollTrigger.create({
-          start: 0,
-          end: "max",
-          onUpdate: (self) => setScrolled(self.scroll() > 24),
-          onRefresh: (self) => setScrolled(self.scroll() > 24),
-        });
+    const measure = () => {
+      const rect = header.getBoundingClientRect();
+      const y = rect.top + rect.height / 2;
+      const xs = [rect.width * 0.12, rect.width * 0.5, rect.width * 0.88];
 
-    return () => trigger.kill();
+      let total = 0;
+      let taken = 0;
+      for (const x of xs) {
+        const under = document
+          .elementsFromPoint(x, y)
+          .find((node) => !header.contains(node));
+        const rgb = paintedBackground(under ?? null);
+        if (rgb) {
+          total += luminance(rgb);
+          taken += 1;
+        }
+      }
+      if (!taken) return;
+
+      const behind = total / taken;
+      const white = contrast(1, behind);
+      const black = contrast(0, behind);
+      setOnLight(black > white);
+    };
+
+    measure();
+    // ScrollSmoother owns the scroll position, so the samples are taken from
+    // its updates rather than from a scroll listener that would never fire.
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: measure,
+      onRefresh: measure,
+    });
+    window.addEventListener("resize", measure);
+
+    return () => {
+      trigger.kill();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
-  const solid = scrolled || open;
+  // Over the open menu the ground is the blue overlay, which wants white.
+  const darkType = onLight && !open;
+  const social = [
+    instagramUrl ? { href: instagramUrl, label: "Instagram" } : null,
+    facebookUrl ? { href: facebookUrl, label: "Facebook" } : null,
+  ].filter((link) => link !== null);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 text-white">
-      {/* Light blur that fades out downward, so the bar doesn't cut a hard edge */}
+    <header
+      ref={headerRef}
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
+        darkType ? "text-ink" : "text-white"
+      }`}
+    >
+      {/* Hero recipe, identical at every scroll position: blur fading
+          downward with grain over it, and nothing else. */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-x-0 top-0 -bottom-8 transition-opacity duration-300 ${
-          solid ? "opacity-0" : "opacity-100"
+        className={`pointer-events-none absolute inset-x-0 top-0 -bottom-10 transition-opacity duration-300 ${
+          open ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="absolute inset-0 backdrop-blur-[6px] [mask-image:linear-gradient(to_bottom,black_0%,black_45%,transparent_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/20 to-transparent" />
+        <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
+        <div className="absolute inset-0 backdrop-blur-[12px] [mask-image:linear-gradient(to_bottom,black_0%,black_38%,transparent_88%)]" />
+        <div className="grain absolute inset-0 opacity-35 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
       </div>
-
-      {/* Solid bar once scrolled */}
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 bg-ink/90 backdrop-blur-md transition-opacity duration-300 ${
-          solid ? "opacity-100" : "opacity-0"
-        }`}
-      />
 
       <div className="page-x relative flex items-center justify-between gap-3 py-3 sm:py-4">
         <a
@@ -75,29 +162,25 @@ export function SiteHeader({ registrationUrl }: { registrationUrl?: string }) {
             className="h-9 w-9 shrink-0 sm:h-11 sm:w-11"
           />
           <span className="min-w-0">
-            <span className="block font-display text-xs leading-tight tracking-wide whitespace-nowrap sm:text-base">
+            <span className="block font-display text-lg leading-tight tracking-wide whitespace-nowrap sm:text-base">
               VALMA STREET BLOCK
             </span>
-            <span className="block text-[9px] font-semibold whitespace-nowrap text-white sm:text-xs">
+            <span className="hidden text-[9px] font-semibold whitespace-nowrap opacity-80 sm:block sm:text-xs">
               10 Apr 2027 · Valmadrera
             </span>
           </span>
         </a>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="relative text-sm font-semibold tracking-wide text-white uppercase transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-right after:scale-x-0 after:bg-yellow after:transition-transform after:duration-300 hover:text-yellow hover:after:origin-left hover:after:scale-x-100"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="hidden lg:block">
-          <RegisterButton registrationUrl={registrationUrl} size="sm" />
+        <div className="ml-auto hidden lg:block">
+          {!open ? (
+            <RegisterButton
+              registrationUrl={registrationUrl}
+              open={registrationOpen}
+              label={registrationLabel}
+              closedLabel={registrationClosedLabel}
+              size="sm"
+            />
+          ) : null}
         </div>
 
         <button
@@ -105,39 +188,77 @@ export function SiteHeader({ registrationUrl }: { registrationUrl?: string }) {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Chiudi menu" : "Apri menu"}
-          className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 rounded-xl bg-yellow lg:hidden"
+          className="inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-yellow px-4 font-sans text-sm font-bold tracking-wide text-ink uppercase transition"
         >
-          <span
-            className={`h-0.5 w-5 bg-ink transition ${open ? "translate-y-2 rotate-45" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-5 bg-ink transition ${open ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-5 bg-ink transition ${open ? "-translate-y-2 -rotate-45" : ""}`}
-          />
+          {open ? "Chiudi" : "Menu"}
         </button>
       </div>
 
+      {/* Full-screen overlay. Footer vocabulary — blue ground, yellow Koulen,
+          hairline white rules — with the type sized off the viewport so it
+          fills the screen. Sits at -z-10 inside the header's own stacking
+          context, which keeps the Chiudi button on top of it. */}
       {open && (
-        <nav className="page-x relative flex flex-col border-t border-white/10 bg-ink pb-4 lg:hidden">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="border-b border-white/8 py-4 font-display text-lg text-white"
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="py-4">
+        <div className="fixed inset-0 -z-10 overflow-y-auto bg-blue/88 backdrop-blur-2xl">
+          <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
+
+          <div className="relative flex min-h-full flex-col px-[5vw] pt-20 pb-8 sm:pt-24 lg:px-24">
+            {/* The nav itself, tight and oversized */}
+            <ul className="flex flex-col gap-4 pt-6 pb-8 lg:gap-0">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="block font-display text-[15.03vw] leading-[1.02] whitespace-nowrap text-yellow uppercase transition-transform duration-300 hover:translate-x-2 lg:text-[9vw]"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
             <RegisterButton
               registrationUrl={registrationUrl}
-              className="w-full"
+              open={registrationOpen}
+              label={registrationLabel}
+              closedLabel={registrationClosedLabel}
+              variant="dark"
+              size="lg"
+              className="mt-2 w-full sm:w-auto sm:self-start"
             />
+
+            {/* Bottom band, mirroring the footer's own closing row */}
+            <div className="mt-auto flex flex-col gap-4">
+              {social.length > 0 ? (
+                <ul className="flex flex-wrap gap-x-6 gap-y-1">
+                  {social.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1 py-1 text-sm font-semibold tracking-wide text-white/85 uppercase transition hover:text-white"
+                      >
+                        {link.label}
+                        <span
+                          aria-hidden="true"
+                          className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        >
+                          ↗
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+
+              <p className="text-xs text-white/70">
+                Organizzato da CAI Valmadrera e OSA Valmadrera
+              </p>
+            </div>
           </div>
-        </nav>
+        </div>
       )}
     </header>
   );

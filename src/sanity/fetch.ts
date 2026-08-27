@@ -29,6 +29,9 @@ const FALLBACK_SITE_SETTINGS = {
   intro:
     "Un giorno di boulder in mezzo al paese. Muri, cornicioni e angoli di città diventano blocchi da chiudere. Poi si balla.",
   registrationUrl: undefined,
+  registrationOpen: false,
+  registrationLabel: undefined,
+  registrationClosedLabel: undefined,
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
   facebookUrl: "https://www.facebook.com/ValmaStreetBlock/",
   contactEmail: "segreteria@caivalmadrera.it",
@@ -40,7 +43,7 @@ const FALLBACK_PROGRAM = [
     title: "Ritiro pettorali",
     time: "10:30",
     endTime: undefined,
-    description: "Ritiro pacco gara e pettorali al punto di ritrovo.",
+    description: "Consegna di pacco gara e pettorale. Da qui parte tutto.",
     location: "Parco via Leopardi",
     category: "ritrovo",
   },
@@ -50,7 +53,7 @@ const FALLBACK_PROGRAM = [
     time: "12:30",
     endTime: "18:00",
     description:
-      "50 blocchi sparsi per il paese: passaggi brevi ma intensi, valutati da giudici di gara.",
+      "Cinque ore e mezza tra muri e cortili: si prova, si riprova, i giudici segnano.",
     location: "Centro Valmadrera",
     category: "gara",
   },
@@ -59,7 +62,7 @@ const FALLBACK_PROGRAM = [
     title: "Finali e premiazioni",
     time: "19:00",
     endTime: undefined,
-    description: "I migliori atleti si sfidano nelle finali a vista.",
+    description: "I migliori tornano a scalare davanti a tutti, a vista. Poi i premi.",
     location: "Parco via Leopardi",
     category: "premiazioni",
   },
@@ -68,7 +71,7 @@ const FALLBACK_PROGRAM = [
     title: "DJ set",
     time: "21:00",
     endTime: undefined,
-    description: "Festa finale in musica per chiudere la giornata.",
+    description: "Si resta al parco fino a tardi.",
     location: "Parco via Leopardi",
     category: "festa",
   },
@@ -255,7 +258,7 @@ const FALLBACK_HOW_TO_ARRIVE = {
   carInfo:
     "Da Lecco: SS36 direzione Colico, uscita Valmadrera. Parcheggi segnalati nei pressi del centro.",
   publicTransportInfo:
-    "Chi arriva in treno o bus riceve un piccolo riconoscimento dall'organizzazione: conserva i biglietti e mostrali all'iscrizione.",
+    "Conserva i biglietti e mostrali all'iscrizione: l'organizzazione ti riserva un piccolo riconoscimento.",
   mapEmbedUrl: "https://maps.google.com/?q=Valmadrera+LC",
 } satisfies Awaited<ReturnType<typeof getHowToArrive>>;
 

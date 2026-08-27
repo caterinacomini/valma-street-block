@@ -21,7 +21,8 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
   const [frame, setFrame] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const frames = edition.frames.length > 0 ? edition.frames : [edition.coverUrl];
+  const frames =
+    edition.frames.length > 0 ? edition.frames : [edition.coverUrl];
 
   const start = () => {
     if (timer.current || frames.length < 2) return;
@@ -46,7 +47,7 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
 
   return (
     <article
-      className="group relative aspect-[3/4] w-72 shrink-0 overflow-hidden rounded-3xl bg-ink sm:w-80 lg:w-[22rem]"
+      className="group relative aspect-[3/4] w-72 shrink-0 overflow-hidden rounded-3xl bg-ink sm:w-80 lg:h-[82dvh] lg:w-auto"
       onMouseEnter={start}
       onMouseLeave={stop}
     >
@@ -87,8 +88,8 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
 
         {edition.participantsCount ? (
           <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
-            <span className="h-2 w-2 shrink-0 rounded-full bg-yellow" />
-            +{edition.participantsCount} climbers
+            <span className="h-2 w-2 shrink-0 rounded-full bg-yellow" />+
+            {edition.participantsCount} climbers
           </p>
         ) : null}
       </div>
@@ -102,6 +103,73 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
   const pinRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [moreRight, setMoreRight] = useState(false);
+  const [moreLeft, setMoreLeft] = useState(false);
+
+  const stepWidth = () => {
+    const first = cardsRef.current?.firstElementChild as HTMLElement | null;
+    return first ? first.getBoundingClientRect().width + 20 : 340;
+  };
+
+  /**
+   * How far the strip has travelled comes from two places: the native scroll
+   * position when it is swiped, and the transform GSAP writes when the page
+   * scroll drives it. Adding them covers both without caring which is in charge.
+   */
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const cards = cardsRef.current;
+    if (!viewport || !cards) return;
+
+    const update = () => {
+      const shifted =
+        viewport.scrollLeft +
+        Math.abs(Number(gsap.getProperty(cards, "x")) || 0);
+      const total = cards.scrollWidth - viewport.clientWidth;
+      setMoreRight(shifted > stepWidth() * 2.1 && shifted < total - 24);
+      setMoreLeft(shifted > 24);
+    };
+
+    update();
+    viewport.addEventListener("scroll", update, { passive: true });
+    const ticker = ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: update,
+      onRefresh: update,
+    });
+    window.addEventListener("resize", update);
+
+    return () => {
+      viewport.removeEventListener("scroll", update);
+      ticker.kill();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const advance = (direction: 1 | -1) => {
+    const viewport = viewportRef.current;
+    const cards = cardsRef.current;
+    if (!viewport || !cards) return;
+
+    const step = stepWidth();
+    const total = cards.scrollWidth - viewport.clientWidth;
+
+    if (getComputedStyle(viewport).overflowX !== "hidden") {
+      viewport.scrollBy({ left: step * direction, behavior: "smooth" });
+      return;
+    }
+    // Desktop: the strip is moved by transform, so the arrow moves the same
+    // property. It only appears once the pinned run is over, so nothing is
+    // fighting it for control.
+    const current = Number(gsap.getProperty(cards, "x")) || 0;
+    gsap.to(cards, {
+      x: Math.min(0, Math.max(-total, current - step * direction)),
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  };
 
   useLayoutEffect(() => {
     const pin = pinRef.current;
@@ -123,14 +191,21 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           const hiddenOverflow = () => {
             const finalColumnWidth =
               pin.clientWidth * (1 - PHOTO_FINAL_WIDTH / 100);
-            return Math.max(0, cards.scrollWidth - finalColumnWidth + 48);
+            const full = Math.max(0, cards.scrollWidth - finalColumnWidth + 48);
+            // Only the first few editions slide past while the section is
+            // pinned. Carrying all of them this way would hold the page for
+            // something like ten screens before the regolamento came into view.
+            const first = cards.firstElementChild as HTMLElement | null;
+            const step = first ? first.getBoundingClientRect().width + 20 : 340;
+            return Math.min(full, step * 3);
           };
 
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: pin,
               start: "top top",
-              end: () => `+=${window.innerHeight * 2.4}`,
+              end: () =>
+                `+=${Math.max(window.innerHeight * 1.2, hiddenOverflow() * 1.56)}`,
               pin: true,
               // ScrollSmoother transforms the content, so the pin has to be
               // transform-based rather than position:fixed.
@@ -159,11 +234,26 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
 
   return (
     <div ref={pinRef} className="relative lg:h-[100dvh]">
+      {/* Stacked, the photo panel would just push the cards off the fold, so
+          this reads as a plain section heading like the others. */}
+      <div className="px-6 pt-16 sm:px-8 lg:hidden">
+        <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
+          Edizioni passate
+        </p>
+        <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl">
+          Le nostre edizioni
+        </h2>
+        <p className="mt-4 max-w-md text-base leading-relaxed font-medium text-ink">
+          Dal 2015 le vie di Valmadrera ospitano la gara, una primavera dopo
+          l&apos;altra.
+        </p>
+      </div>
+
       <div className="flex h-full flex-col lg:flex-row lg:items-stretch">
         {/* Photo panel */}
         <div
           ref={photoRef}
-          className="relative h-72 shrink-0 sm:h-96 lg:h-full lg:w-[42%]"
+          className="relative hidden shrink-0 lg:block lg:h-full lg:w-[42%]"
         >
           <Image
             src="/content/urban-climbing-hand.png"
@@ -190,15 +280,66 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
         </div>
 
         {/* Cards — free horizontal scroll on mobile, GSAP-driven on desktop */}
-        <div className="flex min-w-0 flex-1 touch-pan-x items-center overflow-x-auto overscroll-x-contain py-8 lg:touch-auto lg:overflow-x-hidden lg:py-0">
+        <div className="relative flex min-w-0 flex-1">
           <div
-            ref={cardsRef}
-            className="flex gap-5 px-6 will-change-transform sm:px-8 lg:px-12"
+            ref={viewportRef}
+            className="flex min-w-0 flex-1 touch-pan-x items-center overflow-x-auto overscroll-x-contain py-8 lg:touch-auto lg:overflow-x-hidden lg:py-0"
           >
-            {editions.map((edition) => (
-              <EditionThumb key={edition.id} edition={edition} />
-            ))}
+            <div
+              ref={cardsRef}
+              className="flex gap-5 px-6 will-change-transform sm:px-8 lg:px-12"
+            >
+              {editions.map((edition) => (
+                <EditionThumb key={edition.id} edition={edition} />
+              ))}
+            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => advance(-1)}
+            aria-label="Torna alle edizioni precedenti"
+            className={`absolute top-1/2 left-4 z-10 flex h-14 w-14 -translate-y-1/2 rotate-180 items-center justify-center rounded-full border border-white/70 bg-gradient-to-r from-ink/60 to-white/25 backdrop-blur-md transition-opacity duration-300 sm:left-6 ${
+              moreLeft ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => advance(1)}
+            aria-label="Vedi le edizioni successive"
+            className={`absolute top-1/2 right-4 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-gradient-to-r from-ink/60 to-white/25 backdrop-blur-md transition-opacity duration-300 sm:right-6 ${
+              moreRight ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>

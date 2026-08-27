@@ -10,6 +10,9 @@ export interface SiteSettings {
   location?: string;
   intro?: string;
   registrationUrl?: string;
+  registrationOpen?: boolean;
+  registrationLabel?: string;
+  registrationClosedLabel?: string;
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
