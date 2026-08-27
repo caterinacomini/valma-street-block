@@ -86,85 +86,73 @@ export default async function HomePage() {
           Dal 2015 le vie di Valmadrera diventano una palestra a cielo aperto.
         </h2>
 
-        <div className="mt-10 grid gap-x-12 gap-y-10 lg:mt-12 lg:grid-cols-[1.25fr_1fr] lg:gap-x-16">
-          {/* Left: headline number + photo grid */}
-          <div>
+        <div className="mt-10 grid items-end gap-x-12 gap-y-9 lg:mt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-x-16">
+          {/* Left: the claim, then where the thing came from */}
+          <div className="flex flex-col gap-4">
             <p className="font-display text-4xl leading-none whitespace-nowrap text-ink sm:text-5xl lg:text-6xl">
               100% in strada
             </p>
-            <p className="mt-3 max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
+            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
               Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
               cortili del paese.
             </p>
-
-            <div className="mt-6 grid max-w-[460px] grid-cols-2 gap-3 lg:mt-8">
-              {[
-                { src: "/content/urban-climbing-2.png", pos: "object-center" },
-                {
-                  src: "/content/urban-climbing-1.png",
-                  pos: "object-[center_25%]",
-                },
-                {
-                  src: "/content/urban-climbing-hand.png",
-                  pos: "object-center",
-                },
-                {
-                  src: "/content/urban-climbing-shoe.png",
-                  pos: "object-[center_30%]",
-                },
-              ].map((photo) => (
-                <div
-                  key={photo.src}
-                  className="relative aspect-square overflow-hidden rounded-2xl"
-                >
-                  <Image
-                    src={photo.src}
-                    alt=""
-                    fill
-                    className={`object-cover ${photo.pos}`}
-                    sizes="(min-width: 1024px) 330px, 45vw"
-                  />
-                </div>
-              ))}
-            </div>
+            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
+              Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
+              uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti
+              del nord Italia.
+            </p>
           </div>
 
-          {/* Right: description + supporting stats */}
-          <div className="flex flex-col justify-end">
-            <p className="max-w-md text-base leading-relaxed font-medium text-ink lg:text-lg">
-              Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi è uno
-              degli appuntamenti di arrampicata urbana più sentiti del nord
-              Italia.
-            </p>
+          {/* Right: the two numbers as photo cards, on the hero's blur + grain recipe.
+            Sized in container units so both titles land at the same size whatever
+            the column does. Not interactive: the pill is a caption, not a button. */}
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+            {[
+              {
+                src: "/content/urban-climbing-2.png",
+                pos: "object-[center_35%]",
+                value: `+${lastEdition?.participantsCount ?? 470}`,
+                label: "climbers",
+                caption: "Competitivi e non",
+              },
+              {
+                src: "/content/urban-climbing-beam.png",
+                pos: "object-[center_45%]",
+                value: "+50",
+                label: "blocchi",
+                caption: "Sparsi per il paese",
+              },
+            ].map((card) => (
+              <div
+                key={card.src}
+                className="@container relative aspect-square overflow-hidden rounded-3xl bg-ink"
+              >
+                <Image
+                  src={card.src}
+                  alt=""
+                  fill
+                  className={`object-cover ${card.pos}`}
+                  sizes="(min-width: 1024px) 330px, (min-width: 640px) 45vw, 90vw"
+                />
+                {/* Progressive blur rising from the bottom, where the type sits */}
+                <div className="pointer-events-none absolute inset-0">
+                  <div className="absolute inset-0 backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_14%,transparent_52%)]" />
+                  <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_top,black_4%,transparent_34%)]" />
+                </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
+                <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
-            <div className="mt-8 flex flex-col gap-6 lg:mt-10">
-              <div className="border-l-2 border-yellow pl-5">
-                <p className="flex items-baseline gap-3">
-                  <span className="font-display text-3xl text-ink sm:text-4xl">
-                    +{lastEdition?.participantsCount ?? 470}
-                  </span>
-                  <span className="font-display text-3xl tracking-wide text-ink sm:text-4xl">
-                    climbers
-                  </span>
-                </p>
-                <p className="mt-1 text-sm text-ink/60">
-                  In gara all&apos;ultima edizione, competitivi e non.
-                </p>
+                <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-[2.5cqw] p-[5.5cqw]">
+                  <p className="font-display text-[13cqw] leading-[0.88] text-white">
+                    <span className="block">{card.value}</span>
+                    <span className="block">{card.label}</span>
+                  </p>
+                  <p className="max-w-[94%] text-[5.2cqw] leading-snug font-medium tracking-wide text-white/85">
+                    {card.caption}
+                  </p>
+                </div>
               </div>
-              <div className="border-l-2 border-blue pl-5">
-                <p className="flex items-baseline gap-3">
-                  <span className="font-display text-3xl text-ink sm:text-4xl">
-                    +50
-                  </span>
-                  <span className="font-display text-3xl tracking-wide text-ink sm:text-4xl">
-                    blocchi
-                  </span>
-                </p>
-                <p className="mt-1 text-sm text-ink/60">
-                  Passaggi brevi ma intensi, sparsi per il paese.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -192,8 +180,8 @@ export default async function HomePage() {
                 Bagai, pronti a scalare il paese?
               </h2>
               <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">
-                50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno,
-                si scala tutti insieme.
+                50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno, si
+                scala tutti insieme.
               </p>
             </div>
             <RegisterButton
@@ -209,4 +197,3 @@ export default async function HomePage() {
     </>
   );
 }
-
