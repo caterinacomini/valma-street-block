@@ -104,6 +104,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
   const photoRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [showArrows, setShowArrows] = useState(false);
 
   const stepWidth = () => {
@@ -191,6 +192,43 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
+      /**
+       * Arrives as a card: full bleed while it is still below the fold, drawn
+       * in to rounded corners by the time it settles. Done with clip-path on a
+       * wrapper *inside* the pinned element — clipping the section from the
+       * outside would cut the content away exactly when the pin holds it still,
+       * and changing width or padding would move the measurements the pin
+       * depends on.
+       */
+      mm.add(
+        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const card = cardRef.current;
+          if (!card) return;
+
+          // Two custom properties rather than two clip-path strings: gsap
+          // normalises `inset(0% 0% 0% 0% round 0px)` down to `inset(0%)`, and
+          // interpolating between shapes of different structure is unreliable.
+          // This way the string never changes, only the numbers in it.
+          gsap.fromTo(
+            card,
+            { "--card-inset": "0%", "--card-radius": "0px" },
+            {
+              "--card-inset": "3%",
+              "--card-radius": "30px",
+              ease: "none",
+              scrollTrigger: {
+                trigger: pin,
+                start: "top 85%",
+                end: "top 12%",
+                scrub: 0.6,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        },
+      );
+
       // Desktop only: the shrink-then-scroll choreography needs the horizontal
       // room, and pinning on touch devices fights the native scroll.
       mm.add(
@@ -260,7 +298,14 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
         </p>
       </div>
 
-      <div className="flex h-full flex-col lg:flex-row lg:items-stretch">
+      <div
+        ref={cardRef}
+        className="flex h-full flex-col lg:flex-row lg:items-stretch"
+        style={{
+          clipPath:
+            "inset(0% var(--card-inset, 0%) 0% var(--card-inset, 0%) round var(--card-radius, 0px))",
+        }}
+      >
         {/* Photo panel */}
         <div
           ref={photoRef}
