@@ -25,7 +25,7 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
   const [openId, setOpenId] = useState(items[0]?._id);
 
   return (
-    <ul className="flex flex-col gap-3 lg:h-[420px] lg:flex-row lg:gap-4">
+    <ul className="flex flex-col gap-3 lg:h-[70dvh] lg:flex-row lg:gap-4">
       {items.map((item, index) => {
         const open = item._id === openId;
         const hasDetail = Boolean(item.location || item.description);
