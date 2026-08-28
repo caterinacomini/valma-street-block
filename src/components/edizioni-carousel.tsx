@@ -193,8 +193,8 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
       const mm = gsap.matchMedia();
 
       /**
-       * Arrives as a card: full bleed while it is still below the fold, drawn
-       * in to rounded corners by the time it settles. Done with clip-path on a
+       * Arrives as a card and opens out: rounded and inset while it is still
+       * below the fold, full bleed by the time it settles. Done with clip-path on a
        * wrapper *inside* the pinned element — clipping the section from the
        * outside would cut the content away exactly when the pin holds it still,
        * and changing width or padding would move the measurements the pin
@@ -212,15 +212,16 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           // This way the string never changes, only the numbers in it.
           gsap.fromTo(
             card,
-            { "--card-inset": "0%", "--card-radius": "0px" },
+            { "--card-inset": "3%", "--card-radius": "30px", y: 56 },
             {
-              "--card-inset": "3%",
-              "--card-radius": "30px",
+              "--card-inset": "0%",
+              "--card-radius": "0px",
+              y: 0,
               ease: "none",
               scrollTrigger: {
                 trigger: pin,
-                start: "top 85%",
-                end: "top 12%",
+                start: "top 92%",
+                end: "top 18%",
                 scrub: 0.6,
                 invalidateOnRefresh: true,
               },
