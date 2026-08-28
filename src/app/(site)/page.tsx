@@ -97,7 +97,7 @@ export default async function HomePage() {
         {/* DOM order is the stacked order — headline, claim, copy, numbers —
             and the desktop arrangement is done with explicit grid placement
             rather than `order`, so what is read and what is seen stay the same. */}
-        <div className="grid gap-x-12 gap-y-9 lg:grid-cols-2 lg:gap-x-16">
+        <div className="grid gap-x-12 gap-y-9 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-16 lg:gap-y-6">
           <h2
             data-reveal
             className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:col-start-1 lg:row-start-1 lg:text-6xl"
