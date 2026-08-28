@@ -22,7 +22,7 @@ const BACKDROPS = [
  * the question the section exists to answer.
  */
 export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
-  const [openId, setOpenId] = useState<string | null>(items[0]?._id ?? null);
+  const [openId, setOpenId] = useState(items[0]?._id);
 
   return (
     <ul className="flex flex-col gap-3 lg:h-[420px] lg:flex-row lg:gap-4">
@@ -40,7 +40,7 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
           >
             <button
               type="button"
-              onClick={() => setOpenId(open && hasDetail ? null : item._id)}
+              onClick={() => setOpenId(item._id)}
               aria-expanded={open}
               className="group relative flex h-full w-full flex-col justify-end overflow-hidden rounded-3xl bg-ink px-5 py-5 text-left text-white sm:px-6 sm:py-6"
             >
@@ -103,27 +103,6 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
                     ) : null}
                   </div>
                 </div>
-              ) : null}
-
-              {hasDetail ? (
-                <span
-                  aria-hidden="true"
-                  className={`relative mt-4 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/40 transition-transform duration-500 ${
-                    open ? "rotate-45" : ""
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="14"
-                    height="14"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                  >
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
-                </span>
               ) : null}
             </button>
           </li>
