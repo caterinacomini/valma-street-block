@@ -275,9 +275,6 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-ink/5 to-ink/75" />
           <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
-          <div className="absolute top-6 left-6 font-mono text-xs tracking-[0.2em] text-white uppercase sm:left-8">
-            Edizioni passate
-          </div>
           <div className="absolute right-6 bottom-8 left-6 sm:left-8">
             <p className="font-display text-3xl leading-none tracking-wide text-white sm:text-4xl lg:text-5xl">
               Dal 2015
