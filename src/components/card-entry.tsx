@@ -59,8 +59,10 @@ export function CardEntry({
             { ...open, y: 0, ease: "none", duration: 1 },
           )
           // an empty tween, purely to hold the open state through the middle
-          .to({}, { duration: 1.4 })
-          .to(el, { ...closed, y: -rise, ease: "none", duration: 1 });
+          .to({}, { duration: 0.7 })
+          // a longer close than the open, so it begins well before the element
+          // has left rather than snapping shut at the very end
+          .to(el, { ...closed, y: -rise, ease: "none", duration: 1.5 });
       });
     }, el);
 
