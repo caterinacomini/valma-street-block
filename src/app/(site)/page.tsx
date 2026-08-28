@@ -25,50 +25,6 @@ export const revalidate = 60;
  * a much smaller title than the square ones. Stacked they also share one aspect
  * ratio, so the heights match; side by side each shape goes its own way.
  */
-function PhotoCard({
-  src,
-  position,
-  title,
-  wide = false,
-}: {
-  src: string;
-  position: string;
-  title: React.ReactNode;
-  wide?: boolean;
-}) {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-3xl bg-ink aspect-[3/2] ${
-        wide ? "sm:aspect-[16/6]" : "sm:aspect-square"
-      }`}
-    >
-      <Image
-        src={src}
-        alt=""
-        fill
-        className={`object-cover ${position}`}
-        sizes={
-          wide
-            ? "(min-width: 1024px) 520px, 92vw"
-            : "(min-width: 1024px) 260px, (min-width: 640px) 45vw, 92vw"
-        }
-      />
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_14%,transparent_52%)]" />
-        <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_top,black_4%,transparent_34%)]" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
-      <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
-
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-5">
-        <p className="font-display text-4xl leading-[0.88] text-white sm:text-5xl lg:text-4xl">
-          {title}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default async function HomePage() {
   const [settings, pastEditions] = await Promise.all([
     loadSiteSettings(),
@@ -138,16 +94,69 @@ export default async function HomePage() {
       </section>
 
       <section className="page-x flex flex-col justify-center bg-white py-14 lg:min-h-[100dvh] lg:py-12">
-        <h2
-          data-reveal
-          className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:text-6xl"
-        >
-          Le vie di Valmadrera diventano una palestra a cielo aperto.
-        </h2>
+        {/* DOM order is the stacked order — headline, claim, copy, numbers —
+            and the desktop arrangement is done with explicit grid placement
+            rather than `order`, so what is read and what is seen stay the same. */}
+        <div className="grid gap-x-12 gap-y-9 lg:grid-cols-2 lg:gap-x-16">
+          <h2
+            data-reveal
+            className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:col-start-1 lg:row-start-1 lg:text-6xl"
+          >
+            Le vie di Valmadrera diventano una palestra a cielo aperto.
+          </h2>
 
-        <div className="mt-9 grid gap-x-12 gap-y-9 lg:mt-10 lg:grid-cols-2 lg:gap-x-16">
-          {/* The copy, reading straight on from the headline above it */}
-          <div data-reveal="stagger" className="flex flex-col gap-4">
+          <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
+            <p
+              data-reveal
+              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:text-5xl"
+            >
+              100% in strada
+            </p>
+
+            {/* A strip of four when stacked, a square block when there are two
+                columns to fill. */}
+            <div
+              data-reveal="stagger"
+              className="mt-5 grid grid-cols-4 gap-2.5 sm:gap-3 lg:mt-7 lg:grid-cols-2 lg:gap-4"
+            >
+              {[
+                {
+                  src: "/content/urban-climbing-2.png",
+                  pos: "object-center",
+                },
+                {
+                  src: "/content/urban-climbing-1.png",
+                  pos: "object-[center_25%]",
+                },
+                {
+                  src: "/content/urban-climbing-hand.png",
+                  pos: "object-center",
+                },
+                {
+                  src: "/content/urban-climbing-shoe.png",
+                  pos: "object-[center_30%]",
+                },
+              ].map((photo) => (
+                <div
+                  key={photo.src}
+                  className="relative aspect-square overflow-hidden rounded-2xl lg:rounded-3xl"
+                >
+                  <Image
+                    src={photo.src}
+                    alt=""
+                    fill
+                    className={`object-cover ${photo.pos}`}
+                    sizes="(min-width: 1024px) 300px, 24vw"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            data-reveal="stagger"
+            className="flex flex-col gap-4 lg:col-start-1 lg:row-start-2"
+          >
             <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
               Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
               uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti
@@ -159,45 +168,25 @@ export default async function HomePage() {
             </p>
           </div>
 
-          {/* The claim and the two numbers, all on the same card recipe.
-              Dropped a step below the copy once there are two columns. */}
           <div
             data-reveal="stagger"
-            className="flex flex-col gap-3 sm:gap-4 lg:ml-auto lg:w-full lg:max-w-[min(58dvh,560px)] lg:pt-6"
+            className="grid grid-cols-2 gap-6 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
           >
-            <PhotoCard
-              src="/content/urban-climbing-shoe.png"
-              position="object-[center_55%]"
-              title="100% in strada"
-              wide
-            />
-            <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-              {[
-                {
-                  src: "/content/urban-climbing-2.png",
-                  pos: "object-[center_35%]",
-                  value: `+${lastEdition?.participantsCount ?? 470}`,
-                  label: "climbers",
-                },
-                {
-                  src: "/content/urban-climbing-beam.png",
-                  pos: "object-[center_45%]",
-                  value: "+50",
-                  label: "blocchi",
-                },
-              ].map((card) => (
-                <PhotoCard
-                  key={card.src}
-                  src={card.src}
-                  position={card.pos}
-                  title={
-                    <>
-                      <span className="block">{card.value}</span>
-                      <span className="block">{card.label}</span>
-                    </>
-                  }
-                />
-              ))}
+            <div>
+              <p className="font-display text-3xl leading-none text-ink sm:text-4xl">
+                +{lastEdition?.participantsCount ?? 470} climbers
+              </p>
+              <p className="mt-1.5 text-sm text-ink/60">
+                In gara all&apos;ultima edizione, competitivi e non.
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-3xl leading-none text-ink sm:text-4xl">
+                +50 blocchi
+              </p>
+              <p className="mt-1.5 text-sm text-ink/60">
+                Passaggi brevi ma intensi, sparsi per il paese.
+              </p>
             </div>
           </div>
         </div>
