@@ -117,14 +117,14 @@ export default async function HomePage() {
           <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
             <p
               data-reveal
-              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:ml-auto lg:max-w-[440px] lg:text-right lg:text-5xl"
+              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-5xl"
             >
               100% in strada
             </p>
 
             <p
               data-reveal
-              className="mt-4 max-w-lg text-base leading-relaxed font-medium text-ink lg:ml-auto lg:max-w-[440px] lg:text-right lg:text-lg"
+              className="mt-4 max-w-lg text-base leading-relaxed font-medium text-ink lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-lg"
             >
               Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
               cortili del paese.
@@ -133,7 +133,7 @@ export default async function HomePage() {
             {/* Two by two at every width */}
             <div
               data-reveal="stagger"
-              className="mt-5 grid grid-cols-2 gap-3 lg:mt-7 lg:ml-auto lg:max-w-[440px] lg:gap-4"
+              className="mt-5 grid grid-cols-2 gap-3 lg:mt-7 lg:ml-auto lg:max-w-[500px] lg:gap-4"
             >
               {[
                 {
