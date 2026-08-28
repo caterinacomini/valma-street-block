@@ -76,7 +76,7 @@ export const siteSettings = defineType({
       name: "registrationClosedLabel",
       title: "Testo del pulsante, iscrizioni chiuse",
       type: "string",
-      description: "Poche parole. Se vuoto: Iscrizioni non aperte",
+      description: "Poche parole. Se vuoto: Stay tuned",
     }),
     defineField({
       name: "instagramUrl",

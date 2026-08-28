@@ -82,7 +82,7 @@ export function RegisterButton({
         className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} ${className}`}
       >
         <Padlock />
-        {closedLabel || "Iscrizioni non aperte"}
+        {closedLabel || "Stay tuned"}
       </span>
     );
   }

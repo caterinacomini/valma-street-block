@@ -104,8 +104,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
   const photoRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [moreRight, setMoreRight] = useState(false);
-  const [moreLeft, setMoreLeft] = useState(false);
+  const [showArrows, setShowArrows] = useState(false);
 
   const stepWidth = () => {
     const first = cardsRef.current?.firstElementChild as HTMLElement | null;
@@ -127,8 +126,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
         viewport.scrollLeft +
         Math.abs(Number(gsap.getProperty(cards, "x")) || 0);
       const total = cards.scrollWidth - viewport.clientWidth;
-      setMoreRight(shifted > stepWidth() * 2.1 && shifted < total - 24);
-      setMoreLeft(shifted > 24);
+      setShowArrows(total > 24 && shifted > stepWidth() * 2.1);
     };
 
     update();
@@ -313,7 +311,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
             onClick={() => advance(-1)}
             aria-label="Torna alle edizioni precedenti"
             className={`absolute top-1/2 left-4 z-10 flex h-14 w-14 -translate-y-1/2 rotate-180 items-center justify-center rounded-full border border-white/70 bg-gradient-to-r from-ink/60 to-white/25 backdrop-blur-md transition-opacity duration-300 sm:left-6 ${
-              moreLeft ? "opacity-100" : "pointer-events-none opacity-0"
+              showArrows ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
             <svg
@@ -336,7 +334,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
             onClick={() => advance(1)}
             aria-label="Vedi le edizioni successive"
             className={`absolute top-1/2 right-4 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-gradient-to-r from-ink/60 to-white/25 backdrop-blur-md transition-opacity duration-300 sm:right-6 ${
-              moreRight ? "opacity-100" : "pointer-events-none opacity-0"
+              showArrows ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
             <svg
