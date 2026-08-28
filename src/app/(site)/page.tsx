@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { CardEntry } from "@/components/card-entry";
 import { RegisterButton } from "@/components/register-button";
 import { ComeArrivareSection } from "@/components/sections/come-arrivare-section";
 import { EdizioniPassateSection } from "@/components/sections/edizioni-passate-section";
@@ -198,37 +199,41 @@ export default async function HomePage() {
       <EdizioniPassateSection />
       <RegolamentoSection />
 
-      <section className="relative min-h-[100dvh] overflow-hidden bg-ink">
-        <Image
-          src="/content/urban-climbing-1.png"
-          alt="Climber in azione durante il Valma Street Block"
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
-        <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
+      <section className="bg-white">
+        {/* Opens out of a card on the way in and folds back into one on the
+            way out, at every width. */}
+        <CardEntry className="relative min-h-[100dvh] overflow-hidden bg-ink">
+          <Image
+            src="/content/urban-climbing-1.png"
+            alt="Climber in azione durante il Valma Street Block"
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+          <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
-        <div className="page-x relative flex min-h-[100dvh] flex-col justify-end pb-10 sm:pb-14">
-          <div data-reveal="stagger" className="flex flex-col gap-6">
-            <div className="max-w-3xl">
-              <h2 className="font-display text-[9vw] leading-[0.9] text-white sm:text-[6vw] lg:text-[4.5vw]">
-                Bagai, pronti a scalare il paese?
-              </h2>
-              <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">
-                50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno, si
-                scala tutti insieme.
-              </p>
+          <div className="page-x relative flex min-h-[100dvh] flex-col justify-end pb-10 sm:pb-14">
+            <div data-reveal="stagger" className="flex flex-col gap-6">
+              <div className="max-w-3xl">
+                <h2 className="font-display text-[9vw] leading-[0.9] text-white sm:text-[6vw] lg:text-[4.5vw]">
+                  Bagai, pronti a scalare il paese?
+                </h2>
+                <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">
+                  50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno,
+                  si scala tutti insieme.
+                </p>
+              </div>
+              <RegisterButton
+                registrationUrl={settings.registrationUrl ?? undefined}
+                open={settings.registrationOpen}
+                label={settings.registrationLabel}
+                closedLabel={settings.registrationClosedLabel}
+                className="self-start"
+              />
             </div>
-            <RegisterButton
-              registrationUrl={settings.registrationUrl ?? undefined}
-              open={settings.registrationOpen}
-              label={settings.registrationLabel}
-              closedLabel={settings.registrationClosedLabel}
-              className="self-start"
-            />
           </div>
-        </div>
+        </CardEntry>
       </section>
 
       <SponsorSection />

@@ -148,8 +148,8 @@ export function SiteHeader({
           open ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="absolute inset-0 backdrop-blur-[5px] [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
-        <div className="absolute inset-0 backdrop-blur-[12px] [mask-image:linear-gradient(to_bottom,black_0%,black_38%,transparent_88%)]" />
+        <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom,black_0%,black_60%,transparent_100%)]" />
+        <div className="absolute inset-0 backdrop-blur-[24px] [mask-image:linear-gradient(to_bottom,black_0%,black_46%,transparent_92%)]" />
         <div className="grain absolute inset-0 opacity-35 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
       </div>
 

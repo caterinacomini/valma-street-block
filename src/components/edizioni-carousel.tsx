@@ -193,8 +193,10 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
       const mm = gsap.matchMedia();
 
       /**
-       * Arrives as a card and opens out: rounded and inset while it is still
-       * below the fold, full bleed by the time it settles. Done with clip-path on a
+       * Arrives as a card and opens out. Deliberately not the shared CardEntry:
+       * this one sits inside a pinned element, so it has to finish before the
+       * pin takes over the transform and it must not fold back on the way out —
+       * the pin is still holding it there. Done with clip-path on a
        * wrapper *inside* the pinned element — clipping the section from the
        * outside would cut the content away exactly when the pin holds it still,
        * and changing width or padding would move the measurements the pin
@@ -212,7 +214,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           // This way the string never changes, only the numbers in it.
           gsap.fromTo(
             card,
-            { "--card-inset": "3%", "--card-radius": "30px", y: 56 },
+            { "--card-inset": "7%", "--card-radius": "44px", y: 56 },
             {
               "--card-inset": "0%",
               "--card-radius": "0px",
