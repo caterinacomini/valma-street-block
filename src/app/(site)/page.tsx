@@ -108,7 +108,7 @@ export default async function HomePage() {
           <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
             <p
               data-reveal
-              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:text-5xl"
+              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:max-w-[440px] lg:text-5xl text-right"
             >
               100% in strada
             </p>
