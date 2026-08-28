@@ -22,26 +22,44 @@ export function SiteLoader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    const mountedAt = performance.now();
+    /**
+     * The letters need 1.31s to finish arriving — 0.95s each, the last one
+     * held back by 0.36s. Locally the page is ready long before that, so
+     * without a floor the overlay was dismissed mid-entrance and the exit
+     * never had anything to play from.
+     */
+    const MIN_VISIBLE = 1400;
+
     let cancelled = false;
+    let scheduled = false;
+    let leaving: ReturnType<typeof setTimeout>;
+
     const finish = () => {
-      if (!cancelled) setDone(true);
+      if (cancelled || scheduled) return;
+      scheduled = true;
+      const waited = performance.now() - mountedAt;
+      leaving = setTimeout(
+        () => {
+          if (!cancelled) setDone(true);
+        },
+        Math.max(0, MIN_VISIBLE - waited),
+      );
     };
 
     if (document.readyState === "complete") {
-      const settle = setTimeout(finish, 1100);
-      return () => {
-        cancelled = true;
-        clearTimeout(settle);
-      };
+      finish();
+    } else {
+      window.addEventListener("load", finish);
     }
-
-    window.addEventListener("load", finish);
     // never hold the page hostage to an asset that will not arrive
     const cap = setTimeout(finish, 3200);
+
     return () => {
       cancelled = true;
-      window.removeEventListener("load", finish);
+      clearTimeout(leaving);
       clearTimeout(cap);
+      window.removeEventListener("load", finish);
     };
   }, []);
 
