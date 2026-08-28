@@ -214,7 +214,7 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           // This way the string never changes, only the numbers in it.
           gsap.fromTo(
             card,
-            { "--card-inset": "7%", "--card-radius": "44px", y: 56 },
+            { "--card-inset": "7%", "--card-radius": "24px", y: 56 },
             {
               "--card-inset": "0%",
               "--card-radius": "0px",

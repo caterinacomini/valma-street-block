@@ -2,12 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import { Icon, type IconId } from "./arrival-map";
-
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+import { buildRouteTimeline, Icon, type IconId } from "./arrival-route";
 
 /**
  * Stacked, the wide two-lane map has nowhere to go, so this is the same journey
@@ -111,81 +106,15 @@ export function ArrivalMapMobile() {
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
-
       mm.add(
         "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
         () => {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: root,
-              start: "top 80%",
-              end: "bottom 75%",
-              scrub: 0.8,
-            },
+          buildRouteTimeline(root, SEGMENTS, "#m-meeting-point", {
+            start: "top 80%",
+            end: "bottom 75%",
+            scrub: 0.8,
+            pillLift: 8,
           });
-
-          SEGMENTS.forEach((segment) => {
-            const line = root.querySelector<SVGPathElement>(`#${segment.id}`);
-            const vehicle = root.querySelector<SVGGElement>(
-              `#veh-${segment.id}`,
-            );
-            const pill = root.querySelector<SVGGElement>(`#pill-${segment.id}`);
-            const stop = root.querySelector<SVGGElement>(`#${segment.stop}`);
-            if (!line || !vehicle || !stop) return;
-
-            const length = line.getTotalLength();
-            const at = segment.at;
-
-            tl.fromTo(
-              stop,
-              { autoAlpha: 0, scale: 0.6, transformOrigin: "50% 50%" },
-              { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)" },
-              at,
-            )
-              .fromTo(
-                line,
-                { strokeDasharray: length, strokeDashoffset: length },
-                { strokeDashoffset: 0, ease: "none", duration: 0.85 },
-                at + 0.12,
-              )
-              .fromTo(
-                vehicle,
-                { autoAlpha: 0 },
-                { autoAlpha: 1, duration: 0.1, ease: "none" },
-                at + 0.12,
-              )
-              .to(
-                vehicle,
-                {
-                  duration: 0.85,
-                  ease: "none",
-                  motionPath: {
-                    path: line,
-                    align: line,
-                    alignOrigin: [0.5, 0.5],
-                  },
-                },
-                at + 0.12,
-              )
-              .to(vehicle, { autoAlpha: 0, duration: 0.15 }, at + 0.97)
-              .to(vehicle, { autoAlpha: 0, duration: 0.01 }, at + 0.98);
-
-            if (pill) {
-              tl.fromTo(
-                pill,
-                { autoAlpha: 0, y: 8 },
-                { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" },
-                at + 0.4,
-              );
-            }
-          });
-
-          tl.fromTo(
-            "#m-meeting-point",
-            { autoAlpha: 0, scale: 0.4, transformOrigin: "50% 50%" },
-            { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" },
-            ">-0.25",
-          );
         },
       );
     }, root);

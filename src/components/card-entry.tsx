@@ -21,7 +21,7 @@ export function CardEntry({
   className = "",
   media = "(min-width: 0px)",
   inset = "7%",
-  radius = "44px",
+  radius = "24px",
   rise = 56,
 }: {
   children: React.ReactNode;

@@ -1,7 +1,6 @@
 import { client } from "./client";
 import {
   howToArriveQuery,
-  mapPointsQuery,
   pastEditionsQuery,
   programItemsQuery,
   regulationQuery,
@@ -10,7 +9,6 @@ import {
 } from "./queries";
 import type {
   HowToArrive,
-  MapPoint,
   PastEdition,
   ProgramItem,
   Regulation,
@@ -262,41 +260,6 @@ const FALLBACK_HOW_TO_ARRIVE = {
   mapEmbedUrl: "https://maps.google.com/?q=Valmadrera+LC",
 } satisfies Awaited<ReturnType<typeof getHowToArrive>>;
 
-const FALLBACK_MAP_POINTS = [
-  {
-    _id: "fallback-parcheggio",
-    label: "Parcheggio",
-    type: "parcheggio",
-    description: "Area sosta principale, a 5 minuti a piedi dal ritrovo.",
-    x: 20,
-    y: 70,
-  },
-  {
-    _id: "fallback-ritrovo",
-    label: "Ritrovo & pettorali",
-    type: "ritrovo",
-    description: "Parco di via Leopardi, hub principale dell'evento.",
-    x: 50,
-    y: 45,
-  },
-  {
-    _id: "fallback-piazza",
-    label: "Piazza Mons. Citterio",
-    type: "blocco",
-    description: "Una delle zone gara nel cuore del paese.",
-    x: 65,
-    y: 30,
-  },
-  {
-    _id: "fallback-info",
-    label: "Punto informazioni",
-    type: "info",
-    description: "Per domande su percorso, blocchi e assistenza.",
-    x: 48,
-    y: 55,
-  },
-] satisfies Awaited<ReturnType<typeof getMapPoints>>;
-
 async function safeFetch<T>(
   fetcher: () => Promise<T | null | undefined>,
   fallback: T,
@@ -311,32 +274,28 @@ async function safeFetch<T>(
   }
 }
 
-export async function getSiteSettings() {
+async function getSiteSettings() {
   return client.fetch<SiteSettings | null>(siteSettingsQuery);
 }
 
-export async function getProgramItems() {
+async function getProgramItems() {
   return client.fetch<ProgramItem[]>(programItemsQuery);
 }
 
-export async function getSponsors() {
+async function getSponsors() {
   return client.fetch<Sponsor[]>(sponsorsQuery);
 }
 
-export async function getPastEditions() {
+async function getPastEditions() {
   return client.fetch<PastEdition[]>(pastEditionsQuery);
 }
 
-export async function getRegulation() {
+async function getRegulation() {
   return client.fetch<Regulation | null>(regulationQuery);
 }
 
-export async function getHowToArrive() {
+async function getHowToArrive() {
   return client.fetch<HowToArrive | null>(howToArriveQuery);
-}
-
-export async function getMapPoints() {
-  return client.fetch<MapPoint[]>(mapPointsQuery);
 }
 
 export async function loadSiteSettings() {
@@ -361,8 +320,4 @@ export async function loadRegulation() {
 
 export async function loadHowToArrive() {
   return safeFetch(getHowToArrive, FALLBACK_HOW_TO_ARRIVE);
-}
-
-export async function loadMapPoints() {
-  return safeFetch(getMapPoints, FALLBACK_MAP_POINTS);
 }
