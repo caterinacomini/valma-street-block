@@ -319,7 +319,9 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
             alt="Climber in azione al Valma Street Block"
             fill
             className="object-cover object-center"
-            sizes="100vw"
+            /* only rendered from lg up, where it holds 42% of the width —
+               declaring 100vw had the browser fetching the 3840px variant */
+            sizes="42vw"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-ink/5 to-ink/75" />
           <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
