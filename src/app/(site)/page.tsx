@@ -113,11 +113,10 @@ export default async function HomePage() {
               100% in strada
             </p>
 
-            {/* A strip of four when stacked, a square block when there are two
-                columns to fill. */}
+            {/* Two by two at every width */}
             <div
               data-reveal="stagger"
-              className="mt-5 grid grid-cols-4 gap-2.5 sm:gap-3 lg:mt-7 lg:grid-cols-2 lg:gap-4"
+              className="mt-5 grid grid-cols-2 gap-3 lg:mt-7 lg:max-w-[440px] lg:gap-4"
             >
               {[
                 {
@@ -146,7 +145,7 @@ export default async function HomePage() {
                     alt=""
                     fill
                     className={`object-cover ${photo.pos}`}
-                    sizes="(min-width: 1024px) 300px, 24vw"
+                    sizes="(min-width: 1024px) 220px, 46vw"
                   />
                 </div>
               ))}
@@ -173,7 +172,7 @@ export default async function HomePage() {
             className="grid grid-cols-2 gap-6 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
           >
             <div>
-              <p className="font-display text-3xl leading-none text-ink sm:text-4xl">
+              <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
                 +{lastEdition?.participantsCount ?? 470} climbers
               </p>
               <p className="mt-1.5 text-sm text-ink/60">
@@ -181,7 +180,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div>
-              <p className="font-display text-3xl leading-none text-ink sm:text-4xl">
+              <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
                 +50 blocchi
               </p>
               <p className="mt-1.5 text-sm text-ink/60">
