@@ -105,12 +105,29 @@ export default async function HomePage() {
             Le vie di Valmadrera diventano una palestra a cielo aperto.
           </h2>
 
+          <p
+            data-reveal
+            className="max-w-lg text-base leading-relaxed font-medium text-ink lg:col-start-1 lg:row-start-2 lg:text-lg"
+          >
+            Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
+            uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti del
+            nord Italia.
+          </p>
+
           <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
             <p
               data-reveal
               className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:max-w-[440px] lg:text-5xl text-right"
             >
               100% in strada
+            </p>
+
+            <p
+              data-reveal
+              className="mt-4 max-w-lg text-base leading-relaxed font-medium text-ink lg:ml-auto lg:max-w-[440px] lg:text-right lg:text-lg"
+            >
+              Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
+              cortili del paese.
             </p>
 
             {/* Two by two at every width */}
@@ -150,21 +167,6 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div
-            data-reveal="stagger"
-            className="flex flex-col gap-4 lg:col-start-1 lg:row-start-2"
-          >
-            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
-              Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
-              uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti
-              del nord Italia.
-            </p>
-            <p className="max-w-lg text-base leading-relaxed font-medium text-ink lg:text-lg">
-              Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
-              cortili del paese.
-            </p>
           </div>
 
           <div

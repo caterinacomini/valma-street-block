@@ -1,0 +1,134 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+
+import type { ProgramItem } from "@/sanity/types";
+
+/**
+ * One photograph per moment of the day. Assigned by position for now — when
+ * the programme is edited in the CMS these should come with the items.
+ */
+const BACKDROPS = [
+  { src: "/content/urban-climbing-hero.png", pos: "object-[center_35%]" },
+  { src: "/content/urban-climbing-2.png", pos: "object-[center_30%]" },
+  { src: "/content/urban-climbing-beam.png", pos: "object-[center_45%]" },
+  { src: "/content/urban-climbing-1.png", pos: "object-[center_35%]" },
+];
+
+/**
+ * The essentials — when, and what happens — stay on the face of every card,
+ * open or shut. Only the detail is folded away, so a closed list still answers
+ * the question the section exists to answer.
+ */
+export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
+  const [openId, setOpenId] = useState<string | null>(items[0]?._id ?? null);
+
+  return (
+    <ul className="flex flex-col gap-3 lg:h-[420px] lg:flex-row lg:gap-4">
+      {items.map((item, index) => {
+        const open = item._id === openId;
+        const hasDetail = Boolean(item.location || item.description);
+        const photo = BACKDROPS[index % BACKDROPS.length];
+
+        return (
+          <li
+            key={item._id}
+            className={`min-w-0 transition-all duration-500 ease-out lg:h-full lg:basis-0 ${
+              open ? "h-[340px] lg:grow-[2.6]" : "h-28 lg:grow"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenId(open && hasDetail ? null : item._id)}
+              aria-expanded={open}
+              className="group relative flex h-full w-full flex-col justify-end overflow-hidden rounded-3xl bg-ink px-5 py-5 text-left text-white sm:px-6 sm:py-6"
+            >
+              <Image
+                src={photo.src}
+                alt=""
+                fill
+                className={`object-cover ${photo.pos} transition-transform duration-700 group-hover:scale-[1.04]`}
+                sizes="(min-width: 1024px) 520px, 92vw"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-ink/20" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+              <div className="grain pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply" />
+
+              {/* Always on the face of the card */}
+              <p className="relative font-display text-2xl leading-none sm:text-3xl">
+                {item.time}
+                {item.endTime ? (
+                  <span className="text-white/55"> – {item.endTime}</span>
+                ) : null}
+              </p>
+              <h3 className="relative mt-1.5 font-display text-xl tracking-wide sm:text-2xl">
+                {item.title}
+              </h3>
+
+              {/* Folded away until asked for */}
+              {hasDetail ? (
+                <div
+                  className={`relative grid transition-[grid-template-rows,opacity] duration-500 ease-out ${
+                    open
+                      ? "mt-2.5 grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    {item.location ? (
+                      <p className="flex items-center gap-1.5 text-sm font-semibold text-white/85">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="14"
+                          height="14"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                          className="shrink-0"
+                        >
+                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1116 0z" />
+                          <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        {item.location}
+                      </p>
+                    ) : null}
+                    {item.description ? (
+                      <p className="mt-1.5 max-w-sm text-sm text-white/75">
+                        {item.description}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              {hasDetail ? (
+                <span
+                  aria-hidden="true"
+                  className={`relative mt-4 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/40 transition-transform duration-500 ${
+                    open ? "rotate-45" : ""
+                  }`}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </span>
+              ) : null}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
