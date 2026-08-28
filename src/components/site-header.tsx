@@ -105,18 +105,23 @@ export function SiteHeader({
     };
 
     measure();
-    // ScrollSmoother owns the scroll position, so the samples are taken from
-    // its updates rather than from a scroll listener that would never fire.
+    // ScrollSmoother owns the scroll position, so the samples come from its
+    // updates. The native listener is a second channel rather than a duplicate:
+    // if the smoother is absent — reduced motion, or a failure setting it up —
+    // this is the only one that fires, and the bar would otherwise be stuck on
+    // whatever colour it picked at mount.
     const trigger = ScrollTrigger.create({
       start: 0,
       end: "max",
       onUpdate: measure,
       onRefresh: measure,
     });
+    window.addEventListener("scroll", measure, { passive: true });
     window.addEventListener("resize", measure);
 
     return () => {
       trigger.kill();
+      window.removeEventListener("scroll", measure);
       window.removeEventListener("resize", measure);
     };
   }, []);
