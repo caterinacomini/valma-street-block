@@ -59,16 +59,31 @@ body {
   animation: loader-out 0.7s ease 4.4s forwards;
 }
 
+/* Held back until the last letter has finished leaving: it starts at 0.28s and
+   runs for 0.7s, so nothing is still moving after 0.98s. */
 @utility loader-shell-done {
-  animation: loader-out 0.7s ease forwards;
+  animation: loader-out 0.45s ease 1s forwards;
+}
+
+@keyframes loader-letter-out {
+  to {
+    opacity: 0;
+    transform: translateY(34%) rotate(-10deg);
+  }
 }
 
 @utility loader-letter {
   animation: loader-letter 0.95s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
 }
 
+/* The way in, run backwards: same distance, same tilt, same order. */
+@utility loader-letter-out {
+  animation: loader-letter-out 0.7s cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .loader-letter {
+  .loader-letter,
+  .loader-letter-out {
     animation: none;
   }
 }
