@@ -10,7 +10,7 @@ import type { ProgramItem } from "@/sanity/types";
  * the programme is edited in the CMS these should come with the items.
  */
 const BACKDROPS = [
-  { src: "/content/urban-climbing-bridge-dyno.jpg", pos: "object-[center_40%]" },
+  { src: "/content/urban-climbing-bridge-holds.jpg", pos: "object-[65%_40%]" },
   { src: "/content/urban-climbing-bench-full.jpg", pos: "object-[25%_45%]" },
   { src: "/content/urban-climbing-hero.png", pos: "object-[center_35%]" },
   { src: "/content/urban-climbing-beam.png", pos: "object-[center_45%]" },

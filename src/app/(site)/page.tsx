@@ -42,20 +42,20 @@ export default async function HomePage() {
         className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink"
       >
         <Image
-          src="/content/urban-climbing-bridge-holds.jpg"
-          alt="Prese appese sotto il ponte durante il Valma Street Block"
+          src="/content/urban-climbing-bridge-dyno.jpg"
+          alt="Passaggio in dinamico sotto il ponte durante il Valma Street Block"
           fill
           priority
-          className="object-cover object-[center_40%]"
+          className="object-cover object-[center_45%]"
           sizes="100vw"
         />
-        {/* Progressive blur (0 → 12px) fading in toward the bottom-left, where the copy sits.
+        {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the copy sits.
             Stacked layers because CSS has no native progressive backdrop-filter. */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 backdrop-blur-[2px] [mask-image:linear-gradient(to_bottom_left,transparent_25%,black_45%)]" />
-          <div className="absolute inset-0 backdrop-blur-[4px] [mask-image:linear-gradient(to_bottom_left,transparent_42%,black_62%)]" />
-          <div className="absolute inset-0 backdrop-blur-[8px] [mask-image:linear-gradient(to_bottom_left,transparent_58%,black_78%)]" />
-          <div className="absolute inset-0 backdrop-blur-[12px] [mask-image:linear-gradient(to_bottom_left,transparent_74%,black_94%)]" />
+          <div className="absolute inset-0 backdrop-blur-[1.5px] [mask-image:linear-gradient(to_bottom_left,transparent_34%,black_54%)]" />
+          <div className="absolute inset-0 backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom_left,transparent_51%,black_71%)]" />
+          <div className="absolute inset-0 backdrop-blur-[6px] [mask-image:linear-gradient(to_bottom_left,transparent_67%,black_87%)]" />
+          <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom_left,transparent_82%,black_98%)]" />
         </div>
         {/* Film grain */}
         <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
