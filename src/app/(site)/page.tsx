@@ -42,11 +42,11 @@ export default async function HomePage() {
         className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink"
       >
         <Image
-          src="/content/urban-climbing-hero-2.png"
-          alt="Climber in azione al Valma Street Block"
+          src="/content/urban-climbing-bridge-holds.jpg"
+          alt="Prese appese sotto il ponte durante il Valma Street Block"
           fill
           priority
-          className="object-cover object-[center_20%]"
+          className="object-cover object-[center_40%]"
           sizes="100vw"
         />
         {/* Progressive blur (0 → 12px) fading in toward the bottom-left, where the copy sits.
@@ -138,20 +138,20 @@ export default async function HomePage() {
             >
               {[
                 {
-                  src: "/content/urban-climbing-2.png",
+                  src: "/content/urban-climbing-bench-detail.jpg",
                   pos: "object-center",
                 },
                 {
-                  src: "/content/urban-climbing-1.png",
-                  pos: "object-[center_25%]",
+                  src: "/content/urban-climbing-wall-kid.jpg",
+                  pos: "object-[center_30%]",
                 },
                 {
                   src: "/content/urban-climbing-hand.png",
                   pos: "object-center",
                 },
                 {
-                  src: "/content/urban-climbing-shoe.png",
-                  pos: "object-[center_30%]",
+                  src: "/content/urban-climbing-1.png",
+                  pos: "object-[center_25%]",
                 },
               ].map((photo) => (
                 <div
@@ -204,10 +204,10 @@ export default async function HomePage() {
             way out, at every width. */}
         <CardEntry className="relative min-h-[100dvh] overflow-hidden bg-ink">
           <Image
-            src="/content/urban-climbing-1.png"
-            alt="Climber in azione durante il Valma Street Block"
+            src="/content/urban-climbing-underpass.jpg"
+            alt="Salto nel sottopasso durante il Valma Street Block"
             fill
-            className="object-cover object-center"
+            className="object-cover object-[center_45%]"
             sizes="100vw"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />

@@ -315,8 +315,8 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           className="relative hidden shrink-0 lg:block lg:h-full lg:w-[42%]"
         >
           <Image
-            src="/content/urban-climbing-hand.png"
-            alt="Climber in azione al Valma Street Block"
+            src="/content/urban-climbing-shoes-pack.jpg"
+            alt="Scarpette da arrampicata appese allo zaino"
             fill
             className="object-cover object-center"
             /* only rendered from lg up, where it holds 42% of the width —

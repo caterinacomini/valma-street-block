@@ -120,9 +120,13 @@ export function SiteFooter({
               {contactEmail}
             </a>
           ) : null}
-          <p className="text-xs text-white/70">
-            Organizzato da CAI Valmadrera e OSA Valmadrera
-          </p>
+          <div className="text-xs text-white/70">
+            <p>Organizzato da CAI Valmadrera e OSA Valmadrera</p>
+            <p className="mt-1.5">
+              Fotografie di Clara Rusconi e Daniela Rusconi — Fotoclub G.
+              Anghileri, Valmadrera
+            </p>
+          </div>
         </div>
       </div>
     </footer>

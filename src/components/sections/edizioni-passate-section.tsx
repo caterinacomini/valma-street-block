@@ -8,7 +8,7 @@ const FALLBACK_COVERS = [
   "/content/urban-climbing-shoe.png",
   "/content/urban-climbing-hand.png",
   "/content/urban-climbing-beam.png",
-  "/content/urban-climbing-1.png",
+  "/content/urban-climbing-wall-kid.jpg",
 ];
 
 export async function EdizioniPassateSection() {
