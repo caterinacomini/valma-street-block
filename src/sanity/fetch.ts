@@ -19,7 +19,6 @@ import type {
 const FALLBACK_SITE_SETTINGS = {
   title: "Valma Street Block",
   editionNumber: 11,
-  tagline: "Bagai, si torna a scalare la città.",
   heroImage: null,
   eventDate: "2027-04-10",
   rainDate: "2027-04-17",

@@ -3,7 +3,6 @@ import type { Image } from "sanity";
 export interface SiteSettings {
   title: string;
   editionNumber?: number;
-  tagline?: string;
   heroImage?: Image | null;
   eventDate?: string;
   rainDate?: string;

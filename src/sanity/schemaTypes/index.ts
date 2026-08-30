@@ -5,16 +5,17 @@ import { programItem } from "./programItem";
 import { sponsor } from "./sponsor";
 import { pastEdition } from "./pastEdition";
 import { regulation } from "./regulation";
-import { mapPoint, howToArrive } from "./mapPoint";
+import { howToArrive } from "./howToArrive";
+import { homeContent } from "./homeContent";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     siteSettings,
+    homeContent,
     programItem,
     sponsor,
     pastEdition,
     regulation,
     howToArrive,
-    mapPoint,
   ],
 };

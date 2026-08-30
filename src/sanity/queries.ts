@@ -4,7 +4,6 @@ export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings"][0]{
     title,
     editionNumber,
-    tagline,
     heroImage,
     eventDate,
     rainDate,
@@ -73,16 +72,5 @@ export const howToArriveQuery = defineQuery(`
     carInfo,
     publicTransportInfo,
     mapEmbedUrl
-  }
-`);
-
-export const mapPointsQuery = defineQuery(`
-  *[_type == "mapPoint"] | order(order asc){
-    _id,
-    label,
-    type,
-    description,
-    x,
-    y
   }
 `);

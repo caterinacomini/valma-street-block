@@ -50,6 +50,14 @@ export const programItem = defineType({
       },
     }),
     defineField({
+      name: "image",
+      title: "Foto",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Sfondo della card. Da chiusa la card è molto stretta e alta: usa l'hotspot, altrimenti il ritaglio centrale può mancare il soggetto.",
+    }),
+    defineField({
       name: "order",
       title: "Ordine",
       type: "number",

@@ -19,16 +19,12 @@ export const siteSettings = defineType({
       description: "Es. 11 per l'11ª edizione",
     }),
     defineField({
-      name: "tagline",
-      title: "Tagline",
-      type: "string",
-      description: "Frase breve mostrata nell'hero",
-    }),
-    defineField({
       name: "heroImage",
-      title: "Immagine hero",
+      title: "Immagine di copertina",
       type: "image",
       options: { hotspot: true },
+      description:
+        "Occupa tutto lo schermo. Sui telefoni il taglio è molto più stretto che su computer: usa l'hotspot per marcare cosa deve restare sempre in campo.",
     }),
     defineField({
       name: "eventDate",
@@ -93,8 +89,15 @@ export const siteSettings = defineType({
       title: "Email di contatto",
       type: "string",
     }),
+    defineField({
+      name: "photoCredit",
+      title: "Credito fotografico",
+      type: "string",
+      description:
+        "Riga mostrata nel footer, sotto gli organizzatori. Lasciala vuota per non mostrarla.",
+    }),
   ],
   preview: {
-    select: { title: "title", subtitle: "tagline" },
+    select: { title: "title", subtitle: "location" },
   },
 });
