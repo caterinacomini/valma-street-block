@@ -46,7 +46,7 @@ export default async function HomePage() {
           alt="Passaggio in dinamico sotto il ponte durante il Valma Street Block"
           fill
           priority
-          className="object-cover object-[center_45%]"
+          className="object-cover object-[80%_45%] lg:object-[center_45%]"
           sizes="100vw"
         />
         {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the copy sits.
