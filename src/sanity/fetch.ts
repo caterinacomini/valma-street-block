@@ -4,10 +4,12 @@ import {
   pastEditionsQuery,
   programItemsQuery,
   regulationQuery,
+  homeContentQuery,
   siteSettingsQuery,
   sponsorsQuery,
 } from "./queries";
 import type {
+  HomeContent,
   HowToArrive,
   PastEdition,
   ProgramItem,
@@ -16,7 +18,7 @@ import type {
   Sponsor,
 } from "./types";
 
-const FALLBACK_SITE_SETTINGS = {
+const FALLBACK_SITE_SETTINGS: SiteSettings = {
   title: "Valma Street Block",
   editionNumber: 11,
   heroImage: null,
@@ -32,7 +34,7 @@ const FALLBACK_SITE_SETTINGS = {
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
   facebookUrl: "https://www.facebook.com/ValmaStreetBlock/",
   contactEmail: "segreteria@caivalmadrera.it",
-} satisfies Awaited<ReturnType<typeof getSiteSettings>>;
+};
 
 const FALLBACK_PROGRAM = [
   {
@@ -170,7 +172,7 @@ const FALLBACK_PAST_EDITIONS = [
   },
 ] satisfies Awaited<ReturnType<typeof getPastEditions>>;
 
-const FALLBACK_REGULATION = {
+const FALLBACK_REGULATION: Regulation = {
   title: "Regolamento",
   faq: [
     {
@@ -246,9 +248,27 @@ const FALLBACK_REGULATION = {
   ],
   pdfUrl: null,
   updatedAt: undefined,
-} satisfies Awaited<ReturnType<typeof getRegulation>>;
+};
 
-const FALLBACK_HOW_TO_ARRIVE = {
+const FALLBACK_HOME: HomeContent = {
+  introHeading: "Le vie di Valmadrera diventano una palestra a cielo aperto.",
+  introText:
+    "Nato dall'idea di sette ragazzi di Valmadrera, oggi è uno degli appuntamenti di arrampicata urbana più sentiti del nord Italia.",
+  claim: "100% in strada",
+  claimText:
+    "Nessuna parete artificiale: si scala sui muri, sulle pietre e nei cortili del paese.",
+  introPhotos: [],
+  stats: [
+    { value: "+470 climbers", label: "In gara all'ultima edizione, competitivi e non." },
+    { value: "+50 blocchi", label: "Passaggi brevi ma intensi, sparsi per il paese." },
+  ],
+  closingHeading: "Bagai, pronti a scalare il paese?",
+  closingText:
+    "50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno, si scala tutti insieme.",
+  closingImage: null,
+};
+
+const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
   intro:
     "Il ritrovo è al parco di via Leopardi, punto di partenza di tutte le stazioni di gara sparse per il paese.",
   address: "Parco di via Leopardi, Valmadrera (LC)",
@@ -257,7 +277,39 @@ const FALLBACK_HOW_TO_ARRIVE = {
   publicTransportInfo:
     "Conserva i biglietti e mostrali all'iscrizione: l'organizzazione ti riserva un piccolo riconoscimento.",
   mapEmbedUrl: "https://maps.google.com/?q=Valmadrera+LC",
-} satisfies Awaited<ReturnType<typeof getHowToArrive>>;
+};
+
+/**
+ * Sanity hands back null for every field an editor has not filled in, so a
+ * document that exists but is half written would blank the section it feeds.
+ * These merge over the fallback one field at a time, counting empty strings and
+ * empty arrays as unfilled too — a saved draft can never wipe the page.
+ */
+function merged<T extends object>(
+  value: Partial<T> | null | undefined,
+  fallback: T,
+): T {
+  if (!value) return fallback;
+  const out = { ...fallback };
+  for (const [key, v] of Object.entries(value)) {
+    if (v === null || v === undefined) continue;
+    if (typeof v === "string" && v.trim() === "") continue;
+    if (Array.isArray(v) && v.length === 0) continue;
+    (out as Record<string, unknown>)[key] = v;
+  }
+  return out;
+}
+
+async function safeMerge<T extends object>(
+  fetcher: () => Promise<Partial<T> | null | undefined>,
+  fallback: T,
+): Promise<T> {
+  try {
+    return merged(await fetcher(), fallback);
+  } catch {
+    return fallback;
+  }
+}
 
 async function safeFetch<T>(
   fetcher: () => Promise<T | null | undefined>,
@@ -293,12 +345,16 @@ async function getRegulation() {
   return client.fetch<Regulation | null>(regulationQuery);
 }
 
+async function getHomeContent() {
+  return client.fetch<HomeContent | null>(homeContentQuery);
+}
+
 async function getHowToArrive() {
   return client.fetch<HowToArrive | null>(howToArriveQuery);
 }
 
 export async function loadSiteSettings() {
-  return safeFetch(getSiteSettings, FALLBACK_SITE_SETTINGS);
+  return safeMerge(getSiteSettings, FALLBACK_SITE_SETTINGS);
 }
 
 export async function loadProgramItems() {
@@ -314,9 +370,13 @@ export async function loadPastEditions() {
 }
 
 export async function loadRegulation() {
-  return safeFetch(getRegulation, FALLBACK_REGULATION);
+  return safeMerge(getRegulation, FALLBACK_REGULATION);
+}
+
+export async function loadHomeContent() {
+  return safeMerge(getHomeContent, FALLBACK_HOME);
 }
 
 export async function loadHowToArrive() {
-  return safeFetch(getHowToArrive, FALLBACK_HOW_TO_ARRIVE);
+  return safeMerge(getHowToArrive, FALLBACK_HOW_TO_ARRIVE);
 }

@@ -15,7 +15,8 @@ export const siteSettingsQuery = defineQuery(`
     registrationClosedLabel,
     instagramUrl,
     facebookUrl,
-    contactEmail
+    contactEmail,
+    photoCredit
   }
 `);
 
@@ -27,7 +28,8 @@ export const programItemsQuery = defineQuery(`
     endTime,
     description,
     location,
-    category
+    category,
+    image
   }
 `);
 
@@ -62,6 +64,20 @@ export const regulationQuery = defineQuery(`
     },
     "pdfUrl": pdfFile.asset->url,
     updatedAt
+  }
+`);
+
+export const homeContentQuery = defineQuery(`
+  *[_type == "homeContent"][0]{
+    introHeading,
+    introText,
+    claim,
+    claimText,
+    introPhotos,
+    stats[]{ value, label },
+    closingHeading,
+    closingText,
+    closingImage
   }
 `);
 

@@ -15,6 +15,7 @@ export interface SiteSettings {
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
+  photoCredit?: string;
 }
 
 export interface ProgramItem {
@@ -25,6 +26,7 @@ export interface ProgramItem {
   description?: string;
   location?: string;
   category?: string;
+  image?: Image | null;
 }
 
 export interface Sponsor {
@@ -65,11 +67,19 @@ export interface HowToArrive {
   mapEmbedUrl?: string;
 }
 
-export interface MapPoint {
-  _id: string;
+export interface Stat {
+  value: string;
   label: string;
-  type: string;
-  description?: string;
-  x?: number;
-  y?: number;
+}
+
+export interface HomeContent {
+  introHeading?: string;
+  introText?: string;
+  claim?: string;
+  claimText?: string;
+  introPhotos?: Image[];
+  stats?: Stat[];
+  closingHeading?: string;
+  closingText?: string;
+  closingImage?: Image | null;
 }
