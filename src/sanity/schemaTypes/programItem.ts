@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { imageWithAlt } from "./imageWithAlt";
+
 export const programItem = defineType({
   name: "programItem",
   title: "Programma",
@@ -49,11 +51,9 @@ export const programItem = defineType({
         ],
       },
     }),
-    defineField({
+    imageWithAlt({
       name: "image",
       title: "Foto",
-      type: "image",
-      options: { hotspot: true },
       description:
         "Sfondo della card. Da chiusa la card è molto stretta e alta: usa l'hotspot, altrimenti il ritaglio centrale può mancare il soggetto.",
     }),

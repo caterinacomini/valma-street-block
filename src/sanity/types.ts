@@ -1,9 +1,12 @@
 import type { Image } from "sanity";
 
+/** A photograph plus the alt text the editor wrote for it. */
+export type SanityPhoto = Image & { alt?: string };
+
 export interface SiteSettings {
   title: string;
   editionNumber?: number;
-  heroImage?: Image | null;
+  heroImage?: SanityPhoto | null;
   eventDate?: string;
   rainDate?: string;
   location?: string;
@@ -26,7 +29,7 @@ export interface ProgramItem {
   description?: string;
   location?: string;
   category?: string;
-  image?: Image | null;
+  image?: SanityPhoto | null;
 }
 
 export interface Sponsor {
@@ -41,7 +44,7 @@ export interface PastEdition {
   _id: string;
   year: number;
   editionNumber?: number;
-  coverImage?: Image | null;
+  coverImage?: SanityPhoto | null;
   gallery?: Image[];
   highlights?: string;
   participantsCount?: number;
@@ -77,9 +80,9 @@ export interface HomeContent {
   introText?: string;
   claim?: string;
   claimText?: string;
-  introPhotos?: Image[];
+  introPhotos?: SanityPhoto[];
   stats?: Stat[];
   closingHeading?: string;
   closingText?: string;
-  closingImage?: Image | null;
+  closingImage?: SanityPhoto | null;
 }

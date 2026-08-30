@@ -1,5 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { imageWithAlt } from "./imageWithAlt";
+
 /**
  * The two stretches of the landing page that are prose rather than data: the
  * section under the hero, and the card that closes the page. Everything else
@@ -50,7 +52,19 @@ export const homeContent = defineType({
       title: "Foto della griglia",
       type: "array",
       group: "intro",
-      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
+      of: [
+        defineArrayMember({
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Testo alternativo",
+              type: "string",
+            }),
+          ],
+        }),
+      ],
       description:
         "Quattro foto, in griglia due per due. Vengono ritagliate quadrate: usa l'hotspot per scegliere il punto da tenere sempre in campo.",
       validation: (rule) => rule.max(4),
@@ -98,11 +112,9 @@ export const homeContent = defineType({
       rows: 3,
       group: "closing",
     }),
-    defineField({
+    imageWithAlt({
       name: "closingImage",
       title: "Foto di sfondo",
-      type: "image",
-      options: { hotspot: true },
       group: "closing",
       description:
         "A tutto schermo, con il testo in basso. L'hotspot decide cosa resta in campo sui telefoni, dove il taglio è molto più stretto.",

@@ -9,6 +9,7 @@ import { RegolamentoSection } from "@/components/sections/regolamento-section";
 import { SponsorSection } from "@/components/sections/sponsor-section";
 import { formatDateIt } from "@/lib/format";
 import { loadPastEditions, loadSiteSettings } from "@/sanity/fetch";
+import { photoProps } from "@/sanity/image";
 
 /**
  * Re-fetch content from Sanity at most once a minute. Without this the page is
@@ -33,6 +34,17 @@ export default async function HomePage() {
   ]);
 
   const lastEdition = pastEditions[0];
+  /* The file in /public keeps its own object-position classes: those were
+     tuned per breakpoint, and a hotspot is a single point for every width. */
+  const heroPhoto = photoProps(
+    settings.heroImage,
+    {
+      src: "/content/urban-climbing-bridge-dyno.jpg",
+      className: "object-cover object-[80%_45%] lg:object-[center_45%]",
+      alt: "Passaggio in dinamico sotto il ponte durante il Valma Street Block",
+    },
+    3200,
+  );
   const formattedDate = formatDateIt(settings.eventDate);
 
   return (
@@ -41,14 +53,7 @@ export default async function HomePage() {
         id="top"
         className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink"
       >
-        <Image
-          src="/content/urban-climbing-bridge-dyno.jpg"
-          alt="Passaggio in dinamico sotto il ponte durante il Valma Street Block"
-          fill
-          priority
-          className="object-cover object-[80%_45%] lg:object-[center_45%]"
-          sizes="100vw"
-        />
+        <Image {...heroPhoto} alt={heroPhoto.alt} fill priority sizes="100vw" />
         {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the copy sits.
             Stacked layers because CSS has no native progressive backdrop-filter. */}
         <div className="pointer-events-none absolute inset-0">

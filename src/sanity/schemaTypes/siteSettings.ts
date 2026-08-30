@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { imageWithAlt } from "./imageWithAlt";
+
 export const siteSettings = defineType({
   name: "siteSettings",
   title: "Impostazioni sito",
@@ -18,11 +20,9 @@ export const siteSettings = defineType({
       type: "number",
       description: "Es. 11 per l'11ª edizione",
     }),
-    defineField({
+    imageWithAlt({
       name: "heroImage",
       title: "Immagine di copertina",
-      type: "image",
-      options: { hotspot: true },
       description:
         "Occupa tutto lo schermo. Sui telefoni il taglio è molto più stretto che su computer: usa l'hotspot per marcare cosa deve restare sempre in campo.",
     }),

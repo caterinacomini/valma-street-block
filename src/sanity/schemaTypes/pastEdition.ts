@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { imageWithAlt } from "./imageWithAlt";
+
 export const pastEdition = defineType({
   name: "pastEdition",
   title: "Edizione passata",
@@ -16,11 +18,9 @@ export const pastEdition = defineType({
       title: "Numero edizione",
       type: "number",
     }),
-    defineField({
+    imageWithAlt({
       name: "coverImage",
       title: "Immagine di copertina",
-      type: "image",
-      options: { hotspot: true },
     }),
     defineField({
       name: "gallery",
