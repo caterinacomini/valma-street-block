@@ -1,14 +1,11 @@
+import type { NavLink } from "@/lib/sections";
+
 import { RegisterButton } from "./register-button";
 
-const eventLinks = [
-  { href: "#programma", label: "Programma" },
-  { href: "#come-arrivare", label: "Come arrivare" },
-  { href: "#regolamento", label: "Regolamento" },
-  { href: "#edizioni-passate", label: "Edizioni passate" },
-  { href: "#sponsor", label: "Sponsor" },
-];
+
 
 export function SiteFooter({
+  eventLinks,
   instagramUrl,
   facebookUrl,
   contactEmail,
@@ -18,6 +15,7 @@ export function SiteFooter({
   registrationLabel,
   registrationClosedLabel,
 }: {
+  eventLinks: NavLink[];
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment, type ReactNode } from "react";
 
 import { CardEntry } from "@/components/card-entry";
 import { RegisterButton } from "@/components/register-button";
@@ -8,6 +9,7 @@ import { ProgrammaSection } from "@/components/sections/programma-section";
 import { RegolamentoSection } from "@/components/sections/regolamento-section";
 import { SponsorSection } from "@/components/sections/sponsor-section";
 import { formatDateIt } from "@/lib/format";
+import { resolveSections, type SectionId } from "@/lib/sections";
 import {
   loadHomeContent,
   loadPastEditions,
@@ -21,6 +23,17 @@ import { heroPhotoProps, photoProps } from "@/sanity/image";
  * until the next deploy.
  */
 export const revalidate = 60;
+
+/**
+ * The four sections an editor can reorder. Kept as elements rather than
+ * components so the order below is a list to walk, not a switch to maintain.
+ */
+const SECTIONS: Record<SectionId, ReactNode> = {
+  programma: <ProgrammaSection />,
+  comeArrivare: <ComeArrivareSection />,
+  edizioniPassate: <EdizioniPassateSection />,
+  regolamento: <RegolamentoSection />,
+};
 
 /**
  * Photo card on the hero's recipe: a light progressive blur rising from the
@@ -244,10 +257,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <ProgrammaSection />
-      <ComeArrivareSection />
-      <EdizioniPassateSection />
-      <RegolamentoSection />
+      {resolveSections(settings.sections)
+        .filter((section) => section.visible)
+        .map((section) => (
+          <Fragment key={section.id}>{SECTIONS[section.id]}</Fragment>
+        ))}
 
       <section className="bg-white">
         {/* Opens out of a card on the way in and folds back into one on the
@@ -279,7 +293,7 @@ export default async function HomePage() {
         </CardEntry>
       </section>
 
-      <SponsorSection />
+      {settings.showSponsors === false ? null : <SponsorSection />}
     </>
   );
 }

@@ -1,5 +1,7 @@
 import { PostponedBanner } from "@/components/postponed-banner";
 import { draftMode } from "next/headers";
+
+import { navLinksFor } from "@/lib/sections";
 import { VisualEditing } from "next-sanity/visual-editing";
 
 import { ScrollReveals } from "@/components/scroll-reveals";
@@ -17,6 +19,13 @@ export default async function SiteLayout({
 }) {
   const settings = await loadSiteSettings();
   const { isEnabled: preview } = await draftMode();
+  /* Menu and footer read the same list the page renders from, so a section
+     switched off cannot leave a link pointing at an anchor that is not there. */
+  const links = navLinksFor(settings.sections);
+  const footerNav =
+    settings.showSponsors === false
+      ? links
+      : [...links, { href: "#sponsor", label: "Sponsor" }];
 
   return (
     <>
@@ -29,6 +38,7 @@ export default async function SiteLayout({
       ) : null}
       {/* Header stays outside the smoother so it can remain fixed */}
       <SiteHeader
+        navLinks={links}
         registrationUrl={settings.registrationUrl ?? undefined}
         registrationOpen={settings.registrationOpen}
         registrationLabel={settings.registrationLabel}
@@ -39,6 +49,7 @@ export default async function SiteLayout({
       <SmoothScroll>
         <main className="site-in">{children}</main>
         <SiteFooter
+          eventLinks={footerNav}
           instagramUrl={settings.instagramUrl ?? undefined}
           facebookUrl={settings.facebookUrl ?? undefined}
           contactEmail={settings.contactEmail ?? undefined}

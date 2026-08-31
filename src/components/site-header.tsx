@@ -1,12 +1,14 @@
 "use client";
 
+import type { NavLink } from "@/lib/sections";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { navLinks } from "./nav-links";
+
 import { RegisterButton } from "./register-button";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -51,6 +53,7 @@ function paintedBackground(node: Element | null): number[] | null {
 }
 
 export function SiteHeader({
+  navLinks,
   registrationUrl,
   registrationOpen,
   registrationLabel,
@@ -58,6 +61,7 @@ export function SiteHeader({
   instagramUrl,
   facebookUrl,
 }: {
+  navLinks: NavLink[];
   registrationUrl?: string;
   registrationOpen?: boolean;
   registrationLabel?: string;

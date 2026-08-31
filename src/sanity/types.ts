@@ -1,5 +1,7 @@
 import type { Image } from "sanity";
 
+import type { SectionChoice } from "@/lib/sections";
+
 /** A photograph plus the alt text the editor wrote for it. */
 export type SanityPhoto = Image & { alt?: string };
 
@@ -32,6 +34,8 @@ export interface SiteSettings {
   facebookUrl?: string;
   contactEmail?: string;
   photoCredit?: string;
+  sections?: SectionChoice[];
+  showSponsors?: boolean;
 }
 
 export interface ProgramItem {

@@ -18,7 +18,9 @@ export const siteSettingsQuery = defineQuery(`
     instagramUrl,
     facebookUrl,
     contactEmail,
-    photoCredit
+    photoCredit,
+    sections[]{ section, visible },
+    showSponsors
   }
 `);
 

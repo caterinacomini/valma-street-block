@@ -1,5 +1,6 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { MOVABLE_SECTIONS } from "../../lib/sections";
 import { imageWithAlt } from "./imageWithAlt";
 
 export const siteSettings = defineType({
@@ -118,6 +119,58 @@ export const siteSettings = defineType({
       name: "contactEmail",
       title: "Email di contatto",
       type: "string",
+    }),
+    defineField({
+      name: "sections",
+      title: "Sezioni della pagina",
+      type: "array",
+      description:
+        "Trascina per cambiare l'ordine sul sito, e spegni l'interruttore per nascondere una sezione. Una sezione nascosta sparisce anche dal menu. Se lasci vuoto vale l'ordine predefinito.",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "sectionChoice",
+          fields: [
+            defineField({
+              name: "section",
+              title: "Sezione",
+              type: "string",
+              options: {
+                list: MOVABLE_SECTIONS.map((s) => ({ title: s.label, value: s.id })),
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "visible",
+              title: "Mostra sul sito",
+              type: "boolean",
+              initialValue: true,
+            }),
+          ],
+          preview: {
+            select: { section: "section", visible: "visible" },
+            prepare: ({ section, visible }) => ({
+              title:
+                MOVABLE_SECTIONS.find((s) => s.id === section)?.label ?? section,
+              subtitle: visible === false ? "nascosta" : "visibile",
+            }),
+          },
+        }),
+      ],
+      validation: (rule) =>
+        rule.max(MOVABLE_SECTIONS.length).custom((value) => {
+          const ids = (value ?? []).map((v) => (v as { section?: string })?.section);
+          const dupes = ids.filter((id, i) => id && ids.indexOf(id) !== i);
+          return dupes.length ? "Una sezione compare più di una volta." : true;
+        }),
+    }),
+    defineField({
+      name: "showSponsors",
+      title: "Mostra gli sponsor",
+      type: "boolean",
+      initialValue: true,
+      description:
+        "Gli sponsor chiudono la pagina dopo l'invito finale, quindi non si spostano — ma si possono nascondere.",
     }),
     defineField({
       name: "photoCredit",
