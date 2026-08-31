@@ -170,7 +170,13 @@ def main() -> int:
             record.string = record.toUnicode().replace("Koulen", "KoulenVSB")
 
     font.save(DST)
-    print(f"{len(added)} glyphs added → {os.path.relpath(DST, os.path.join(HERE, '..'))}")
+
+    # the site loads the woff2; producing it here keeps the two in step, since a
+    # rebuilt ttf beside a stale woff2 is a bug nobody would think to look for
+    font.flavor = "woff2"
+    font.save(DST.replace(".ttf", ".woff2"))
+
+    print(f"{len(added)} glyphs added → {os.path.relpath(DST, os.path.join(HERE, '..'))} (+ .woff2)")
     print("  " + " ".join(chr(c) for c, _ in added))
     return 0
 

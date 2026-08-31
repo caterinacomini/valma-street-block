@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Koulen, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const koulen = Koulen({
+/**
+ * Koulen with the accents it never had. The upstream face carries no à è é ì ò ù
+ * — nor ª, nor a typographic apostrophe — and this site is in Italian with most
+ * display text coming from the Studio, so the missing letters were being drawn
+ * by whatever the browser reached for, mid-word and at another width.
+ * Rebuild with scripts/build-koulen-vsb.py.
+ */
+const koulen = localFont({
+  src: "./fonts/KoulenVSB.woff2",
   variable: "--font-koulen",
-  subsets: ["latin"],
-  weight: "400",
+  display: "swap",
 });
 
 const spaceGrotesk = Space_Grotesk({
