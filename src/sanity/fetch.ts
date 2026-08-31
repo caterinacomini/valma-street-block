@@ -18,7 +18,7 @@ import type {
   Sponsor,
 } from "./types";
 
-const FALLBACK_SITE_SETTINGS: SiteSettings = {
+export const FALLBACK_SITE_SETTINGS: SiteSettings = {
   title: "Valma Street Block",
   editionNumber: 11,
   heroImage: null,
@@ -39,7 +39,7 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
     "Fotografie di Clara Rusconi e Daniela Rusconi — Fotoclub G. Anghileri, Valmadrera",
 };
 
-const FALLBACK_PROGRAM = [
+export const FALLBACK_PROGRAM = [
   {
     _id: "fallback-1",
     title: "Ritiro pettorali",
@@ -79,7 +79,7 @@ const FALLBACK_PROGRAM = [
   },
 ] satisfies Awaited<ReturnType<typeof getProgramItems>>;
 
-const FALLBACK_PAST_EDITIONS = [
+export const FALLBACK_PAST_EDITIONS = [
   {
     _id: "fallback-2026",
     year: 2026,
@@ -175,7 +175,7 @@ const FALLBACK_PAST_EDITIONS = [
   },
 ] satisfies Awaited<ReturnType<typeof getPastEditions>>;
 
-const FALLBACK_REGULATION: Regulation = {
+export const FALLBACK_REGULATION: Regulation = {
   title: "Regolamento",
   faq: [
     {
@@ -253,7 +253,7 @@ const FALLBACK_REGULATION: Regulation = {
   updatedAt: undefined,
 };
 
-const FALLBACK_HOME: HomeContent = {
+export const FALLBACK_HOME: HomeContent = {
   introHeading: "Le vie di Valmadrera diventano una palestra a cielo aperto.",
   introText:
     "Nato dall'idea di sette ragazzi di Valmadrera, oggi è uno degli appuntamenti di arrampicata urbana più sentiti del nord Italia.",
@@ -270,7 +270,7 @@ const FALLBACK_HOME: HomeContent = {
   closingImage: null,
 };
 
-const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
+export const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
   intro:
     "Il ritrovo è al parco di via Leopardi, punto di partenza di tutte le stazioni di gara sparse per il paese.",
   address: "Parco di via Leopardi, Valmadrera (LC)",
