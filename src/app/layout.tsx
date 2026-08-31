@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
+import { siteUrl } from "@/lib/site-url";
+import { loadSiteSettings } from "@/sanity/fetch";
 import "./globals.css";
 
 /**
@@ -21,11 +23,50 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Valma Street Block",
-  description:
-    "Valma Street Block: la gara di arrampicata urbana tra le vie di Valmadrera.",
-};
+const FALLBACK_DESCRIPTION =
+  "Valma Street Block: la gara di arrampicata urbana tra le vie di Valmadrera.";
+
+/**
+ * Read from the Studio like everything else, so the line that shows up in
+ * search results and in a pasted link is the organisation's to write. The
+ * description falls back to the introduction, then to the sentence above.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await loadSiteSettings();
+  const title = settings.title?.trim() || "Valma Street Block";
+  const description = settings.intro?.trim() || FALLBACK_DESCRIPTION;
+  const where = [settings.location].filter(Boolean).join(" ");
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: { default: title, template: `%s · ${title}` },
+    description,
+    applicationName: title,
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      locale: "it_IT",
+      siteName: title,
+      title,
+      description,
+      url: "/",
+      images: [
+        {
+          url: "/og.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${title}${where ? ` — ${where}` : ""}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og.jpg"],
+    },
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
