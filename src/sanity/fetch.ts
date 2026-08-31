@@ -34,6 +34,8 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
   facebookUrl: "https://www.facebook.com/ValmaStreetBlock/",
   contactEmail: "segreteria@caivalmadrera.it",
+  photoCredit:
+    "Fotografie di Clara Rusconi e Daniela Rusconi — Fotoclub G. Anghileri, Valmadrera",
 };
 
 const FALLBACK_PROGRAM = [

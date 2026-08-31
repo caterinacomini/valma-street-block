@@ -3,11 +3,13 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { photoProps } from "@/sanity/image";
 import type { ProgramItem } from "@/sanity/types";
 
 /**
- * One photograph per moment of the day. Assigned by position for now — when
- * the programme is edited in the CMS these should come with the items.
+ * What a card shows before anybody has attached a photograph to it in the
+ * Studio. Assigned by position, so the four moments of the day keep the framing
+ * each of these was chosen for; an item with its own photograph ignores them.
  */
 const BACKDROPS = [
   { src: "/content/urban-climbing-shoes-pack.jpg", pos: "object-center" },
@@ -29,7 +31,12 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
       {items.map((item, index) => {
         const open = item._id === openId;
         const hasDetail = Boolean(item.location || item.description);
-        const photo = BACKDROPS[index % BACKDROPS.length];
+        const local = BACKDROPS[index % BACKDROPS.length];
+        const photo = photoProps(
+          item.image,
+          { src: local.src, className: `object-cover ${local.pos}`, alt: "" },
+          1200,
+        );
 
         return (
           <li
@@ -45,10 +52,10 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
               className="group relative flex h-full w-full flex-col justify-end overflow-hidden rounded-3xl bg-ink px-5 py-5 text-left text-white sm:px-6 sm:py-6"
             >
               <Image
-                src={photo.src}
-                alt=""
+                {...photo}
+                alt={photo.alt}
                 fill
-                className={`object-cover ${photo.pos} transition-transform duration-700 group-hover:scale-[1.04]`}
+                className={`${photo.className} transition-transform duration-700 group-hover:scale-[1.04]`}
                 sizes="(min-width: 1024px) 520px, 92vw"
               />
               <div className="pointer-events-none absolute inset-0 bg-ink/20" />

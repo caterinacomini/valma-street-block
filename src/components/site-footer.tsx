@@ -12,6 +12,7 @@ export function SiteFooter({
   instagramUrl,
   facebookUrl,
   contactEmail,
+  photoCredit,
   registrationUrl,
   registrationOpen,
   registrationLabel,
@@ -20,6 +21,7 @@ export function SiteFooter({
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
+  photoCredit?: string;
   registrationUrl?: string;
   registrationOpen?: boolean;
   registrationLabel?: string;
@@ -122,10 +124,7 @@ export function SiteFooter({
           ) : null}
           <div className="text-xs text-white/70">
             <p>Organizzato da CAI Valmadrera e OSA Valmadrera</p>
-            <p className="mt-1.5">
-              Fotografie di Clara Rusconi e Daniela Rusconi — Fotoclub G.
-              Anghileri, Valmadrera
-            </p>
+            {photoCredit ? <p className="mt-1.5">{photoCredit}</p> : null}
           </div>
         </div>
       </div>

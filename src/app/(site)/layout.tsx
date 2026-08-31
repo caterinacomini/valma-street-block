@@ -30,6 +30,7 @@ export default async function SiteLayout({
           instagramUrl={settings.instagramUrl ?? undefined}
           facebookUrl={settings.facebookUrl ?? undefined}
           contactEmail={settings.contactEmail ?? undefined}
+          photoCredit={settings.photoCredit ?? undefined}
           registrationUrl={settings.registrationUrl ?? undefined}
           registrationOpen={settings.registrationOpen}
           registrationLabel={settings.registrationLabel}
