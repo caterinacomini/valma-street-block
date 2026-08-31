@@ -24,7 +24,10 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
   heroImage: null,
   eventDate: "2027-04-10",
   rainDate: "2027-04-17",
-  postponed: false,
+  /* Preview branch only: this is what the site looks like with the switch on.
+     Never merge — production reads the switch from the Studio. */
+  postponed: true,
+  postponedNote: "Annullata per allerta meteo",
   location: "Valmadrera (LC)",
   intro:
     "Un giorno di boulder in mezzo al paese. Muri, cornicioni e angoli di città diventano blocchi da chiudere. Poi si balla.",
