@@ -1,4 +1,7 @@
 import { PostponedBanner } from "@/components/postponed-banner";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
+
 import { ScrollReveals } from "@/components/scroll-reveals";
 import { SiteLoader } from "@/components/site-loader";
 import { SiteFooter } from "@/components/site-footer";
@@ -13,6 +16,7 @@ export default async function SiteLayout({
   children: React.ReactNode;
 }) {
   const settings = await loadSiteSettings();
+  const { isEnabled: preview } = await draftMode();
 
   return (
     <>
@@ -46,6 +50,9 @@ export default async function SiteLayout({
         />
         {/* Last child, so its effect runs once every section is mounted */}
         <ScrollReveals />
+        {/* Only inside the Studio's preview pane: it paints the click-to-edit
+            overlays and keeps the page in step with what is being typed. */}
+        {preview ? <VisualEditing /> : null}
       </SmoothScroll>
     </>
   );

@@ -27,7 +27,7 @@ import {
   FALLBACK_PROGRAM,
   FALLBACK_REGULATION,
   FALLBACK_SITE_SETTINGS,
-} from "../src/sanity/fetch";
+} from "../src/sanity/fallbacks";
 
 type Doc = Record<string, unknown> & { _id: string; _type: string };
 

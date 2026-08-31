@@ -1,4 +1,5 @@
 import { defineConfig } from "sanity";
+import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { itITLocale } from "@sanity/locale-it-it";
 import { visionTool } from "@sanity/vision";
@@ -30,6 +31,15 @@ export default defineConfig({
   },
   plugins: [
     structureTool({ structure }),
+    /* The site beside the fields, and clicking the page jumps to the field that
+       wrote it. The origin is left to the browser so the same build serves
+       localhost and the deployed Studio without knowing which it is. */
+    presentationTool({
+      title: "Anteprima",
+      previewUrl: {
+        previewMode: { enable: "/api/draft-mode/enable" },
+      },
+    }),
     // The field labels were already Italian; this translates the Studio around
     // them — buttons, menus, validation, the publish confirmations.
     itITLocale(),
