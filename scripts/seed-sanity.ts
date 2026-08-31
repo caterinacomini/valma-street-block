@@ -22,6 +22,7 @@ import { join } from "node:path";
 
 import {
   FALLBACK_HOME,
+  FALLBACK_PAST_EDITIONS as EDITIONS,
   FALLBACK_HOW_TO_ARRIVE,
   FALLBACK_PAST_EDITIONS,
   FALLBACK_PROGRAM,
@@ -46,6 +47,27 @@ function readEnv(): Record<string, string> {
   return env;
 }
 
+/**
+ * Sanity needs a _key on every object inside an array — without one the Studio
+ * shows the list as broken and refuses to reorder it. Derived from position and
+ * content rather than random, so running this twice does not churn the document.
+ */
+function withKeys(value: unknown, path = "k"): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item, index) =>
+      item && typeof item === "object" && !Array.isArray(item)
+        ? { _key: `${path}${index}`, ...(withKeys(item, `${path}${index}-`) as object) }
+        : withKeys(item, `${path}${index}-`),
+    );
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, inner]) => [key, withKeys(inner, `${path}${key}-`)]),
+    );
+  }
+  return value;
+}
+
 /** Strip the keys that describe the fallback rather than the content. */
 function clean<T extends object>(source: T, drop: string[] = []): Record<string, unknown> {
   const out: Record<string, unknown> = {};
@@ -53,7 +75,7 @@ function clean<T extends object>(source: T, drop: string[] = []): Record<string,
     if (drop.includes(key) || key.startsWith("_")) continue;
     if (value === null || value === undefined) continue;
     if (Array.isArray(value) && value.length === 0) continue;
-    out[key] = value;
+    out[key] = withKeys(value, `${key}-`);
   }
   return out;
 }
@@ -62,7 +84,28 @@ function documents(): Doc[] {
   const docs: Doc[] = [
     // The three singletons keep the ids the Studio's structure looks them up by
     { _id: "siteSettings", _type: "siteSettings", ...clean(FALLBACK_SITE_SETTINGS, ["heroImage"]) },
-    { _id: "homeContent", _type: "homeContent", ...clean(FALLBACK_HOME, ["closingImage", "introPhotos"]) },
+    {
+      _id: "homeContent",
+      _type: "homeContent",
+      ...clean(FALLBACK_HOME, ["closingImage", "introPhotos", "stats"]),
+      /* The fallback leaves these empty so the page can read the participant
+         count off the most recent edition. Seeding them makes the numbers
+         editable, which is the point of a CMS — at the cost of that link, which
+         was invisible anyway: nobody expects editing an edition to move the
+         home page. */
+      stats: [
+        {
+          _key: "climbers",
+          value: `+${EDITIONS[0]?.participantsCount ?? 470} climbers`,
+          label: "In gara all'ultima edizione, competitivi e non.",
+        },
+        {
+          _key: "blocchi",
+          value: "+50 blocchi",
+          label: "Passaggi brevi ma intensi, sparsi per il paese.",
+        },
+      ],
+    },
     { _id: "howToArrive", _type: "howToArrive", ...clean(FALLBACK_HOW_TO_ARRIVE) },
     { _id: "regulation", _type: "regulation", ...clean(FALLBACK_REGULATION, ["pdfUrl"]) },
   ];
