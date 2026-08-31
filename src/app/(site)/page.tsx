@@ -40,7 +40,8 @@ export default async function HomePage() {
     settings.heroImage,
     {
       src: "/content/urban-climbing-bridge-dyno.jpg",
-      className: "object-cover object-[80%_45%] lg:object-[center_45%]",
+      className:
+        "object-cover object-[80%_45%] sm:object-[65%_45%] lg:object-[center_45%]",
       alt: "Passaggio in dinamico sotto il ponte durante il Valma Street Block",
     },
     3200,
