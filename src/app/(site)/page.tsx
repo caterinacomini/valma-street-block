@@ -142,7 +142,7 @@ export default async function HomePage() {
                     {formattedDate}
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-[-6%] top-1/2 h-[5px] -rotate-[7deg] rounded-full bg-blue shadow-[0_0_0_2px_rgb(0_0_0/0.35)]"
+                      className="pointer-events-none absolute inset-x-[-6%] top-1/2 h-[5px] -rotate-[7deg] rounded-full bg-blue"
                     />
                   </s>
                 ) : (
