@@ -1,5 +1,8 @@
 import { createImageUrlBuilder } from "@sanity/image-url";
 import type { Image } from "sanity";
+import type { CSSProperties } from "react";
+
+import type { HeroPhoto } from "./types";
 
 import { dataset, projectId } from "./runtime-env";
 
@@ -51,5 +54,35 @@ export function photoProps(
     className: "object-cover",
     alt: source?.alt ?? fallback.alt,
     style: { objectPosition: cms.objectPosition },
+  };
+}
+
+/**
+ * The hero alone gets a focal point per breakpoint, handed to CSS as variables
+ * so one element can hold three positions — inline styles cannot carry a media
+ * query. Anything left empty falls back to the hotspot.
+ */
+export function heroPhotoProps(
+  source: HeroPhoto | null | undefined,
+  fallback: { src: string; className: string; alt: string },
+  width = 3200,
+) {
+  const cms = imageProps(source, width);
+  if (!cms) return { ...fallback, style: undefined };
+
+  const [hotspotX, hotspotY] = cms.objectPosition.split(" ");
+  const at = (x: number | undefined) =>
+    `${x === undefined || x === null ? hotspotX : `${x}%`} ${hotspotY}`;
+
+  return {
+    src: cms.src,
+    alt: source?.alt ?? fallback.alt,
+    className:
+      "object-cover object-[var(--focus-phone)] sm:object-[var(--focus-tablet)] lg:object-[var(--focus-desktop)]",
+    style: {
+      "--focus-phone": at(source?.focusPhone),
+      "--focus-tablet": at(source?.focusTablet),
+      "--focus-desktop": at(source?.focusDesktop),
+    } as CSSProperties,
   };
 }

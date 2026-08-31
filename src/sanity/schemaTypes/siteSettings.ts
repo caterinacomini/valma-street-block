@@ -23,6 +23,7 @@ export const siteSettings = defineType({
     imageWithAlt({
       name: "heroImage",
       title: "Immagine di copertina",
+      perBreakpointFocus: true,
       description:
         "Occupa tutto lo schermo. Sui telefoni il taglio è molto più stretto che su computer: usa l'hotspot per marcare cosa deve restare sempre in campo.",
     }),

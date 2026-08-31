@@ -3,10 +3,21 @@ import type { Image } from "sanity";
 /** A photograph plus the alt text the editor wrote for it. */
 export type SanityPhoto = Image & { alt?: string };
 
+/**
+ * The hero, which is cropped so differently across widths that one focal point
+ * cannot serve them all: these nudge it horizontally, and fall back to the
+ * hotspot wherever they are left empty.
+ */
+export type HeroPhoto = SanityPhoto & {
+  focusPhone?: number;
+  focusTablet?: number;
+  focusDesktop?: number;
+};
+
 export interface SiteSettings {
   title: string;
   editionNumber?: number;
-  heroImage?: SanityPhoto | null;
+  heroImage?: HeroPhoto | null;
   eventDate?: string;
   rainDate?: string;
   location?: string;
