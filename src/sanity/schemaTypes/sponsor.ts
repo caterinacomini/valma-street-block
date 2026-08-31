@@ -55,6 +55,16 @@ export const sponsor = defineType({
     },
   ],
   preview: {
-    select: { title: "name", subtitle: "tier", media: "logo" },
+    select: { title: "name", tier: "tier", media: "logo" },
+    /* "partner" is what the field stores; nobody says it out loud. */
+    prepare({ title, tier, media }) {
+      const labels: Record<string, string> = {
+        main: "Main sponsor",
+        gold: "Gold",
+        silver: "Silver",
+        partner: "Partner tecnico",
+      };
+      return { title, subtitle: tier ? labels[tier] : undefined, media };
+    },
   },
 });

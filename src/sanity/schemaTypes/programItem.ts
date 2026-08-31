@@ -71,6 +71,22 @@ export const programItem = defineType({
     },
   ],
   preview: {
-    select: { title: "title", subtitle: "time" },
+    select: {
+      title: "title",
+      time: "time",
+      endTime: "endTime",
+      location: "location",
+      media: "image",
+    },
+    /* The list is read chronologically, so the hour leads, and the photograph
+       comes along — a card is recognised by its picture before its name. */
+    prepare({ title, time, endTime, location, media }) {
+      const when = [time, endTime].filter(Boolean).join(" – ");
+      return {
+        title: when ? `${when}  ·  ${title}` : title,
+        subtitle: location,
+        media,
+      };
+    },
   },
 });
