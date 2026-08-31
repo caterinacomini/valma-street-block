@@ -20,6 +20,8 @@ export interface SiteSettings {
   heroImage?: HeroPhoto | null;
   eventDate?: string;
   rainDate?: string;
+  postponed?: boolean;
+  postponedNote?: string;
   location?: string;
   intro?: string;
   registrationUrl?: string;

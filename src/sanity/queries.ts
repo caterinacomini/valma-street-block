@@ -7,6 +7,8 @@ export const siteSettingsQuery = defineQuery(`
     heroImage,
     eventDate,
     rainDate,
+    postponed,
+    postponedNote,
     location,
     intro,
     registrationUrl,

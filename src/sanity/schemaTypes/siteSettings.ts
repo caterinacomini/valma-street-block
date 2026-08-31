@@ -6,6 +6,15 @@ export const siteSettings = defineType({
   name: "siteSettings",
   title: "Impostazioni sito",
   type: "document",
+  fieldsets: [
+    {
+      name: "rinvio",
+      title: "Rinvio per maltempo",
+      options: { collapsible: true, collapsed: true },
+      description:
+        "Serve solo se l'edizione salta. Finché l'interruttore è spento, sul sito non compare nulla.",
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -33,9 +42,29 @@ export const siteSettings = defineType({
       type: "date",
     }),
     defineField({
+      name: "postponed",
+      title: "Evento rinviato",
+      type: "boolean",
+      initialValue: false,
+      fieldset: "rinvio",
+      description:
+        "Accendilo solo quando l'edizione è stata effettivamente rinviata. Il sito lo annuncia in copertina e mostra la nuova data al posto di quella prevista.",
+    }),
+    defineField({
       name: "rainDate",
-      title: "Data di recupero (maltempo)",
+      title: "Nuova data",
       type: "date",
+      fieldset: "rinvio",
+      description: "Compilala insieme all'interruttore qui sopra.",
+    }),
+    defineField({
+      name: "postponedNote",
+      title: "Cosa scrivere",
+      type: "string",
+      fieldset: "rinvio",
+      description:
+        "Il testo dell'etichetta azzurra in copertina — per esempio «Annullata per allerta meteo». Se lo lasci vuoto scrive «Evento rinviato».",
+      validation: (rule) => rule.max(60),
     }),
     defineField({
       name: "location",

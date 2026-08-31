@@ -1,8 +1,10 @@
+import { PostponedBanner } from "@/components/postponed-banner";
 import { ScrollReveals } from "@/components/scroll-reveals";
 import { SiteLoader } from "@/components/site-loader";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { formatDateIt } from "@/lib/format";
 import { loadSiteSettings } from "@/sanity/fetch";
 
 export default async function SiteLayout({
@@ -15,6 +17,12 @@ export default async function SiteLayout({
   return (
     <>
       <SiteLoader />
+      {settings.postponed ? (
+        <PostponedBanner
+          note={settings.postponedNote || "Evento rinviato"}
+          newDate={formatDateIt(settings.rainDate) ?? undefined}
+        />
+      ) : null}
       {/* Header stays outside the smoother so it can remain fixed */}
       <SiteHeader
         registrationUrl={settings.registrationUrl ?? undefined}

@@ -92,6 +92,11 @@ export default async function HomePage() {
     2400,
   );
   const formattedDate = formatDateIt(settings.eventDate);
+  /* A postponement is a state, not a permanent field: until the switch is
+     thrown there is nothing to say. The original date stays on the page, struck
+     through, because people arrive holding it in their heads. */
+  const newDate = formatDateIt(settings.rainDate);
+  const postponed = Boolean(settings.postponed);
 
   return (
     <>
@@ -130,9 +135,32 @@ export default async function HomePage() {
 
             <div className="flex max-w-xs flex-col items-start gap-4 pb-1 sm:max-w-sm lg:pb-4">
               <p className="font-display text-2xl leading-tight tracking-wide text-white sm:text-3xl">
-                {formattedDate ?? "Data da definire"}
+                {postponed && formattedDate ? (
+                  /* <s> so the cancellation reaches a screen reader too; the
+                     default underline is swapped for a drawn diagonal. */
+                  <s className="relative inline-block [text-decoration:none]">
+                    {formattedDate}
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-x-[-6%] top-1/2 h-[5px] -rotate-[7deg] rounded-full bg-blue shadow-[0_0_0_2px_rgb(0_0_0/0.35)]"
+                    />
+                  </s>
+                ) : (
+                  (formattedDate ?? "Data da definire")
+                )}
                 <span className="block">{settings.location}</span>
               </p>
+
+              {postponed ? (
+                <p className="-rotate-[3deg] rounded-2xl bg-blue px-5 py-3 font-sans text-base leading-tight font-bold tracking-wide text-ink uppercase shadow-lg sm:text-lg">
+                  {settings.postponedNote || "Evento rinviato"}
+                  {newDate ? (
+                    <span className="mt-1 block font-display text-xl tracking-wide normal-case sm:text-2xl">
+                      Nuova data: {newDate}
+                    </span>
+                  ) : null}
+                </p>
+              ) : null}
               <RegisterButton
                 registrationUrl={settings.registrationUrl ?? undefined}
                 open={settings.registrationOpen}

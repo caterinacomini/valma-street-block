@@ -12,6 +12,8 @@ export type EditionCard = {
   year: number;
   editionNumber?: number;
   participantsCount?: number;
+  /** A line or two on what that year was. Clamped: the card is a thumbnail. */
+  highlights?: string;
   coverUrl: string;
   /** Extra frames cycled on hover, like a little flipbook. */
   frames: string[];
@@ -90,6 +92,12 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
           <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
             <span className="h-2 w-2 shrink-0 rounded-full bg-yellow" />+
             {edition.participantsCount} climbers
+          </p>
+        ) : null}
+
+        {edition.highlights ? (
+          <p className="mt-2 line-clamp-2 text-sm leading-snug text-white/65">
+            {edition.highlights}
           </p>
         ) : null}
       </div>

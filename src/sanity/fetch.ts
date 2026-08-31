@@ -24,6 +24,7 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
   heroImage: null,
   eventDate: "2027-04-10",
   rainDate: "2027-04-17",
+  postponed: false,
   location: "Valmadrera (LC)",
   intro:
     "Un giorno di boulder in mezzo al paese. Muri, cornicioni e angoli di città diventano blocchi da chiudere. Poi si balla.",

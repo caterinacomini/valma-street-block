@@ -38,6 +38,7 @@ export async function EdizioniPassateSection() {
       year: edition.year,
       editionNumber: edition.editionNumber,
       participantsCount: edition.participantsCount,
+      highlights: edition.highlights,
       coverUrl: cover,
       frames,
     };
