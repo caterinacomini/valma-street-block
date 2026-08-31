@@ -258,10 +258,9 @@ const FALLBACK_HOME: HomeContent = {
   claimText:
     "Nessuna parete artificiale: si scala sui muri, sulle pietre e nei cortili del paese.",
   introPhotos: [],
-  stats: [
-    { value: "+470 climbers", label: "In gara all'ultima edizione, competitivi e non." },
-    { value: "+50 blocchi", label: "Passaggi brevi ma intensi, sparsi per il paese." },
-  ],
+  /* Left empty on purpose: the first number reads the last edition's
+     participant count, which this module has no access to. The page fills it. */
+  stats: [],
   closingHeading: "Bagai, pronti a scalare il paese?",
   closingText:
     "50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno, si scala tutti insieme.",

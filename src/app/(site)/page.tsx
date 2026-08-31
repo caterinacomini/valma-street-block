@@ -8,8 +8,12 @@ import { ProgrammaSection } from "@/components/sections/programma-section";
 import { RegolamentoSection } from "@/components/sections/regolamento-section";
 import { SponsorSection } from "@/components/sections/sponsor-section";
 import { formatDateIt } from "@/lib/format";
-import { loadPastEditions, loadSiteSettings } from "@/sanity/fetch";
-import { heroPhotoProps } from "@/sanity/image";
+import {
+  loadHomeContent,
+  loadPastEditions,
+  loadSiteSettings,
+} from "@/sanity/fetch";
+import { heroPhotoProps, photoProps } from "@/sanity/image";
 
 /**
  * Re-fetch content from Sanity at most once a minute. Without this the page is
@@ -28,9 +32,10 @@ export const revalidate = 60;
  * ratio, so the heights match; side by side each shape goes its own way.
  */
 export default async function HomePage() {
-  const [settings, pastEditions] = await Promise.all([
+  const [settings, pastEditions, home] = await Promise.all([
     loadSiteSettings(),
     loadPastEditions(),
+    loadHomeContent(),
   ]);
 
   const lastEdition = pastEditions[0];
@@ -45,6 +50,46 @@ export default async function HomePage() {
       alt: "Passaggio in dinamico sotto il ponte durante il Valma Street Block",
     },
     3200,
+  );
+
+  /* Four square crops. Each falls back to the file it was framed with, since a
+     hotspot cannot reproduce a per-photo object-position that was chosen by eye. */
+  const introPhotos = [
+    { src: "/content/urban-climbing-bench-detail.jpg", pos: "object-center" },
+    { src: "/content/urban-climbing-wall-kid.jpg", pos: "object-[center_30%]" },
+    { src: "/content/urban-climbing-hand.png", pos: "object-center" },
+    { src: "/content/urban-climbing-1.png", pos: "object-[center_25%]" },
+  ].map((local, i) =>
+    photoProps(
+      home.introPhotos?.[i],
+      { src: local.src, className: `object-cover ${local.pos}`, alt: "" },
+      640,
+    ),
+  );
+
+  /* The first number follows the most recent edition until someone overrides it
+     in the Studio, which is why this fallback lives here and not in fetch.ts. */
+  const stats = home.stats?.length
+    ? home.stats
+    : [
+        {
+          value: `+${lastEdition?.participantsCount ?? 470} climbers`,
+          label: "In gara all'ultima edizione, competitivi e non.",
+        },
+        {
+          value: "+50 blocchi",
+          label: "Passaggi brevi ma intensi, sparsi per il paese.",
+        },
+      ];
+
+  const closingPhoto = photoProps(
+    home.closingImage,
+    {
+      src: "/content/urban-climbing-underpass.jpg",
+      className: "object-cover object-[center_45%]",
+      alt: "Salto nel sottopasso durante il Valma Street Block",
+    },
+    2400,
   );
   const formattedDate = formatDateIt(settings.eventDate);
 
@@ -109,16 +154,14 @@ export default async function HomePage() {
             data-reveal
             className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:col-start-1 lg:row-start-1 lg:text-6xl"
           >
-            Le vie di Valmadrera diventano una palestra a cielo aperto.
+            {home.introHeading}
           </h2>
 
           <p
             data-reveal
             className="max-w-lg text-base leading-relaxed font-medium text-ink lg:col-start-1 lg:row-start-2 lg:text-lg"
           >
-            Nato dall&apos;idea di sette ragazzi di Valmadrera, oggi &egrave;
-            uno degli appuntamenti di arrampicata urbana pi&ugrave; sentiti del
-            nord Italia.
+            {home.introText}
           </p>
 
           <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
@@ -126,15 +169,14 @@ export default async function HomePage() {
               data-reveal
               className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-5xl"
             >
-              100% in strada
+              {home.claim}
             </p>
 
             <p
               data-reveal
               className="mt-4 max-w-lg text-base leading-relaxed font-medium text-ink lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-lg"
             >
-              Nessuna parete artificiale: si scala sui muri, sulle pietre e nei
-              cortili del paese.
+              {home.claimText}
             </p>
 
             {/* Two by two at every width */}
@@ -142,33 +184,15 @@ export default async function HomePage() {
               data-reveal="stagger"
               className="mt-5 grid grid-cols-2 gap-3 lg:mt-7 lg:ml-auto lg:max-w-[500px] lg:gap-4"
             >
-              {[
-                {
-                  src: "/content/urban-climbing-bench-detail.jpg",
-                  pos: "object-center",
-                },
-                {
-                  src: "/content/urban-climbing-wall-kid.jpg",
-                  pos: "object-[center_30%]",
-                },
-                {
-                  src: "/content/urban-climbing-hand.png",
-                  pos: "object-center",
-                },
-                {
-                  src: "/content/urban-climbing-1.png",
-                  pos: "object-[center_25%]",
-                },
-              ].map((photo) => (
+              {introPhotos.map((photo, i) => (
                 <div
-                  key={photo.src}
+                  key={i}
                   className="relative aspect-square overflow-hidden rounded-2xl lg:rounded-3xl"
                 >
                   <Image
-                    src={photo.src}
-                    alt=""
+                    {...photo}
+                    alt={photo.alt}
                     fill
-                    className={`object-cover ${photo.pos}`}
                     sizes="(min-width: 1024px) 220px, 46vw"
                   />
                 </div>
@@ -180,22 +204,14 @@ export default async function HomePage() {
             data-reveal="stagger"
             className="grid grid-cols-2 gap-6 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
           >
-            <div>
-              <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-                +{lastEdition?.participantsCount ?? 470} climbers
-              </p>
-              <p className="mt-1.5 text-sm text-ink/60">
-                In gara all&apos;ultima edizione, competitivi e non.
-              </p>
-            </div>
-            <div>
-              <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-                +50 blocchi
-              </p>
-              <p className="mt-1.5 text-sm text-ink/60">
-                Passaggi brevi ma intensi, sparsi per il paese.
-              </p>
-            </div>
+            {stats.map((stat, i) => (
+              <div key={i}>
+                <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+                  {stat.value}
+                </p>
+                <p className="mt-1.5 text-sm text-ink/60">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -209,13 +225,7 @@ export default async function HomePage() {
         {/* Opens out of a card on the way in and folds back into one on the
             way out, at every width. */}
         <CardEntry className="relative min-h-[100dvh] overflow-hidden bg-ink">
-          <Image
-            src="/content/urban-climbing-underpass.jpg"
-            alt="Salto nel sottopasso durante il Valma Street Block"
-            fill
-            className="object-cover object-[center_45%]"
-            sizes="100vw"
-          />
+          <Image {...closingPhoto} alt={closingPhoto.alt} fill sizes="100vw" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
           <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
@@ -223,11 +233,10 @@ export default async function HomePage() {
             <div data-reveal="stagger" className="flex flex-col gap-6">
               <div className="max-w-3xl">
                 <h2 className="font-display text-[9vw] leading-[0.9] text-white sm:text-[6vw] lg:text-[4.5vw]">
-                  Bagai, pronti a scalare il paese?
+                  {home.closingHeading}
                 </h2>
                 <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">
-                  50 blocchi tra muri, cornicioni e vicoli. Competitivi o meno,
-                  si scala tutti insieme.
+                  {home.closingText}
                 </p>
               </div>
               <RegisterButton
