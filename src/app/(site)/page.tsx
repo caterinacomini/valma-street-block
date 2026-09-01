@@ -257,8 +257,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* The claim gets its own ground: ink, so the yellow above reads as one
-          block and this as another. */}
+      {/* The one dark block between the hero and the footer. Two of them in a
+          row — this and the programme, as it first stood — turned the light
+          middle back into the heavy site it was meant to relieve. */}
       <section className="bg-ink py-16 sm:py-20 lg:py-24">
         <div className="page-x">
           <p
