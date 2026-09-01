@@ -6,6 +6,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+import {
+  Bus,
+  Car,
+  CircleParking,
+  Footprints,
+  TrainFront,
+  type LucideIcon,
+} from "lucide-react";
+
 export type IconId = "treno" | "bus" | "auto" | "parcheggio" | "piedi";
 
 export type RouteSegment = {
@@ -18,68 +27,34 @@ export type RouteSegment = {
   dashed?: boolean;
 };
 
+const GLYPHS: Record<IconId, LucideIcon> = {
+  treno: TrainFront,
+  bus: Bus,
+  auto: Car,
+  parcheggio: CircleParking,
+  piedi: Footprints,
+};
+
+/**
+ * Drawn by Lucide rather than by hand. They sit inside circles centred on the
+ * origin, so the glyph — which Lucide draws from its top-left corner — is
+ * shifted back by half its size.
+ */
 export function Icon({
   id,
   color = "#ffffff",
+  size = 20,
 }: {
   id: IconId;
   color?: string;
+  size?: number;
 }) {
-  const s = {
-    fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-
-  switch (id) {
-    case "treno":
-      return (
-        <g {...s}>
-          <rect x="-8" y="-9" width="16" height="13" rx="3.5" />
-          <path d="M-8 -2.5h16" />
-          <path d="M-4.5 4l-2.5 4.5M4.5 4l2.5 4.5" />
-        </g>
-      );
-    case "bus":
-      return (
-        <g {...s}>
-          <rect x="-9" y="-8" width="18" height="12" rx="3" />
-          <path d="M-9 -1.5h18" />
-          <circle cx="-4.5" cy="6.5" r="1.8" />
-          <circle cx="4.5" cy="6.5" r="1.8" />
-        </g>
-      );
-    case "auto":
-      return (
-        <g {...s}>
-          <path d="M-9 2.5h18M-7.5 2.5l1.8-6h11.4l1.8 6" />
-          <circle cx="-4.5" cy="5.5" r="1.9" />
-          <circle cx="4.5" cy="5.5" r="1.9" />
-        </g>
-      );
-    case "parcheggio":
-      return (
-        <text
-          textAnchor="middle"
-          y="8"
-          fill={color}
-          fontSize="23"
-          fontWeight="700"
-          fontFamily="var(--font-sans)"
-        >
-          P
-        </text>
-      );
-    case "piedi":
-      return (
-        <g {...s}>
-          <circle cx="0" cy="-7" r="2.6" />
-          <path d="M0 -4v6M0 2l-4 6M0 2l4 6M-4 -1l4-1 4 1" />
-        </g>
-      );
-  }
+  const Glyph = GLYPHS[id];
+  return (
+    <g transform={`translate(${-size / 2} ${-size / 2})`}>
+      <Glyph width={size} height={size} color={color} strokeWidth={2} />
+    </g>
+  );
 }
 
 /**

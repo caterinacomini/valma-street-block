@@ -233,7 +233,7 @@ export function ArrivalMapMobile() {
         <g key={stop.id} id={`m-stop-${stop.id}`}>
           <circle cx={stop.x} cy={stop.y} r="22" className="fill-ink" />
           <g transform={`translate(${stop.x} ${stop.y})`}>
-            <Icon id={stop.icon} />
+            <Icon id={stop.icon} size={22} />
           </g>
           <text
             x={stop.x}

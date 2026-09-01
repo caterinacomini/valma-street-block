@@ -241,7 +241,7 @@ export function ArrivalMap() {
           <g key={stop.id} id={`stop-${stop.id}`}>
             <circle cx={stop.x} cy={stop.y} r="30" className="fill-ink" />
             <g transform={`translate(${stop.x} ${stop.y})`}>
-              <Icon id={stop.icon} />
+              <Icon id={stop.icon} size={28} />
             </g>
             <text
               x={labelProps.x}
