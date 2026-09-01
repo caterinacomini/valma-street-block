@@ -84,7 +84,7 @@ export function SiteFooter({
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-white/85 transition hover:text-white"
+                    className="text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
                   >
                     {link.label}
                   </a>
@@ -104,7 +104,7 @@ export function SiteFooter({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 transition hover:text-white"
+                    className="text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
                   >
                     {link.label}
                   </a>
@@ -122,7 +122,7 @@ export function SiteFooter({
             {contactEmail ? (
               <a
                 href={`mailto:${contactEmail}`}
-                className="block text-sm font-medium text-white transition hover:text-white/70 sm:text-base"
+                className="block text-sm font-medium text-white decoration-2 underline-offset-[6px] transition hover:underline sm:text-base"
               >
                 {contactEmail}
               </a>

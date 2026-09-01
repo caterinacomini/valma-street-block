@@ -254,7 +254,7 @@ export function SiteHeader({
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-1 py-1 text-sm font-semibold tracking-wide text-white/85 uppercase transition hover:text-white"
+                        className="group inline-flex items-center gap-1 py-1 text-sm font-semibold tracking-wide text-white/85 uppercase decoration-2 underline-offset-[6px] transition hover:underline"
                       >
                         {link.label}
                         <span
