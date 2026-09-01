@@ -36,7 +36,7 @@ const CLOSED_VARIANT = {
 /* Written inline rather than as a class. Brightness cannot do it — the face is
    mostly transparent white already — and the class it would need is built at
    render time, which is exactly the kind Tailwind never sees to generate. */
-const NUDGE_STYLE = { backgroundColor: "rgba(255,255,255,0.4)" } as const;
+const NUDGE_STYLE = { backgroundColor: "rgba(255,255,255,0.24)" } as const;
 
 const BASE =
   "inline-flex items-center justify-center gap-2 rounded-full font-sans font-bold tracking-wide whitespace-nowrap uppercase transition";
@@ -87,7 +87,7 @@ export function RegisterButton({
         aria-disabled="true"
         onClick={() => {
           setNudged(true);
-          window.setTimeout(() => setNudged(false), 640);
+          window.setTimeout(() => setNudged(false), 420);
         }}
         style={nudged ? NUDGE_STYLE : undefined}
         className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} cursor-default ${className}`}
