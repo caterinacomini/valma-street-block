@@ -30,6 +30,16 @@ export default async function SiteLayout({
   return (
     <>
       <SiteLoader />
+      {/* Draft Mode is a cookie: without a way out it follows you off the
+          Studio and quietly stays on. */}
+      {preview ? (
+        <a
+          href="/api/draft-mode/disable"
+          className="fixed bottom-4 left-4 z-[70] rounded-full bg-ink px-4 py-2 text-xs font-semibold tracking-wide text-yellow uppercase shadow-lg transition hover:bg-ink/85"
+        >
+          Anteprima attiva · esci
+        </a>
+      ) : null}
       {settings.postponed ? (
         <PostponedBanner
           note={settings.postponedNote || "Evento rinviato"}
@@ -46,7 +56,7 @@ export default async function SiteLayout({
         instagramUrl={settings.instagramUrl ?? undefined}
         facebookUrl={settings.facebookUrl ?? undefined}
       />
-      <SmoothScroll>
+      <SmoothScroll preview={preview}>
         <main className="site-in">{children}</main>
         <SiteFooter
           eventLinks={footerNav}

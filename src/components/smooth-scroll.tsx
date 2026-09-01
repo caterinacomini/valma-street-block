@@ -7,8 +7,21 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-export function SmoothScroll({ children }: { children: React.ReactNode }) {
+export function SmoothScroll({
+  children,
+  preview = false,
+}: {
+  children: React.ReactNode;
+  preview?: boolean;
+}) {
   useLayoutEffect(() => {
+    /* Not in the Studio's preview pane. The smoother rewrites an inline
+       transform every frame, and the visual editing overlay watches the DOM
+       with a MutationObserver that reacts by mutating it again — the two chase
+       each other until React gives up with "maximum update depth exceeded".
+       An editor checking their words does not need the inertia. */
+    if (preview) return;
+
     // Respect users who ask the OS for reduced motion: no inertia for them.
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduced.matches) return;
@@ -58,7 +71,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       document.removeEventListener("click", onClick);
       smoother.kill();
     };
-  }, []);
+  }, [preview]);
 
   return (
     <div id="smooth-wrapper">
