@@ -54,7 +54,7 @@ const AUTO_PATH =
   "M 200 378 C 238 384, 262 384, 300 378 C 338 371, 362 371, 400 378 C 438 387, 462 387, 500 378 C 538 368, 562 368, 600 378 C 638 390, 662 390, 700 378 C 738 364, 762 364, 800 378 C 838 393, 862 393, 900 378 C 980 378, 1030 359, 1030 326";
 
 const PIEDI_PATH =
-  "M 880 220 C 863 237, 853 237, 836 220 C 819 202, 809 202, 792 220 C 775 239, 765 239, 748 220 C 731 200, 721 200, 704 220 C 687 241, 677 241, 660 220";
+  "M 880 220 C 851 232, 836 232, 807 220 C 777 207, 763 207, 733 220 C 704 234, 689 234, 660 220";
 
 const SEGMENTS: {
   id: string;
@@ -312,17 +312,17 @@ export function ArrivalMap() {
 
       {/* Meeting point, where both ways converge */}
       <g id="meeting-point">
-        <circle cx="600" cy="220" r="46" className="fill-yellow" />
+        <circle cx="600" cy="220" r="30" className="fill-yellow" />
         <g
           transform="translate(600 220)"
           fill="none"
           stroke="var(--color-ink)"
-          strokeWidth="3"
+          strokeWidth="2.4"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M-10 -16v32" />
-          <path d="M-10 -15h21l-3.8 7.6L12 -0.6H-10" />
+          <path d="M-7 -11v22" />
+          <path d="M-7 -10.5h15l-2.7 5.3L8.5 -0.4H-7" />
         </g>
         <text
           x="540"
