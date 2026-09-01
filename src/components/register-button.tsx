@@ -80,7 +80,8 @@ export function RegisterButton({
   if (!live) {
     /* Shut, but not deaf. A click gets a brighter face and a shake of the
        padlock — an acknowledgement that the press landed, without pretending
-       there is anywhere to go. */
+       there is anywhere to go. The brightening is shorter than the wobble
+       on purpose: the colour is the acknowledgement, the shake is the answer. */
     return (
       <button
         type="button"
