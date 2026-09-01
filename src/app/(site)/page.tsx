@@ -195,39 +195,53 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* The quiet after the shout. The hero puts type over a photograph; here
-          type sits beside one, at the same weight — white ground, hard edges,
-          and air doing the work a dark background used to do. */}
-      <section className="page-x bg-white py-20 sm:py-24 lg:py-32">
-        {/* One — the statement, said as large as it can be said */}
-        <div className="grid gap-y-8 lg:grid-cols-12 lg:gap-x-10">
-          <h2
-            data-reveal
-            className="font-display text-[13vw] leading-[0.86] text-ink lg:col-span-9 lg:text-[7vw]"
-          >
-            {home.introHeading}
-          </h2>
-          <p
-            data-reveal
-            className="max-w-md text-base leading-relaxed font-medium text-ink lg:col-span-3 lg:self-end lg:text-lg"
-          >
-            {home.introText}
+      {/* Flat colour, no texture, type edge to edge. The hero shouts over a
+          photograph; from here the page shouts in paint — one saturated ground
+          per section, dotted rules for punctuation, and stickers tilted over the
+          type where the badge in the hero was doing it alone. */}
+      <section className="bg-white py-16 sm:py-20 lg:py-24">
+        <div className="page-x">
+          <p className="text-xs font-bold tracking-[0.22em] text-ink/70 uppercase sm:text-sm">
+            Dal 2015, ogni primavera
           </p>
         </div>
 
-        {/* Two — the photographs as a ragged band. Unequal widths, unequal
-            heights, one nudged off the line: a row of equal squares would read
-            as a catalogue, which is the thing this page is trying not to be. */}
+        <div className="rule-dotted mt-6 text-ink/45 sm:mt-8" />
+
+        {/* The statement, as wide as the page allows */}
+        <h2
+          data-reveal
+          className="page-x relative py-6 font-sans text-[10.5vw] leading-[0.92] font-bold tracking-[-0.035em] text-ink uppercase sm:py-8 lg:text-[7.6vw]"
+        >
+          {home.introHeading}
+        </h2>
+
+        <div className="rule-dotted text-ink/45" />
+
+        <div className="page-x mt-8 sm:mt-10">
+          <p className="max-w-xl text-xs leading-relaxed font-bold tracking-[0.06em] text-ink uppercase sm:text-sm">
+            {home.introText}
+          </p>
+          {/* The sticker sits in the air under the paragraph rather than over a
+              word: the reference tilts them into gaps, not across letters. */}
+          <p className="mt-7 flex">
+            <span className="-rotate-3 rounded-full bg-blue px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-white uppercase sm:text-xs">
+              {home.claim}
+            </span>
+          </p>
+        </div>
+
+        {/* The photographs, big blocks on the flat ground */}
         <div
           data-reveal="stagger"
-          className="mt-14 grid grid-cols-2 gap-3 sm:mt-20 lg:mt-28 lg:grid-cols-12 lg:gap-5"
+          className="page-x mt-12 grid grid-cols-2 items-start gap-3 pb-2 sm:mt-16 lg:grid-cols-12 lg:gap-5"
         >
           {introPhotos.map((photo, i) => {
             const shape = [
-              "lg:col-span-5 aspect-[4/5]",
+              "lg:col-span-4 aspect-[4/5]",
               "lg:col-span-3 aspect-[3/4] lg:mt-20",
-              "lg:col-span-4 aspect-[5/6] lg:mt-8",
-              "lg:col-span-4 aspect-[4/5] lg:col-start-6 lg:-mt-4 lg:-rotate-2",
+              "lg:col-span-2 aspect-[2/3] lg:mt-8",
+              "lg:col-span-3 aspect-[4/5] lg:mt-28 lg:-rotate-2",
             ][i];
             return (
               <div key={i} className={`relative overflow-hidden ${shape}`}>
@@ -241,32 +255,39 @@ export default async function HomePage() {
             );
           })}
         </div>
+      </section>
 
-        {/* Three — the claim, and the numbers big enough to be read across a
-            room. Hairlines instead of cards. */}
-        <div className="mt-14 grid gap-y-12 sm:mt-20 lg:mt-20 lg:grid-cols-12 lg:gap-x-10">
-          <div data-reveal className="lg:col-span-7">
-            <p className="font-display text-[11vw] leading-[0.9] whitespace-nowrap text-ink lg:text-[5.6vw]">
-              {home.claim}
-            </p>
-            <p className="mt-5 max-w-md text-base leading-relaxed font-medium text-ink lg:text-lg">
-              {home.claimText}
-            </p>
-          </div>
+      {/* The claim gets its own ground: ink, so the yellow above reads as one
+          block and this as another. */}
+      <section className="bg-ink py-16 sm:py-20 lg:py-24">
+        <div className="page-x">
+          <p
+            data-reveal
+            className="font-sans text-[13vw] leading-[0.9] font-bold tracking-[-0.04em] text-yellow uppercase lg:text-[9vw]"
+          >
+            {home.claim}
+          </p>
+          <p className="mt-6 max-w-md text-xs leading-relaxed font-bold tracking-[0.06em] text-white/75 uppercase sm:text-sm">
+            {home.claimText}
+          </p>
+        </div>
 
-          <div data-reveal="stagger" className="lg:col-span-5 lg:pt-4">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className="border-t border-ink/20 py-5 first:border-t-0 first:pt-0 lg:py-7"
-              >
-                <p className="font-display text-[13vw] leading-[0.85] text-ink sm:text-[9vw] lg:text-[4.4vw]">
-                  {stat.value}
-                </p>
-                <p className="mt-2 max-w-xs text-sm text-ink/55">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+        <div className="rule-dotted mt-12 text-white/30 sm:mt-16" />
+
+        <div
+          data-reveal="stagger"
+          className="page-x mt-10 grid gap-y-10 sm:mt-14 lg:grid-cols-2 lg:gap-x-12"
+        >
+          {stats.map((stat, i) => (
+            <div key={i}>
+              <p className="font-sans text-[15vw] leading-[0.85] font-bold tracking-[-0.04em] text-white uppercase lg:text-[6vw]">
+                {stat.value}
+              </p>
+              <p className="mt-3 max-w-xs text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 

@@ -175,3 +175,16 @@ body {
     animation: none;
   }
 }
+
+/* The reference's separator: a dotted rule rather than a hairline. Drawn with a
+   repeating gradient so it keeps its rhythm at any width. */
+@utility rule-dotted {
+  background-image: radial-gradient(
+    circle,
+    currentColor 1.4px,
+    transparent 1.6px
+  );
+  background-size: 11px 4px;
+  background-repeat: repeat-x;
+  height: 4px;
+}
