@@ -195,71 +195,75 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="page-x flex flex-col justify-center bg-white py-14 lg:min-h-[100dvh] lg:py-12">
-        {/* DOM order is the stacked order — headline, claim, copy, numbers —
-            and the desktop arrangement is done with explicit grid placement
-            rather than `order`, so what is read and what is seen stay the same. */}
-        <div className="grid gap-x-12 gap-y-5 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-16 lg:gap-y-6">
+      {/* The quiet after the shout. The hero puts type over a photograph; here
+          type sits beside one, at the same weight — white ground, hard edges,
+          and air doing the work a dark background used to do. */}
+      <section className="page-x bg-white py-20 sm:py-24 lg:py-32">
+        {/* One — the statement, said as large as it can be said */}
+        <div className="grid gap-y-8 lg:grid-cols-12 lg:gap-x-10">
           <h2
             data-reveal
-            className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:col-start-1 lg:row-start-1 lg:text-6xl"
+            className="font-display text-[13vw] leading-[0.86] text-ink lg:col-span-9 lg:text-[7vw]"
           >
             {home.introHeading}
           </h2>
-
           <p
             data-reveal
-            className="max-w-lg text-base leading-relaxed font-medium text-ink lg:col-start-1 lg:row-start-2 lg:text-lg"
+            className="max-w-md text-base leading-relaxed font-medium text-ink lg:col-span-3 lg:self-end lg:text-lg"
           >
             {home.introText}
           </p>
+        </div>
 
-          <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
-            <p
-              data-reveal
-              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-5xl"
-            >
+        {/* Two — the photographs as a ragged band. Unequal widths, unequal
+            heights, one nudged off the line: a row of equal squares would read
+            as a catalogue, which is the thing this page is trying not to be. */}
+        <div
+          data-reveal="stagger"
+          className="mt-14 grid grid-cols-2 gap-3 sm:mt-20 lg:mt-28 lg:grid-cols-12 lg:gap-5"
+        >
+          {introPhotos.map((photo, i) => {
+            const shape = [
+              "lg:col-span-5 aspect-[4/5]",
+              "lg:col-span-3 aspect-[3/4] lg:mt-20",
+              "lg:col-span-4 aspect-[5/6] lg:mt-8",
+              "lg:col-span-4 aspect-[4/5] lg:col-start-6 lg:-mt-4 lg:-rotate-2",
+            ][i];
+            return (
+              <div key={i} className={`relative overflow-hidden ${shape}`}>
+                <Image
+                  {...photo}
+                  alt={photo.alt}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 46vw"
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Three — the claim, and the numbers big enough to be read across a
+            room. Hairlines instead of cards. */}
+        <div className="mt-14 grid gap-y-12 sm:mt-20 lg:mt-20 lg:grid-cols-12 lg:gap-x-10">
+          <div data-reveal className="lg:col-span-7">
+            <p className="font-display text-[11vw] leading-[0.9] whitespace-nowrap text-ink lg:text-[5.6vw]">
               {home.claim}
             </p>
-
-            <p
-              data-reveal
-              className="mt-4 max-w-lg text-base leading-relaxed font-medium text-ink lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-lg"
-            >
+            <p className="mt-5 max-w-md text-base leading-relaxed font-medium text-ink lg:text-lg">
               {home.claimText}
             </p>
-
-            {/* Two by two at every width */}
-            <div
-              data-reveal="stagger"
-              className="mt-5 grid grid-cols-2 gap-3 lg:mt-7 lg:ml-auto lg:max-w-[500px] lg:gap-4"
-            >
-              {introPhotos.map((photo, i) => (
-                <div
-                  key={i}
-                  className="relative aspect-square overflow-hidden rounded-2xl lg:rounded-3xl"
-                >
-                  <Image
-                    {...photo}
-                    alt={photo.alt}
-                    fill
-                    sizes="(min-width: 1024px) 220px, 46vw"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div
-            data-reveal="stagger"
-            className="grid grid-cols-2 gap-6 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
-          >
+          <div data-reveal="stagger" className="lg:col-span-5 lg:pt-4">
             {stats.map((stat, i) => (
-              <div key={i}>
-                <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+              <div
+                key={i}
+                className="border-t border-ink/20 py-5 first:border-t-0 first:pt-0 lg:py-7"
+              >
+                <p className="font-display text-[13vw] leading-[0.85] text-ink sm:text-[9vw] lg:text-[4.4vw]">
                   {stat.value}
                 </p>
-                <p className="mt-1.5 text-sm text-ink/60">{stat.label}</p>
+                <p className="mt-2 max-w-xs text-sm text-ink/55">{stat.label}</p>
               </div>
             ))}
           </div>
