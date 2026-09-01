@@ -101,7 +101,6 @@ const SEGMENTS: {
     id: "seg-piedi",
     icon: "piedi",
     path: PIEDI_PATH,
-    pill: { x: 776, y: 220, text: "5 min a piedi" },
     stop: "stop-bus",
     at: 1.95,
     dashed: true,
