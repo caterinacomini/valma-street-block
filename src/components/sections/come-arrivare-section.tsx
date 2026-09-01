@@ -1,7 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
 
-import { ArrivalMap } from "@/components/arrival-map";
-import { ArrivalMapMobile } from "@/components/arrival-map-mobile";
 import { loadHowToArrive } from "@/sanity/fetch";
 
 /** Pill link, ranged left, the shape the reference uses for everything. */
@@ -11,7 +9,7 @@ function Pill({ href, children }: { href: string; children: React.ReactNode }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[11px] font-bold tracking-[0.14em] text-white uppercase transition hover:bg-blue sm:text-xs"
+      className="group mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[11px] font-bold tracking-[0.14em] text-white uppercase transition hover:bg-blue sm:text-xs"
     >
       {children}
       <ArrowUpRight
@@ -23,6 +21,24 @@ function Pill({ href, children }: { href: string; children: React.ReactNode }) {
   );
 }
 
+/** A labelled block: small caps label, then the answer. */
+function Block({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="border-t border-dashed border-ink/25 pt-6 sm:pt-8">
+      <p className="text-[11px] font-bold tracking-[0.2em] text-blue uppercase sm:text-xs">
+        {label}
+      </p>
+      {children}
+    </div>
+  );
+}
+
 export async function ComeArrivareSection({
   eyebrow,
   heading,
@@ -31,12 +47,6 @@ export async function ComeArrivareSection({
   heading?: string;
 }) {
   const info = await loadHowToArrive();
-
-  const details = [
-    { title: "Punto di ritrovo", body: info.address, pill: info.mapEmbedUrl ? { href: info.mapEmbedUrl, label: "Apri in Google Maps" } : null },
-    { title: "In auto", body: info.carInfo, pill: { href: "https://www.google.com/maps/search/parcheggi+Valmadrera", label: "Scopri i parcheggi" } },
-    { title: "Con i mezzi", body: info.publicTransportInfo, pill: null },
-  ].filter((d) => d.body);
 
   return (
     <section id="come-arrivare" className="scroll-mt-20 bg-white py-16 sm:py-20 lg:py-24">
@@ -60,44 +70,50 @@ export async function ComeArrivareSection({
 
       <div className="rule-dotted text-ink/35" />
 
-      {info.intro ? (
-        <div className="page-x mt-8 sm:mt-10">
-          <p className="max-w-xl text-xs leading-relaxed font-bold tracking-[0.06em] text-ink uppercase sm:text-sm">
-            {info.intro}
-          </p>
-        </div>
-      ) : null}
-
-      {/* The route keeps its two shapes: wide and side to side once there is
-          room, vertical and scroll-driven when there is not. */}
-      <div className="page-x mt-12 lg:mt-16">
-        <div className="lg:hidden">
-          <ArrivalMapMobile />
-        </div>
-        <div className="hidden lg:block">
-          <ArrivalMap />
-        </div>
-      </div>
-
-      {/* Three answers, stacked on a phone and split by dashed rules rather
-          than sitting in columns that only exist on a laptop. */}
-      <div data-reveal="stagger" className="page-x mt-12 sm:mt-16 lg:grid lg:grid-cols-3 lg:gap-10">
-        {details.map((detail) => (
-          <div
-            key={detail.title}
-            className="border-t border-dashed border-ink/25 py-8 lg:border-t-0 lg:py-0"
-          >
-            <h3 className="font-sans text-[6vw] leading-[0.95] font-bold tracking-[-0.02em] text-ink uppercase sm:text-2xl lg:text-[1.9vw]">
-              {detail.title}
-            </h3>
-            <p className="mt-3 max-w-sm text-xs leading-relaxed font-bold tracking-[0.05em] text-ink/70 uppercase sm:text-sm">
-              {detail.body}
+      {/* The address is the answer to the question the section asks, so it is
+          said once, at display size, and never again. Everything below adds
+          something the address does not already say. */}
+      <div data-reveal="stagger" className="page-x mt-10 sm:mt-14">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-7">
+            <p className="text-[11px] font-bold tracking-[0.2em] text-blue uppercase sm:text-xs">
+              Ritrovo
             </p>
-            {detail.pill ? (
-              <Pill href={detail.pill.href}>{detail.pill.label}</Pill>
+            <p className="mt-3 font-sans text-[9vw] leading-[0.94] font-bold tracking-[-0.03em] text-ink uppercase lg:text-[4.2vw]">
+              {info.address}
+            </p>
+            {info.intro ? (
+              <p className="mt-5 max-w-md text-xs leading-relaxed font-bold tracking-[0.06em] text-ink/70 uppercase sm:text-sm">
+                {info.intro}
+              </p>
+            ) : null}
+            {info.mapEmbedUrl ? (
+              <Pill href={info.mapEmbedUrl}>Apri in Google Maps</Pill>
             ) : null}
           </div>
-        ))}
+
+          {/* The two ways of getting there, each stated once. */}
+          <div className="mt-12 flex flex-col gap-8 sm:mt-16 sm:gap-10 lg:col-span-5 lg:mt-2">
+            {info.carInfo ? (
+              <Block label="In auto">
+                <p className="mt-3 text-xs leading-relaxed font-bold tracking-[0.05em] text-ink uppercase sm:text-sm">
+                  {info.carInfo}
+                </p>
+                <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
+                  Scopri i parcheggi
+                </Pill>
+              </Block>
+            ) : null}
+
+            {info.publicTransportInfo ? (
+              <Block label="Se vieni coi mezzi">
+                <p className="mt-3 text-xs leading-relaxed font-bold tracking-[0.05em] text-ink uppercase sm:text-sm">
+                  {info.publicTransportInfo}
+                </p>
+              </Block>
+            ) : null}
+          </div>
+        </div>
       </div>
     </section>
   );
