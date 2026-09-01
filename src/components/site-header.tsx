@@ -154,6 +154,13 @@ export function SiteHeader({
       >
         <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom,black_0%,black_60%,transparent_100%)]" />
         <div className="absolute inset-0 backdrop-blur-[24px] [mask-image:linear-gradient(to_bottom,black_0%,black_46%,transparent_92%)]" />
+        <div
+          className={`absolute inset-0 transition-colors duration-200 [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)] ${
+            darkType
+              ? "bg-gradient-to-b from-white/70 via-white/30 to-transparent"
+              : "bg-gradient-to-b from-ink/45 via-ink/15 to-transparent"
+          }`}
+        />
         <div className="grain absolute inset-0 opacity-35 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
       </div>
 
