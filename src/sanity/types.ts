@@ -89,6 +89,7 @@ export interface HowToArrive {
   intro?: string;
   address?: string;
   carInfo?: string;
+  transitInfo?: string;
   publicTransportInfo?: string;
   mapEmbedUrl?: string;
 }

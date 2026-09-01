@@ -279,6 +279,13 @@ export const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
   address: "Parco di via Leopardi, Valmadrera (LC)",
   carInfo:
     "Da Lecco: SS36 direzione Colico, uscita Valmadrera. Parcheggi segnalati nei pressi del centro.",
+  /* Checked rather than assumed: Valmadrera has its own station on the
+     Como-Lecco line, so nobody needs to change at Lecco. Trenord runs the S7
+     from Milan and the R18 from Como; LineeLecco's line 9 covers the last
+     stretch from Lecco itself. No walking time is claimed here because none
+     was verified. */
+  transitInfo:
+    "Valmadrera ha una stazione sulla linea Como–Lecco: S7 da Milano, R18 da Como. Da Lecco c’è anche la linea 9 dei bus urbani.",
   publicTransportInfo:
     "Conserva i biglietti e mostrali all'iscrizione: l'organizzazione ti riserva un piccolo riconoscimento.",
   mapEmbedUrl: "https://maps.google.com/?q=Valmadrera+LC",

@@ -96,6 +96,7 @@ export const howToArriveQuery = defineQuery(`
     intro,
     address,
     carInfo,
+    transitInfo,
     publicTransportInfo,
     mapEmbedUrl
   }

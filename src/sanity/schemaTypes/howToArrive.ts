@@ -23,11 +23,22 @@ export const howToArrive = defineType({
       rows: 3,
     }),
     defineField({
-      name: "publicTransportInfo",
-      title: "Con i mezzi pubblici",
+      name: "transitInfo",
+      title: "Con i mezzi",
       type: "text",
       rows: 3,
-      description: "Es. incentivo per chi arriva in treno/bus",
+      description:
+        "Treno e bus, come per l'auto. Valmadrera ha una stazione sua sulla " +
+        "linea Como-Lecco (Trenord: S7 da Milano, R18 da Como).",
+    }),
+    defineField({
+      name: "publicTransportInfo",
+      title: "Nota biglietti",
+      type: "text",
+      rows: 3,
+      description:
+        "L'incentivo per chi arriva in treno o bus. Compare come pillola " +
+        "gialla in fondo, non come indicazione stradale.",
     }),
     defineField({
       name: "mapEmbedUrl",

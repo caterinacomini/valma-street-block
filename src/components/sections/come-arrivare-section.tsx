@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Ticket } from "lucide-react";
 
 import { loadHowToArrive } from "@/sanity/fetch";
 
@@ -87,15 +87,27 @@ export async function ComeArrivareSection({
             </div>
           ) : null}
 
-          {info.publicTransportInfo ? (
+          {info.transitInfo ? (
             <div className="flex-1">
               <h3 className="font-display text-lg tracking-wide text-ink">
-                Vieni con i mezzi pubblici?
+                Con i mezzi
               </h3>
-              <p className="mt-2 text-base text-ink/75">
-                {info.publicTransportInfo}
-              </p>
+              <p className="mt-2 text-base text-ink/75">{info.transitInfo}</p>
+              <Pill href="https://www.trenord.it">Orari dei treni</Pill>
             </div>
+          ) : null}
+
+          {/* Not a direction but a reason, so it is set apart as a note rather
+              than a third way of getting here. */}
+          {info.publicTransportInfo ? (
+            <p className="inline-flex items-start gap-2.5 rounded-3xl bg-yellow px-5 py-3 text-sm leading-snug font-semibold text-ink sm:items-center">
+              <Ticket
+                size={16}
+                aria-hidden="true"
+                className="mt-0.5 shrink-0 sm:mt-0"
+              />
+              {info.publicTransportInfo}
+            </p>
           ) : null}
         </div>
       </div>
