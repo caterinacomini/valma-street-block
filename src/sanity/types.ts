@@ -33,6 +33,8 @@ export interface SiteSettings {
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
+  organizers?: string;
+  patronage?: string;
   photoCredit?: string;
   shareImage?: SanityPhoto | null;
   sections?: SectionChoice[];

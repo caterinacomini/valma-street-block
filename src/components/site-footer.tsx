@@ -9,6 +9,8 @@ export function SiteFooter({
   instagramUrl,
   facebookUrl,
   contactEmail,
+  organizers,
+  patronage,
   photoCredit,
   registrationUrl,
   registrationOpen,
@@ -19,6 +21,8 @@ export function SiteFooter({
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
+  organizers?: string;
+  patronage?: string;
   photoCredit?: string;
   registrationUrl?: string;
   registrationOpen?: boolean;
@@ -121,7 +125,8 @@ export function SiteFooter({
             </a>
           ) : null}
           <div className="text-xs text-white/70">
-            <p>Organizzato da CAI Valmadrera e OSA Valmadrera</p>
+            {organizers ? <p>{organizers}</p> : null}
+            {patronage ? <p className="mt-1.5">{patronage}</p> : null}
             {photoCredit ? <p className="mt-1.5">{photoCredit}</p> : null}
           </div>
         </div>

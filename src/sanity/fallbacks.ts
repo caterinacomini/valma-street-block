@@ -32,6 +32,9 @@ export const FALLBACK_SITE_SETTINGS: SiteSettings = {
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
   facebookUrl: "https://www.facebook.com/ValmaStreetBlock/",
   contactEmail: "segreteria@caivalmadrera.it",
+  organizers: "Organizzato da CAI Valmadrera e OSA Valmadrera",
+  patronage:
+    "Con il patrocinio dei Comuni di Valmadrera e Civate",
   photoCredit:
     "Fotografie di Clara Rusconi e Daniela Rusconi — Fotoclub G. Anghileri, Valmadrera",
 };

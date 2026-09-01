@@ -9,6 +9,12 @@ export const siteSettings = defineType({
   type: "document",
   fieldsets: [
     {
+      name: "footer",
+      title: "Righe in fondo alla pagina",
+      options: { collapsible: true, collapsed: false },
+      description: "Chi organizza, chi patrocina, chi ha scattato le fotografie.",
+    },
+    {
       name: "condivisione",
       title: "Condivisione",
       options: { collapsible: true, collapsed: false },
@@ -193,11 +199,24 @@ export const siteSettings = defineType({
         "Gli sponsor chiudono la pagina dopo l'invito finale, quindi non si spostano — ma si possono nascondere.",
     }),
     defineField({
-      name: "photoCredit",
-      title: "Credito fotografico",
+      name: "organizers",
+      title: "Organizzato da",
       type: "string",
-      description:
-        "Riga mostrata nel footer, sotto gli organizzatori. Lasciala vuota per non mostrarla.",
+      fieldset: "footer",
+    }),
+    defineField({
+      name: "patronage",
+      title: "Con il patrocinio di",
+      type: "string",
+      fieldset: "footer",
+      description: "Lasciala vuota per non mostrare la riga.",
+    }),
+    defineField({
+      name: "photoCredit",
+      title: "Fotografie di",
+      type: "string",
+      fieldset: "footer",
+      description: "Lasciala vuota per non mostrare la riga.",
     }),
   ],
   preview: {
