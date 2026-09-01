@@ -115,18 +115,23 @@ export function SiteFooter({
         </div>
 
         {/* Bottom row */}
-        <div className="mt-14 flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          {contactEmail ? (
-            <a
-              href={`mailto:${contactEmail}`}
-              className="text-sm font-medium transition hover:text-white/70 sm:text-base"
-            >
-              {contactEmail}
-            </a>
-          ) : null}
+        {/* Who to write to and who runs it on the left, the acknowledgements on
+            the right — three lines stacked on one side left the row lopsided. */}
+        <div className="mt-14 flex flex-col gap-4 pt-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="text-xs text-white/70">
-            {organizers ? <p>{organizers}</p> : null}
-            {patronage ? <p className="mt-1.5">{patronage}</p> : null}
+            {contactEmail ? (
+              <a
+                href={`mailto:${contactEmail}`}
+                className="block text-sm font-medium text-white transition hover:text-white/70 sm:text-base"
+              >
+                {contactEmail}
+              </a>
+            ) : null}
+            {organizers ? <p className="mt-2">{organizers}</p> : null}
+          </div>
+
+          <div className="text-xs text-white/70 sm:text-right">
+            {patronage ? <p>{patronage}</p> : null}
             {photoCredit ? <p className="mt-1.5">{photoCredit}</p> : null}
           </div>
         </div>
