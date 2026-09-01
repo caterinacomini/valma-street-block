@@ -53,15 +53,12 @@ export async function ComeArrivareSection({
         ) : null}
       </div>
 
-      {/* Without the drawn route the address has to carry the section, so it is
-          set at display size and said once. The two ways of getting there sit
-          beside it rather than under a map that is no longer there. */}
-      <div
-        data-reveal="stagger"
-        className="mt-14 grid gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12"
-      >
+      {/* One big thing and three small ones of equal weight, which is what the
+          content actually is. Putting the address in a column left a hole
+          beside it the width of the map that used to be there. */}
+      <div data-reveal="stagger" className="mt-12 sm:mt-16">
         {info.address ? (
-          <div className="lg:col-span-7">
+          <>
             <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
               Ritrovo
             </p>
@@ -71,45 +68,46 @@ export async function ComeArrivareSection({
             {info.mapEmbedUrl ? (
               <Pill href={info.mapEmbedUrl}>Apri in Google Maps</Pill>
             ) : null}
+          </>
+        ) : null}
+      </div>
+
+      {/* The ways of getting here, side by side rather than stacked in a
+          column: they are alternatives, and equal widths say so. */}
+      <div
+        data-reveal="stagger"
+        className="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
+      >
+        {info.carInfo ? (
+          <div>
+            <h3 className="font-display text-lg tracking-wide text-ink">
+              In auto
+            </h3>
+            <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
+            <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
+              Scopri i parcheggi
+            </Pill>
           </div>
         ) : null}
 
-        <div className="flex flex-col gap-8 sm:flex-row sm:gap-10 lg:col-span-5 lg:flex-col lg:gap-8">
-          {info.carInfo ? (
-            <div className="flex-1">
-              <h3 className="font-display text-lg tracking-wide text-ink">
-                In auto
-              </h3>
-              <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
-              <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
-                Scopri i parcheggi
-              </Pill>
-            </div>
-          ) : null}
+        {info.transitInfo ? (
+          <div>
+            <h3 className="font-display text-lg tracking-wide text-ink">
+              Con i mezzi
+            </h3>
+            <p className="mt-2 text-base text-ink/75">{info.transitInfo}</p>
+            <Pill href="https://www.trenord.it">Orari dei treni</Pill>
+          </div>
+        ) : null}
 
-          {info.transitInfo ? (
-            <div className="flex-1">
-              <h3 className="font-display text-lg tracking-wide text-ink">
-                Con i mezzi
-              </h3>
-              <p className="mt-2 text-base text-ink/75">{info.transitInfo}</p>
-              <Pill href="https://www.trenord.it">Orari dei treni</Pill>
-            </div>
-          ) : null}
-
-          {/* Not a direction but a reason, so it is set apart as a note rather
-              than a third way of getting here. */}
-          {info.publicTransportInfo ? (
-            <p className="inline-flex items-start gap-2.5 rounded-3xl bg-yellow px-5 py-3 text-sm leading-snug font-semibold text-ink sm:items-center">
-              <Ticket
-                size={16}
-                aria-hidden="true"
-                className="mt-0.5 shrink-0 sm:mt-0"
-              />
-              {info.publicTransportInfo}
-            </p>
-          ) : null}
-        </div>
+        {/* Not a third way but a reason, so it is a note and not a column of
+            prose — and it spans the pair while there are only two of them. */}
+        {info.publicTransportInfo ? (
+          <p className="flex items-start gap-2.5 self-start rounded-3xl bg-yellow px-5 py-4 text-sm leading-snug font-semibold text-ink sm:col-span-2 lg:col-span-1">
+            <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+            {info.publicTransportInfo}
+          </p>
+        ) : null}
       </div>
     </section>
   );
