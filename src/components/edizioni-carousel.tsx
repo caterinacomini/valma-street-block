@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+// The left button is the same chevron with the button rotated 180°.
+import { ChevronRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -381,19 +383,7 @@ export function EdizioniCarousel({
               showArrows ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight size={22} aria-hidden="true" />
           </button>
 
           <button
@@ -404,19 +394,7 @@ export function EdizioniCarousel({
               showArrows ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight size={22} aria-hidden="true" />
           </button>
         </div>
       </div>

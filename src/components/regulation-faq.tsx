@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export type FaqCategory = {
   title: string;
@@ -38,20 +39,7 @@ export function RegulationFaq({ categories }: { categories: FaqCategory[] }) {
                   }`}
                 >
                   {category.title}
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="shrink-0"
-                    aria-hidden="true"
-                  >
-                    <path d="M9 6l6 6-6 6" />
-                  </svg>
+                  <ChevronRight size={16} className="shrink-0" aria-hidden="true" />
                 </button>
               </li>
             );
@@ -75,22 +63,7 @@ export function RegulationFaq({ categories }: { categories: FaqCategory[] }) {
                   <span className="font-display text-xl tracking-wide text-ink sm:text-2xl">
                     {item.question}
                   </span>
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="22"
-                    height="22"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={`shrink-0 text-ink transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                    aria-hidden="true"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
+                  <ChevronDown size={22} aria-hidden="true" />
                 </button>
               </h3>
               {isOpen ? (

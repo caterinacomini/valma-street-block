@@ -1,6 +1,7 @@
 import { RegulationFaq } from "@/components/regulation-faq";
 import { formatDateIt } from "@/lib/format";
 import { loadRegulation } from "@/sanity/fetch";
+import { Download } from "lucide-react";
 
 export async function RegolamentoSection({
   eyebrow,
@@ -42,15 +43,7 @@ export async function RegolamentoSection({
             className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border-2 border-ink px-6 py-3 text-sm font-semibold tracking-wide text-ink uppercase transition hover:bg-ink hover:text-white sm:self-auto"
           >
             {regulation.pdfLabel || "Scarica il regolamento"}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path
-                d="M7 1v9M3.5 6.5L7 10l3.5-3.5M1.5 12.5h11"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Download size={14} aria-hidden="true" />
           </a>
         ) : null}
       </div>

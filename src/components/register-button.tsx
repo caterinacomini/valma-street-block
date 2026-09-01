@@ -1,3 +1,5 @@
+import { Lock } from "lucide-react";
+
 /**
  * Three steps, one rule: `lg` for the full-screen moments where the button is
  * the only thing being asked (hero, open menu), `md` for a call to action
@@ -33,21 +35,7 @@ const BASE =
 
 function Padlock() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width="1em"
-      height="1em"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="shrink-0"
-    >
-      <rect x="4" y="10" width="16" height="11" rx="2.5" />
-      <path d="M8 10V7a4 4 0 018 0v3" />
-    </svg>
+    <Lock size={16} className="shrink-0" aria-hidden="true" />
   );
 }
 
