@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+
 import type { NavLink } from "@/lib/sections";
 
 import { RegisterButton } from "./register-button";
@@ -104,9 +106,14 @@ export function SiteFooter({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
+                    className="group inline-flex items-center gap-1 text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
                   >
                     {link.label}
+                    <ArrowUpRight
+                      size={14}
+                      aria-hidden="true"
+                      className="-translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 motion-reduce:transition-none"
+                    />
                   </a>
                 </li>
               ))}

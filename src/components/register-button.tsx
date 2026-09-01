@@ -1,4 +1,7 @@
+"use client";
+
 import { Lock } from "lucide-react";
+import { useState } from "react";
 
 /**
  * Three steps, one rule: `lg` for the full-screen moments where the button is
@@ -30,12 +33,21 @@ const CLOSED_VARIANT = {
   dark: "bg-white/15 text-white/75",
 } as const;
 
+/* Written inline rather than as a class. Brightness cannot do it — the face is
+   mostly transparent white already — and the class it would need is built at
+   render time, which is exactly the kind Tailwind never sees to generate. */
+const NUDGE_STYLE = { backgroundColor: "rgba(255,255,255,0.4)" } as const;
+
 const BASE =
   "inline-flex items-center justify-center gap-2 rounded-full font-sans font-bold tracking-wide whitespace-nowrap uppercase transition";
 
-function Padlock() {
+function Padlock({ shaking }: { shaking: boolean }) {
   return (
-    <Lock size={16} className="shrink-0" aria-hidden="true" />
+    <Lock
+      size={16}
+      className={`shrink-0 ${shaking ? "padlock-wobble" : ""}`}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -56,6 +68,7 @@ export function RegisterButton({
   variant?: "solid" | "inverse" | "dark";
   className?: string;
 }) {
+  const [nudged, setNudged] = useState(false);
   const live = open && Boolean(registrationUrl);
 
   /**
@@ -65,13 +78,23 @@ export function RegisterButton({
    * and a padlock instead, and there is simply no link to press.
    */
   if (!live) {
+    /* Shut, but not deaf. A click gets a brighter face and a shake of the
+       padlock — an acknowledgement that the press landed, without pretending
+       there is anywhere to go. */
     return (
-      <span
-        className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} ${className}`}
+      <button
+        type="button"
+        aria-disabled="true"
+        onClick={() => {
+          setNudged(true);
+          window.setTimeout(() => setNudged(false), 640);
+        }}
+        style={nudged ? NUDGE_STYLE : undefined}
+        className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} cursor-default ${className}`}
       >
-        <Padlock />
+        <Padlock shaking={nudged} />
         {closedLabel || "Stay tuned"}
-      </span>
+      </button>
     );
   }
 

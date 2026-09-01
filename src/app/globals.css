@@ -139,3 +139,39 @@ body {
     padding-inline: 6rem;
   }
 }
+
+/* The padlock's answer to being clicked while registration is shut: it shakes
+   its head. Brief and small — an acknowledgement, not a refusal. */
+@keyframes padlock-wobble {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  15% {
+    transform: rotate(-16deg) scale(1.28);
+  }
+  32% {
+    transform: rotate(15deg) scale(1.3);
+  }
+  50% {
+    transform: rotate(-12deg) scale(1.22);
+  }
+  68% {
+    transform: rotate(9deg) scale(1.14);
+  }
+  84% {
+    transform: rotate(-5deg) scale(1.06);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@utility padlock-wobble {
+  animation: padlock-wobble 0.62s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .padlock-wobble {
+    animation: none;
+  }
+}

@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
+
 import type { NavLink } from "@/lib/sections";
 
 import Image from "next/image";
@@ -264,12 +266,11 @@ export function SiteHeader({
                         className="group inline-flex items-center gap-1 py-1 text-sm font-semibold tracking-wide text-white/85 uppercase decoration-2 underline-offset-[6px] transition hover:underline"
                       >
                         {link.label}
-                        <span
+                        <ArrowUpRight
+                          size={14}
                           aria-hidden="true"
-                          className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                        >
-                          ↗
-                        </span>
+                          className="-translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 motion-reduce:transition-none"
+                        />
                       </a>
                     </li>
                   ))}
