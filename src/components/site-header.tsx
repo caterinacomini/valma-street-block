@@ -152,13 +152,20 @@ export function SiteHeader({
           open ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom,black_0%,black_60%,transparent_100%)]" />
-        <div className="absolute inset-0 backdrop-blur-[24px] [mask-image:linear-gradient(to_bottom,black_0%,black_46%,transparent_92%)]" />
+        {/* Steps, not a gradient. A mask on the same element stops the browser
+            painting its backdrop-filter at all — which is why raising the blur
+            from 6 to 24 over three commits changed nothing. So the fade is four
+            strips of falling height, each filtering what the one above already
+            filtered; the steps are small enough to read as one soft edge. */}
+        <div className="absolute inset-x-0 top-0 h-full backdrop-blur-[3px]" />
+        <div className="absolute inset-x-0 top-0 h-[78%] backdrop-blur-[5px]" />
+        <div className="absolute inset-x-0 top-0 h-[56%] backdrop-blur-[9px]" />
+        <div className="absolute inset-x-0 top-0 h-[34%] backdrop-blur-[14px]" />
         <div
           className={`absolute inset-0 transition-colors duration-200 [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)] ${
             darkType
-              ? "bg-gradient-to-b from-white/70 via-white/30 to-transparent"
-              : "bg-gradient-to-b from-ink/45 via-ink/15 to-transparent"
+              ? "bg-gradient-to-b from-white/55 via-white/20 to-transparent"
+              : "bg-gradient-to-b from-ink/28 via-ink/8 to-transparent"
           }`}
         />
         <div className="grain absolute inset-0 opacity-35 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
