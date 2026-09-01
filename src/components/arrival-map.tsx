@@ -148,7 +148,7 @@ export function ArrivalMap() {
         x="0"
         y="24"
         className="fill-blue"
-        fontSize="14"
+        fontSize="18"
         fontWeight="700"
         letterSpacing="3"
       >
@@ -158,7 +158,7 @@ export function ArrivalMap() {
         x="0"
         y="612"
         className="fill-blue"
-        fontSize="14"
+        fontSize="18"
         fontWeight="700"
         letterSpacing="3"
       >
@@ -263,7 +263,7 @@ export function ArrivalMap() {
               className="fill-ink font-sans"
               fontWeight="700"
               letterSpacing="-0.5"
-              fontSize="26"
+              fontSize="46"
             >
               {stop.title.toUpperCase()}
             </text>
@@ -274,7 +274,7 @@ export function ArrivalMap() {
               className="fill-ink/55 font-sans"
               fontWeight="700"
               letterSpacing="1.2"
-              fontSize="15"
+              fontSize="16"
             >
               {stop.detail}
             </text>
@@ -298,7 +298,7 @@ export function ArrivalMap() {
             y={segment.pill!.y + 5}
             textAnchor="middle"
             className="fill-ink font-sans"
-            fontSize="12"
+            fontSize="15"
             fontWeight="700"
             letterSpacing="1"
             >
@@ -336,7 +336,7 @@ export function ArrivalMap() {
           className="fill-ink font-sans"
               fontWeight="700"
               letterSpacing="-0.5"
-          fontSize="30"
+          fontSize="48"
         >
           RITROVO
         </text>
@@ -347,7 +347,7 @@ export function ArrivalMap() {
           className="fill-ink/55 font-sans"
               fontWeight="700"
               letterSpacing="1.2"
-          fontSize="16"
+          fontSize="17"
         >
           Parco di via Leopardi
         </text>

@@ -146,7 +146,7 @@ export function ArrivalMapMobile() {
         x="0"
         y="12"
         className="fill-blue"
-        fontSize="11"
+        fontSize="14"
         fontWeight="700"
         letterSpacing="2.4"
       >
@@ -157,7 +157,7 @@ export function ArrivalMapMobile() {
         y="12"
         textAnchor="end"
         className="fill-blue"
-        fontSize="11"
+        fontSize="14"
         fontWeight="700"
         letterSpacing="2.4"
       >
@@ -254,7 +254,7 @@ export function ArrivalMapMobile() {
             className="fill-ink font-sans"
             fontWeight="700"
             letterSpacing="-0.4"
-            fontSize="18"
+            fontSize="30"
           >
             {stop.title.toUpperCase()}
           </text>
@@ -288,7 +288,7 @@ export function ArrivalMapMobile() {
             y={segment.pill!.y + 4}
             textAnchor="middle"
             className="fill-ink font-sans"
-            fontSize="10"
+            fontSize="12"
             fontWeight="700"
             letterSpacing="0.8"
             >
@@ -326,7 +326,7 @@ export function ArrivalMapMobile() {
           className="fill-ink font-sans"
             fontWeight="700"
             letterSpacing="-0.4"
-          fontSize="22"
+          fontSize="32"
         >
           RITROVO
         </text>
