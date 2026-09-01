@@ -271,8 +271,11 @@ export const FALLBACK_HOME: HomeContent = {
 };
 
 export const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
+  /* Deliberately does not repeat the address: with the map gone the address
+     carries the section at display size, and saying "parco di via Leopardi"
+     in both places read as a stutter. */
   intro:
-    "Il ritrovo è al parco di via Leopardi, punto di partenza di tutte le stazioni di gara sparse per il paese.",
+    "Punto di partenza di tutte le stazioni di gara sparse per il paese.",
   address: "Parco di via Leopardi, Valmadrera (LC)",
   carInfo:
     "Da Lecco: SS36 direzione Colico, uscita Valmadrera. Parcheggi segnalati nei pressi del centro.",

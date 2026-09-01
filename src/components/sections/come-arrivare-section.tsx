@@ -1,7 +1,25 @@
-import { ArrivalMap } from "@/components/arrival-map";
-import { ArrivalMapMobile } from "@/components/arrival-map-mobile";
-import { loadHowToArrive } from "@/sanity/fetch";
 import { ArrowUpRight } from "lucide-react";
+
+import { loadHowToArrive } from "@/sanity/fetch";
+
+/** Outline pill, the shape this design uses for every secondary link. */
+function Pill({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
+    >
+      {children}
+      <ArrowUpRight
+        size={15}
+        aria-hidden="true"
+        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+      />
+    </a>
+  );
+}
 
 export async function ComeArrivareSection({
   eyebrow,
@@ -35,71 +53,51 @@ export async function ComeArrivareSection({
         ) : null}
       </div>
 
-      {/* Full-width animated routes */}
-      {/* Same journey, two shapes: wide and side-to-side once there is room,
-          vertical and scroll-driven when there is not. */}
-      <div className="mt-12 lg:mt-16">
-        <div className="lg:hidden">
-          <ArrivalMapMobile />
-        </div>
-        <div className="hidden lg:block">
-          <ArrivalMap />
-        </div>
-      </div>
-
-      {/* Practical details */}
+      {/* Without the drawn route the address has to carry the section, so it is
+          set at display size and said once. The two ways of getting there sit
+          beside it rather than under a map that is no longer there. */}
       <div
         data-reveal="stagger"
-        className="mt-12 grid gap-8 border-t border-ink/15 pt-10 sm:grid-cols-2 lg:grid-cols-3"
+        className="mt-14 grid gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12"
       >
         {info.address ? (
-          <div>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              Punto di ritrovo
-            </h3>
-            <p className="mt-2 text-base text-ink/75">{info.address}</p>
+          <div className="lg:col-span-7">
+            <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
+              Ritrovo
+            </p>
+            <p className="mt-3 font-display text-3xl leading-[0.95] text-ink uppercase sm:text-4xl lg:text-5xl">
+              {info.address}
+            </p>
             {info.mapEmbedUrl ? (
-              <a
-                href={info.mapEmbedUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
-              >
-                Apri in Google Maps
-                <ArrowUpRight size={15} aria-hidden="true" />
-              </a>
+              <Pill href={info.mapEmbedUrl}>Apri in Google Maps</Pill>
             ) : null}
           </div>
         ) : null}
 
-        {info.carInfo ? (
-          <div>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              In auto
-            </h3>
-            <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
-            <a
-              href="https://www.google.com/maps/search/parcheggi+Valmadrera"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
-            >
-              Scopri i parcheggi
-              <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
-          </div>
-        ) : null}
+        <div className="flex flex-col gap-8 sm:flex-row sm:gap-10 lg:col-span-5 lg:flex-col lg:gap-8">
+          {info.carInfo ? (
+            <div className="flex-1">
+              <h3 className="font-display text-lg tracking-wide text-ink">
+                In auto
+              </h3>
+              <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
+              <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
+                Scopri i parcheggi
+              </Pill>
+            </div>
+          ) : null}
 
-        {info.publicTransportInfo ? (
-          <div>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              Vieni con i mezzi pubblici?
-            </h3>
-            <p className="mt-2 text-base text-ink/75">
-              {info.publicTransportInfo}
-            </p>
-          </div>
-        ) : null}
+          {info.publicTransportInfo ? (
+            <div className="flex-1">
+              <h3 className="font-display text-lg tracking-wide text-ink">
+                Vieni con i mezzi pubblici?
+              </h3>
+              <p className="mt-2 text-base text-ink/75">
+                {info.publicTransportInfo}
+              </p>
+            </div>
+          ) : null}
+        </div>
       </div>
     </section>
   );
