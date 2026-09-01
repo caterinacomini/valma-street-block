@@ -225,7 +225,7 @@ export function ArrivalMapMobile() {
       </defs>
 
       {/* Legs */}
-      <g filter="url(#mmap-spray)">
+      <g>
         {SEGMENTS.map((segment) => (
           <path
             key={segment.id}
@@ -251,7 +251,9 @@ export function ArrivalMapMobile() {
             x={stop.x}
             y={stop.y + 40}
             textAnchor="middle"
-            className="fill-ink font-display"
+            className="fill-ink font-sans"
+            fontWeight="700"
+            letterSpacing="-0.4"
             fontSize="18"
           >
             {stop.title.toUpperCase()}
@@ -260,7 +262,9 @@ export function ArrivalMapMobile() {
             x={stop.x}
             y={stop.y + 56}
             textAnchor="middle"
-            className="fill-ink/60"
+            className="fill-ink/55 font-sans"
+            fontWeight="700"
+            letterSpacing="1"
             fontSize="11.5"
           >
             {stop.detail}
@@ -277,17 +281,17 @@ export function ArrivalMapMobile() {
             width="112"
             height="24"
             rx="12"
-            className="fill-white stroke-ink/25"
-            strokeWidth="1.5"
+            className="fill-ink"
           />
           <text
             x={segment.pill!.x}
             y={segment.pill!.y + 4}
             textAnchor="middle"
-            className="fill-ink"
-            fontSize="11"
-            fontWeight="600"
-          >
+            className="fill-white font-sans"
+            fontSize="10"
+            fontWeight="700"
+            letterSpacing="0.8"
+            >
             {segment.pill!.text}
           </text>
         </g>
@@ -319,7 +323,9 @@ export function ArrivalMapMobile() {
           x="180"
           y="536"
           textAnchor="middle"
-          className="fill-ink font-display"
+          className="fill-ink font-sans"
+            fontWeight="700"
+            letterSpacing="-0.4"
           fontSize="22"
         >
           RITROVO
@@ -328,7 +334,9 @@ export function ArrivalMapMobile() {
           x="180"
           y="556"
           textAnchor="middle"
-          className="fill-ink/60"
+          className="fill-ink/55 font-sans"
+            fontWeight="700"
+            letterSpacing="1"
           fontSize="12"
         >
           Parco di via Leopardi

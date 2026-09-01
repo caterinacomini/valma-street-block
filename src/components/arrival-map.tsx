@@ -226,7 +226,7 @@ export function ArrivalMap() {
       </defs>
 
       {/* Legs */}
-      <g filter="url(#map-spray)">
+      <g>
         {SEGMENTS.map((segment) => (
           <path
             key={segment.id}
@@ -260,7 +260,9 @@ export function ArrivalMap() {
               x={labelProps.x}
               y={stop.y + labelProps.dy[0]}
               textAnchor={labelProps.anchor}
-              className="fill-ink font-display"
+              className="fill-ink font-sans"
+              fontWeight="700"
+              letterSpacing="-0.5"
               fontSize="26"
             >
               {stop.title.toUpperCase()}
@@ -269,7 +271,9 @@ export function ArrivalMap() {
               x={labelProps.x}
               y={stop.y + labelProps.dy[1]}
               textAnchor={labelProps.anchor}
-              className="fill-ink/60"
+              className="fill-ink/55 font-sans"
+              fontWeight="700"
+              letterSpacing="1.2"
               fontSize="15"
             >
               {stop.detail}
@@ -287,17 +291,17 @@ export function ArrivalMap() {
             width="152"
             height="30"
             rx="15"
-            className="fill-white stroke-ink/25"
-            strokeWidth="1.5"
+            className="fill-ink"
           />
           <text
             x={segment.pill!.x}
             y={segment.pill!.y + 5}
             textAnchor="middle"
-            className="fill-ink"
-            fontSize="13"
-            fontWeight="600"
-          >
+            className="fill-white font-sans"
+            fontSize="12"
+            fontWeight="700"
+            letterSpacing="1"
+            >
             {segment.pill!.text}
           </text>
         </g>
@@ -329,7 +333,9 @@ export function ArrivalMap() {
           x="540"
           y="304"
           textAnchor="end"
-          className="fill-ink font-display"
+          className="fill-ink font-sans"
+              fontWeight="700"
+              letterSpacing="-0.5"
           fontSize="30"
         >
           RITROVO
@@ -338,7 +344,9 @@ export function ArrivalMap() {
           x="540"
           y="330"
           textAnchor="end"
-          className="fill-ink/60"
+          className="fill-ink/55 font-sans"
+              fontWeight="700"
+              letterSpacing="1.2"
           fontSize="16"
         >
           Parco di via Leopardi
