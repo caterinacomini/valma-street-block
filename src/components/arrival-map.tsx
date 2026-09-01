@@ -101,6 +101,7 @@ const SEGMENTS: {
     id: "seg-piedi",
     icon: "piedi",
     path: PIEDI_PATH,
+    pill: { x: 770, y: 220, text: "5' a piedi" },
     stop: "stop-bus",
     at: 1.95,
     dashed: true,
@@ -281,20 +282,20 @@ export function ArrivalMap() {
       {SEGMENTS.filter((segment) => segment.pill).map((segment) => (
         <g key={`pill-${segment.id}`} id={`pill-${segment.id}`}>
           <rect
-            x={segment.pill!.x - 105}
-            y={segment.pill!.y - 21}
-            width="210"
-            height="42"
-            rx="21"
+            x={segment.pill!.x - 76}
+            y={segment.pill!.y - 15}
+            width="152"
+            height="30"
+            rx="15"
             className="fill-white stroke-ink/25"
             strokeWidth="1.5"
           />
           <text
             x={segment.pill!.x}
-            y={segment.pill!.y + 6}
+            y={segment.pill!.y + 5}
             textAnchor="middle"
             className="fill-ink"
-            fontSize="16"
+            fontSize="13"
             fontWeight="600"
           >
             {segment.pill!.text}
