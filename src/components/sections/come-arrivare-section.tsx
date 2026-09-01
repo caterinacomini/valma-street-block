@@ -59,10 +59,13 @@ export async function ComeArrivareSection({
       <div data-reveal="stagger" className="mt-12 sm:mt-16">
         {info.address ? (
           <>
-            <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
+            {/* Labelled like the blocks below, not like a section: in the
+                display face and all caps it read as a second heading, when it
+                is an address. */}
+            <h3 className="font-display text-lg tracking-wide text-ink">
               Ritrovo
-            </p>
-            <p className="mt-3 font-display text-3xl leading-[0.95] text-ink uppercase sm:text-4xl lg:text-5xl">
+            </h3>
+            <p className="mt-2 max-w-2xl text-2xl leading-tight font-medium text-ink sm:text-3xl">
               {info.address}
             </p>
             {info.mapEmbedUrl ? (
