@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { draftMode } from "next/headers";
 import { Fragment, type ReactNode } from "react";
 
 import { CardEntry } from "@/components/card-entry";
@@ -15,6 +16,7 @@ import {
   loadPastEditions,
   loadSiteSettings,
 } from "@/sanity/fetch";
+import { fieldAttr } from "@/sanity/data-attribute";
 import { heroPhotoProps, photoProps } from "@/sanity/image";
 
 /**
@@ -45,6 +47,7 @@ const SECTIONS: Record<SectionId, ReactNode> = {
  * ratio, so the heights match; side by side each shape goes its own way.
  */
 export default async function HomePage() {
+  const { isEnabled: preview } = await draftMode();
   const [settings, pastEditions, home] = await Promise.all([
     loadSiteSettings(),
     loadPastEditions(),
@@ -147,7 +150,10 @@ export default async function HomePage() {
             </h1>
 
             <div className="flex max-w-xs flex-col items-start gap-4 pb-1 sm:max-w-sm lg:pb-4">
-              <p className="font-display text-2xl leading-tight tracking-wide text-white sm:text-3xl">
+              <p
+                className="font-display text-2xl leading-tight tracking-wide text-white sm:text-3xl"
+                data-sanity={fieldAttr(preview, "siteSettings", "siteSettings", "eventDate")}
+              >
                 {postponed && formattedDate ? (
                   /* <s> so the cancellation reaches a screen reader too; the
                      default underline is swapped for a drawn diagonal. */

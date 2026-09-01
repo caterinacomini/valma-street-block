@@ -11,6 +11,7 @@ export function imageWithAlt(options: {
   title: string;
   description?: string;
   group?: string;
+  fieldset?: string;
   /**
    * Adds a horizontal nudge per breakpoint. Only worth it where the crop
    * changes shape drastically — a full-bleed hero keeps under a third of its
@@ -35,6 +36,7 @@ export function imageWithAlt(options: {
     options: { hotspot: true },
     description: options.description,
     group: options.group,
+    fieldset: options.fieldset,
     fieldsets: options.perBreakpointFocus
       ? [
           {

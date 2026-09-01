@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { siteUrl } from "@/lib/site-url";
+import { urlForImage } from "@/sanity/image";
 import { loadSiteSettings } from "@/sanity/fetch";
 import "./globals.css";
 
@@ -36,6 +37,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = settings.title?.trim() || "Valma Street Block";
   const description = settings.intro?.trim() || FALLBACK_DESCRIPTION;
   const where = [settings.location].filter(Boolean).join(" ");
+  /* An uploaded picture is cropped to the 1200×630 every platform expects,
+     around the editor's hotspot; otherwise the card built by
+     scripts/build-og-image.py stands. */
+  const share = settings.shareImage?.asset
+    ? urlForImage(settings.shareImage)
+        .width(1200)
+        .height(630)
+        .fit("crop")
+        .crop("focalpoint")
+        .url()
+    : "/og.jpg";
 
   return {
     metadataBase: new URL(siteUrl),
@@ -52,10 +64,10 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       images: [
         {
-          url: "/og.jpg",
+          url: share,
           width: 1200,
           height: 630,
-          alt: `${title}${where ? ` — ${where}` : ""}`,
+          alt: settings.shareImage?.alt || `${title}${where ? ` — ${where}` : ""}`,
         },
       ],
     },
@@ -63,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og.jpg"],
+      images: [share],
     },
   };
 }

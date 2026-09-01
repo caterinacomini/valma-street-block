@@ -9,6 +9,13 @@ export const siteSettings = defineType({
   type: "document",
   fieldsets: [
     {
+      name: "condivisione",
+      title: "Condivisione",
+      options: { collapsible: true, collapsed: false },
+      description:
+        "Cosa si vede quando il link del sito finisce su Google, in una chat o su Instagram. Non compare sulla pagina.",
+    },
+    {
       name: "rinvio",
       title: "Rinvio per maltempo",
       options: { collapsible: true, collapsed: true },
@@ -75,9 +82,15 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: "intro",
-      title: "Testo introduttivo",
+      title: "Descrizione",
       type: "text",
-      rows: 4,
+      rows: 3,
+      fieldset: "condivisione",
+      description:
+        "Non compare sulla pagina: è la riga che Google mostra sotto il titolo, e quella che si legge quando qualcuno incolla il link in una chat. Due righe asciutte che dicono cos'è l'evento.",
+      validation: (rule) => rule.max(160).warning(
+        "Oltre i 160 caratteri Google taglia la frase a metà.",
+      ),
     }),
     defineField({
       name: "registrationUrl",
@@ -119,6 +132,13 @@ export const siteSettings = defineType({
       name: "contactEmail",
       title: "Email di contatto",
       type: "string",
+    }),
+    imageWithAlt({
+      name: "shareImage",
+      title: "Immagine",
+      fieldset: "condivisione",
+      description:
+        "Il rettangolo che accompagna il link. Va bene 1200×630 pixel: più stretta o più alta viene ritagliata. Se la lasci vuota resta quella preparata a mano, azzurra col marchio.",
     }),
     defineField({
       name: "sections",

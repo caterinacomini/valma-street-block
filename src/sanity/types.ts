@@ -34,6 +34,7 @@ export interface SiteSettings {
   facebookUrl?: string;
   contactEmail?: string;
   photoCredit?: string;
+  shareImage?: SanityPhoto | null;
   sections?: SectionChoice[];
   showSponsors?: boolean;
 }
