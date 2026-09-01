@@ -172,6 +172,19 @@ export const siteSettings = defineType({
               type: "boolean",
               initialValue: true,
             }),
+            defineField({
+              name: "eyebrow",
+              title: "Occhiello",
+              type: "string",
+              description:
+                "La riga piccola azzurra sopra il titolo. Vuota lascia quella di adesso.",
+            }),
+            defineField({
+              name: "heading",
+              title: "Titolo",
+              type: "string",
+              description: "Vuoto lascia quello di adesso.",
+            }),
           ],
           preview: {
             select: { section: "section", visible: "visible" },
@@ -189,6 +202,18 @@ export const siteSettings = defineType({
           const dupes = ids.filter((id, i) => id && ids.indexOf(id) !== i);
           return dupes.length ? "Una sezione compare più di una volta." : true;
         }),
+    }),
+    defineField({
+      name: "sponsorEyebrow",
+      title: "Occhiello degli sponsor",
+      type: "string",
+      description: "Vuoto lascia «Grazie a chi ci sostiene».",
+    }),
+    defineField({
+      name: "sponsorHeading",
+      title: "Titolo degli sponsor",
+      type: "string",
+      description: "Vuoto lascia «I nostri partner».",
     }),
     defineField({
       name: "showSponsors",

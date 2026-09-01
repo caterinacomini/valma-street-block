@@ -107,7 +107,15 @@ function EditionThumb({ edition }: { edition: EditionCard }) {
 
 const PHOTO_FINAL_WIDTH = 42; // % of the section, matches the lg:w-[42%] class
 
-export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
+export function EdizioniCarousel({
+  editions,
+  eyebrow,
+  heading,
+}: {
+  editions: EditionCard[];
+  eyebrow?: string;
+  heading?: string;
+}) {
   const pinRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -298,10 +306,10 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
           this reads as a plain section heading like the others. */}
       <div className="px-6 pt-16 sm:px-8 lg:hidden">
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
-          Edizioni passate
+          {eyebrow || "Edizioni passate"}
         </p>
         <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl">
-          Le nostre edizioni
+          {heading || "Le nostre edizioni"}
         </h2>
         <p className="mt-4 max-w-md text-base leading-relaxed font-medium text-ink">
           Dal 2015 le vie di Valmadrera ospitano la gara, una primavera dopo
@@ -338,9 +346,13 @@ export function EdizioniCarousel({ editions }: { editions: EditionCard[] }) {
               Dal 2015
             </p>
             <h2 className="mt-2 font-display text-4xl leading-none text-yellow sm:text-5xl lg:text-6xl">
-              Le nostre
-              <br />
-              edizioni
+              {heading || (
+                <>
+                  Le nostre
+                  <br />
+                  edizioni
+                </>
+              )}
             </h2>
           </div>
         </div>

@@ -11,7 +11,13 @@ const FALLBACK_COVERS = [
   "/content/urban-climbing-wall-kid.jpg",
 ];
 
-export async function EdizioniPassateSection() {
+export async function EdizioniPassateSection({
+  eyebrow,
+  heading,
+}: {
+  eyebrow?: string;
+  heading?: string;
+}) {
   const editions = await loadPastEditions();
 
   const cards: EditionCard[] = editions.map((edition, i) => {
@@ -46,7 +52,7 @@ export async function EdizioniPassateSection() {
 
   return (
     <section id="edizioni-passate" className="scroll-mt-20 bg-white">
-      <EdizioniCarousel editions={cards} />
+      <EdizioniCarousel editions={cards} eyebrow={eyebrow} heading={heading} />
     </section>
   );
 }

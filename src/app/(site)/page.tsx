@@ -30,11 +30,14 @@ export const revalidate = 60;
  * The four sections an editor can reorder. Kept as elements rather than
  * components so the order below is a list to walk, not a switch to maintain.
  */
-const SECTIONS: Record<SectionId, ReactNode> = {
-  programma: <ProgrammaSection />,
-  comeArrivare: <ComeArrivareSection />,
-  edizioniPassate: <EdizioniPassateSection />,
-  regolamento: <RegolamentoSection />,
+const SECTIONS: Record<
+  SectionId,
+  (props: { eyebrow?: string; heading?: string }) => ReactNode
+> = {
+  programma: (p) => <ProgrammaSection {...p} />,
+  comeArrivare: (p) => <ComeArrivareSection {...p} />,
+  edizioniPassate: (p) => <EdizioniPassateSection {...p} />,
+  regolamento: (p) => <RegolamentoSection {...p} />,
 };
 
 /**
@@ -266,7 +269,12 @@ export default async function HomePage() {
       {resolveSections(settings.sections)
         .filter((section) => section.visible)
         .map((section) => (
-          <Fragment key={section.id}>{SECTIONS[section.id]}</Fragment>
+          <Fragment key={section.id}>
+            {SECTIONS[section.id]({
+              eyebrow: section.eyebrow,
+              heading: section.heading,
+            })}
+          </Fragment>
         ))}
 
       <section className="bg-white">
@@ -299,7 +307,12 @@ export default async function HomePage() {
         </CardEntry>
       </section>
 
-      {settings.showSponsors === false ? null : <SponsorSection />}
+      {settings.showSponsors === false ? null : (
+        <SponsorSection
+          eyebrow={settings.sponsorEyebrow}
+          heading={settings.sponsorHeading}
+        />
+      )}
     </>
   );
 }

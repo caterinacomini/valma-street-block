@@ -13,7 +13,13 @@ const PLACEHOLDER_PARTNERS = [
   "Partner Sei",
 ];
 
-export async function SponsorSection() {
+export async function SponsorSection({
+  eyebrow,
+  heading,
+}: {
+  eyebrow?: string;
+  heading?: string;
+}) {
   const sponsors = await loadSponsors();
 
   const logos = sponsors.length > 0 ? sponsors : null;
@@ -25,10 +31,10 @@ export async function SponsorSection() {
     >
       <div data-reveal="stagger" className="page-x">
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
-          Grazie a chi ci sostiene
+          {eyebrow || "Grazie a chi ci sostiene"}
         </p>
         <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-          I nostri partner
+          {heading || "I nostri partner"}
         </h2>
       </div>
 

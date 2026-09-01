@@ -2,7 +2,13 @@ import { ArrivalMap } from "@/components/arrival-map";
 import { ArrivalMapMobile } from "@/components/arrival-map-mobile";
 import { loadHowToArrive } from "@/sanity/fetch";
 
-export async function ComeArrivareSection() {
+export async function ComeArrivareSection({
+  eyebrow,
+  heading,
+}: {
+  eyebrow?: string;
+  heading?: string;
+}) {
   const info = await loadHowToArrive();
 
   return (
@@ -14,10 +20,10 @@ export async function ComeArrivareSection() {
       >
         <div>
           <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
-            Valmadrera · Lecco
+            {eyebrow}
           </p>
           <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-            Come arrivare
+            {heading}
           </h2>
         </div>
 

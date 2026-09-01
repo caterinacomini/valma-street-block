@@ -1,7 +1,13 @@
 import { ProgramAccordion } from "@/components/program-accordion";
 import { loadProgramItems } from "@/sanity/fetch";
 
-export async function ProgrammaSection() {
+export async function ProgrammaSection({
+  eyebrow,
+  heading,
+}: {
+  eyebrow?: string;
+  heading?: string;
+}) {
   const items = await loadProgramItems();
 
   return (
@@ -14,13 +20,13 @@ export async function ProgrammaSection() {
           data-reveal
           className="font-mono text-sm tracking-[0.2em] text-blue uppercase"
         >
-          Un giorno, cinquanta blocchi
+          {eyebrow}
         </p>
         <h2
           data-reveal
           className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl"
         >
-          Il programma della giornata
+          {heading}
         </h2>
 
         {/* isolate so the ribbon can sit at -z-10 behind the cards without

@@ -22,7 +22,9 @@ export const siteSettingsQuery = defineQuery(`
     patronage,
     photoCredit,
     shareImage,
-    sections[]{ section, visible },
+    sections[]{ section, visible, eyebrow, heading },
+    sponsorEyebrow,
+    sponsorHeading,
     showSponsors
   }
 `);
@@ -69,6 +71,7 @@ export const regulationQuery = defineQuery(`
       title,
       items[]{ question, answer }
     },
+    pdfLabel,
     "pdfUrl": pdfFile.asset->url,
     updatedAt
   }

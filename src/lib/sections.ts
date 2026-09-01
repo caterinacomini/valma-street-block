@@ -7,15 +7,53 @@
  * ending, and moving them would move that. They can still be switched off.
  */
 export const MOVABLE_SECTIONS = [
-  { id: "programma", label: "Programma", anchor: "#programma" },
-  { id: "comeArrivare", label: "Come arrivare", anchor: "#come-arrivare" },
-  { id: "edizioniPassate", label: "Edizioni passate", anchor: "#edizioni-passate" },
-  { id: "regolamento", label: "Regolamento", anchor: "#regolamento" },
+  {
+    id: "programma",
+    label: "Programma",
+    anchor: "#programma",
+    eyebrow: "Un giorno, cinquanta blocchi",
+    heading: "Il programma della giornata",
+  },
+  {
+    id: "comeArrivare",
+    label: "Come arrivare",
+    anchor: "#come-arrivare",
+    eyebrow: "Valmadrera · Lecco",
+    heading: "Come arrivare",
+  },
+  {
+    id: "edizioniPassate",
+    label: "Edizioni passate",
+    anchor: "#edizioni-passate",
+    eyebrow: "Edizioni passate",
+    heading: "Le nostre edizioni",
+  },
+  {
+    id: "regolamento",
+    label: "Regolamento",
+    anchor: "#regolamento",
+    eyebrow: "",
+    heading: "Regolamento",
+  },
 ] as const;
 
 export type SectionId = (typeof MOVABLE_SECTIONS)[number]["id"];
 
-export type SectionChoice = { section: SectionId; visible?: boolean };
+export type SectionChoice = {
+  section: SectionId;
+  visible?: boolean;
+  eyebrow?: string;
+  heading?: string;
+};
+
+export type ResolvedSection = {
+  id: SectionId;
+  label: string;
+  anchor: string;
+  eyebrow: string;
+  heading: string;
+  visible: boolean;
+};
 
 export type NavLink = { href: string; label: string };
 
@@ -27,13 +65,20 @@ export type NavLink = { href: string; label: string };
 export function resolveSections(choices?: SectionChoice[] | null) {
   const known = new Map(MOVABLE_SECTIONS.map((s) => [s.id, s]));
   const seen = new Set<SectionId>();
-  const ordered: { id: SectionId; label: string; anchor: string; visible: boolean }[] = [];
+  const ordered: ResolvedSection[] = [];
 
   for (const choice of choices ?? []) {
     const section = known.get(choice.section);
     if (!section || seen.has(section.id)) continue;
     seen.add(section.id);
-    ordered.push({ ...section, visible: choice.visible !== false });
+    ordered.push({
+      ...section,
+      visible: choice.visible !== false,
+      /* Blank means "leave it as it was" — clearing a field should not clear
+         the heading off the page. */
+      eyebrow: choice.eyebrow?.trim() || section.eyebrow,
+      heading: choice.heading?.trim() || section.heading,
+    });
   }
   for (const section of MOVABLE_SECTIONS) {
     if (!seen.has(section.id)) ordered.push({ ...section, visible: true });

@@ -38,6 +38,8 @@ export interface SiteSettings {
   photoCredit?: string;
   shareImage?: SanityPhoto | null;
   sections?: SectionChoice[];
+  sponsorEyebrow?: string;
+  sponsorHeading?: string;
   showSponsors?: boolean;
 }
 
@@ -78,6 +80,7 @@ export interface FaqCategory {
 export interface Regulation {
   title?: string;
   faq?: FaqCategory[];
+  pdfLabel?: string;
   pdfUrl?: string | null;
   updatedAt?: string;
 }

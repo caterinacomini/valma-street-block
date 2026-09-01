@@ -71,6 +71,13 @@ export const regulation = defineType({
       ],
     }),
     defineField({
+      name: "pdfLabel",
+      title: "Testo del pulsante di download",
+      type: "string",
+      description:
+        "Compare accanto al titolo, solo se hai caricato il PDF qui sotto. Se lo lasci vuoto scrive «Scarica il regolamento».",
+    }),
+    defineField({
       name: "pdfFile",
       title: "PDF scaricabile",
       type: "file",
