@@ -280,14 +280,14 @@ export function ArrivalMapMobile() {
             y={segment.pill!.y - 12}
             width="112"
             height="24"
-            rx="12"
-            className="fill-ink"
+            rx="0"
+            className="fill-white"
           />
           <text
             x={segment.pill!.x}
             y={segment.pill!.y + 4}
             textAnchor="middle"
-            className="fill-white font-sans"
+            className="fill-ink font-sans"
             fontSize="10"
             fontWeight="700"
             letterSpacing="0.8"

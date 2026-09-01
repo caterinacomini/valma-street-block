@@ -290,14 +290,14 @@ export function ArrivalMap() {
             y={segment.pill!.y - 15}
             width="152"
             height="30"
-            rx="15"
-            className="fill-ink"
+            rx="0"
+            className="fill-white"
           />
           <text
             x={segment.pill!.x}
             y={segment.pill!.y + 5}
             textAnchor="middle"
-            className="fill-white font-sans"
+            className="fill-ink font-sans"
             fontSize="12"
             fontWeight="700"
             letterSpacing="1"
