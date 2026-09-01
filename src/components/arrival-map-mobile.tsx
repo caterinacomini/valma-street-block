@@ -45,6 +45,17 @@ const STOPS = [
   },
 ];
 
+/* The same waves as the wide map, running down instead of across: calm where
+   the journey starts and livelier as it nears the meeting point. */
+const M_TRENO_PATH =
+  "M 80 118 C 85 128, 85 134, 80 143 C 74 152, 74 158, 80 168 C 88 178, 88 184, 80 193 C 71 202, 71 208, 80 218";
+
+const M_AUTO_PATH =
+  "M 280 118 C 285 128, 285 134, 280 143 C 274 152, 274 158, 280 168 C 288 178, 288 184, 280 193 C 271 202, 271 208, 280 218";
+
+const M_PIEDI_PATH =
+  "M 180 386 C 193 394, 193 400, 180 408 C 166 416, 166 422, 180 430 C 196 438, 196 444, 180 452";
+
 const SEGMENTS: {
   id: string;
   icon: IconId;
@@ -57,7 +68,7 @@ const SEGMENTS: {
   {
     id: "m-seg-treno",
     icon: "bus",
-    path: "M 80 118 L 80 218",
+    path: M_TRENO_PATH,
     pill: { x: 80, y: 168, text: "15 min di bus" },
     stop: "m-stop-treno",
     at: 0,
@@ -65,7 +76,7 @@ const SEGMENTS: {
   {
     id: "m-seg-auto",
     icon: "auto",
-    path: "M 280 118 L 280 218",
+    path: M_AUTO_PATH,
     pill: { x: 280, y: 168, text: "uscita SS36" },
     stop: "m-stop-auto",
     at: 0.06,
@@ -89,7 +100,7 @@ const SEGMENTS: {
   {
     id: "m-seg-piedi",
     icon: "piedi",
-    path: "M 180 386 L 180 452",
+    path: M_PIEDI_PATH,
     pill: { x: 180, y: 419, text: "5 min a piedi" },
     stop: "m-stop-bus",
     at: 1.95,
@@ -110,8 +121,9 @@ export function ArrivalMapMobile() {
         "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
         () => {
           buildRouteTimeline(root, SEGMENTS, "#m-meeting-point", {
-            start: "top 80%",
-            end: "bottom 75%",
+            /* Finished by the time the map is in the middle of the screen. */
+            start: "top 88%",
+            end: "center 60%",
             scrub: 0.8,
             pillLift: 8,
           });

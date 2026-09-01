@@ -13,7 +13,7 @@ const STOPS = [
     title: "Treno",
     detail: "Stazione di Lecco",
     x: 170,
-    y: 70,
+    y: 62,
     labelAt: "below" as const,
   },
   {
@@ -22,7 +22,7 @@ const STOPS = [
     title: "Bus",
     detail: "Fermata Valmadrera",
     x: 1030,
-    y: 180,
+    y: 134,
     labelAt: "right" as const,
   },
   {
@@ -31,7 +31,7 @@ const STOPS = [
     title: "Parcheggio",
     detail: "Segnalati in centro",
     x: 1030,
-    y: 440,
+    y: 306,
     labelAt: "right" as const,
   },
   {
@@ -40,10 +40,21 @@ const STOPS = [
     title: "Auto",
     detail: "SS36, uscita Valmadrera",
     x: 170,
-    y: 550,
+    y: 378,
     labelAt: "above" as const,
   },
 ];
+
+/* Waves, not rules: gentle where the journey is still far away and livelier as
+   it nears the meeting point, so the line itself says you are getting closer. */
+const TRENO_PATH =
+  "M 200 62 C 238 68, 262 68, 300 62 C 338 55, 362 55, 400 62 C 438 71, 462 71, 500 62 C 538 52, 562 52, 600 62 C 638 74, 662 74, 700 62 C 738 48, 762 48, 800 62 C 838 77, 862 77, 900 62 C 980 62, 1030 81, 1030 114";
+
+const AUTO_PATH =
+  "M 200 378 C 238 384, 262 384, 300 378 C 338 371, 362 371, 400 378 C 438 387, 462 387, 500 378 C 538 368, 562 368, 600 378 C 638 390, 662 390, 700 378 C 738 364, 762 364, 800 378 C 838 393, 862 393, 900 378 C 980 378, 1030 359, 1030 326";
+
+const PIEDI_PATH =
+  "M 880 220 C 863 237, 853 237, 836 220 C 819 202, 809 202, 792 220 C 775 239, 765 239, 748 220 C 731 200, 721 200, 704 220 C 687 241, 677 241, 660 220";
 
 const SEGMENTS: {
   id: string;
@@ -57,16 +68,16 @@ const SEGMENTS: {
   {
     id: "seg-treno",
     icon: "bus",
-    path: "M 200 70 L 900 70 C 980 70 1030 100 1030 150",
-    pill: { x: 550, y: 70, text: "15 min di bus" },
+    path: TRENO_PATH,
+    pill: { x: 550, y: 62, text: "15 min di bus" },
     stop: "stop-treno",
     at: 0,
   },
   {
     id: "seg-auto",
     icon: "auto",
-    path: "M 200 550 L 900 550 C 980 550 1030 520 1030 470",
-    pill: { x: 550, y: 550, text: "uscita SS36" },
+    path: AUTO_PATH,
+    pill: { x: 550, y: 378, text: "uscita SS36" },
     stop: "stop-auto",
     at: 0.06,
   },
@@ -75,22 +86,22 @@ const SEGMENTS: {
   {
     id: "seg-join-bus",
     icon: "piedi",
-    path: "M 1030 210 C 1030 272 950 288 880 306",
+    path: "M 1030 154 C 1030 196 950 208 880 217",
     stop: "stop-bus",
     at: 1,
   },
   {
     id: "seg-join-auto",
     icon: "piedi",
-    path: "M 1030 410 C 1030 348 950 332 880 314",
+    path: "M 1030 286 C 1030 244 950 232 880 223",
     stop: "stop-parcheggio",
     at: 1.04,
   },
   {
     id: "seg-piedi",
     icon: "piedi",
-    path: "M 880 310 L 660 310",
-    pill: { x: 776, y: 310, text: "5 min a piedi" },
+    path: PIEDI_PATH,
+    pill: { x: 776, y: 220, text: "5 min a piedi" },
     stop: "stop-bus",
     at: 1.95,
     dashed: true,
@@ -110,8 +121,10 @@ export function ArrivalMap() {
         "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
         () => {
           buildRouteTimeline(root, SEGMENTS, "#meeting-point", {
-            start: "top 82%",
-            end: "bottom 62%",
+            /* Done by the time the map sits in the middle of the screen:
+               finishing later left it half-drawn exactly when it is being read. */
+            start: "top 88%",
+            end: "center 58%",
             scrub: 0.8,
             pillLift: 10,
           });
@@ -125,7 +138,7 @@ export function ArrivalMap() {
   return (
     <svg
       ref={rootRef}
-      viewBox="0 0 1360 620"
+      viewBox="0 0 1360 450"
       className="h-auto w-full"
       role="img"
       aria-label="Due modi per arrivare: in treno fino a Lecco e poi in bus fino a Valmadrera, oppure in auto dalla SS36 fino ai parcheggi in centro e cinque minuti a piedi fino al parco di via Leopardi"
@@ -300,9 +313,9 @@ export function ArrivalMap() {
 
       {/* Meeting point, where both ways converge */}
       <g id="meeting-point">
-        <circle cx="600" cy="310" r="46" className="fill-yellow" />
+        <circle cx="600" cy="220" r="46" className="fill-yellow" />
         <g
-          transform="translate(600 310)"
+          transform="translate(600 220)"
           fill="none"
           stroke="var(--color-ink)"
           strokeWidth="3"
