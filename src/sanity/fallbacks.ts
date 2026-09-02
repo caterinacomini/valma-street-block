@@ -26,7 +26,10 @@ export const FALLBACK_SITE_SETTINGS: SiteSettings = {
   intro:
     "Un giorno di boulder in mezzo al paese. Muri, cornicioni e angoli di città diventano blocchi da chiudere. Poi si balla.",
   registrationUrl: undefined,
-  registrationOpen: false,
+  /* The default posture is open. It only shows as the yellow button once a
+     registrationUrl exists too — without somewhere to send people, the
+     button stays shut rather than pretending. */
+  registrationOpen: true,
   registrationLabel: undefined,
   registrationClosedLabel: undefined,
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
