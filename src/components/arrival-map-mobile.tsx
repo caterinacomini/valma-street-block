@@ -15,7 +15,7 @@ const STOPS = [
     id: "treno",
     icon: "treno" as IconId,
     title: "Treno",
-    detail: "Stazione di Lecco",
+    detail: "S7 e R18",
     x: 80,
     y: 50,
   },
@@ -28,10 +28,10 @@ const STOPS = [
     y: 50,
   },
   {
-    id: "bus",
-    icon: "bus" as IconId,
-    title: "Bus",
-    detail: "Fermata Valmadrera",
+    id: "stazione",
+    icon: "treno" as IconId,
+    title: "Stazione",
+    detail: "Valmadrera",
     x: 80,
     y: 252,
   },
@@ -67,9 +67,9 @@ const SEGMENTS: {
 }[] = [
   {
     id: "m-seg-treno",
-    icon: "bus",
+    icon: "treno",
     path: M_TRENO_PATH,
-    pill: { x: 80, y: 168, text: "15 min di bus" },
+    pill: { x: 80, y: 168, text: "senza cambi" },
     stop: "m-stop-treno",
     at: 0,
   },
@@ -84,10 +84,10 @@ const SEGMENTS: {
   // The two ways join here. Sharing one walking leg beats printing the same
   // "5 min a piedi" twice, once per lane.
   {
-    id: "m-seg-join-bus",
+    id: "m-seg-join-stazione",
     icon: "piedi",
     path: "M 80 330 C 80 366 132 372 180 386",
-    stop: "m-stop-bus",
+    stop: "m-stop-stazione",
     at: 1,
   },
   {
@@ -102,7 +102,7 @@ const SEGMENTS: {
     icon: "piedi",
     path: M_PIEDI_PATH,
     pill: { x: 180, y: 419, text: "5' a piedi" },
-    stop: "m-stop-bus",
+    stop: "m-stop-stazione",
     at: 1.95,
     dashed: true,
   },
@@ -140,7 +140,7 @@ export function ArrivalMapMobile() {
       viewBox="0 0 360 578"
       className="h-auto w-full"
       role="img"
-      aria-label="Due modi per arrivare: in treno fino a Lecco e poi in bus fino a Valmadrera, oppure in auto dalla SS36 fino ai parcheggi in centro e cinque minuti a piedi. Entrambe le vie finiscono al parco di via Leopardi"
+      aria-label="Due modi per arrivare: in treno fino alla stazione di Valmadrera, sulla linea Como-Lecco, oppure in auto dalla SS36 fino ai parcheggi in centro. Entrambe le vie finiscono a piedi al parco di via Leopardi"
     >
       <text
         x="0"

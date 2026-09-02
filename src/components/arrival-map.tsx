@@ -4,23 +4,25 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { buildRouteTimeline, Icon, type IconId } from "./arrival-route";
 
-// Two snaking routes that mirror each other and meet in the middle:
-// train → bus coming down from the top, car → parking coming up from below.
+// Two snaking routes that mirror each other and meet in the middle: train
+// down from the top, car up from below. Valmadrera has its own station on the
+// Como-Lecco line, so the train arrives here directly — there is no change at
+// Lecco, whatever an earlier version of this map said.
 const STOPS = [
   {
     id: "treno",
     icon: "treno" as IconId,
     title: "Treno",
-    detail: "Stazione di Lecco",
+    detail: "S7 da Milano, R18 da Como",
     x: 170,
     y: 62,
     labelAt: "below" as const,
   },
   {
-    id: "bus",
-    icon: "bus" as IconId,
-    title: "Bus",
-    detail: "Fermata Valmadrera",
+    id: "stazione",
+    icon: "treno" as IconId,
+    title: "Stazione",
+    detail: "Valmadrera, linea Como–Lecco",
     x: 1030,
     y: 134,
     labelAt: "right" as const,
@@ -67,9 +69,9 @@ const SEGMENTS: {
 }[] = [
   {
     id: "seg-treno",
-    icon: "bus",
+    icon: "treno",
     path: TRENO_PATH,
-    pill: { x: 550, y: 62, text: "15 min di bus" },
+    pill: { x: 550, y: 62, text: "senza cambi" },
     stop: "stop-treno",
     at: 0,
   },
@@ -84,10 +86,10 @@ const SEGMENTS: {
   // Both ways join before the last stretch, so the walk is stated once rather
   // than printed twice, once per lane.
   {
-    id: "seg-join-bus",
+    id: "seg-join-stazione",
     icon: "piedi",
     path: "M 1030 154 C 1030 196 950 208 880 217",
-    stop: "stop-bus",
+    stop: "stop-stazione",
     at: 1,
   },
   {
@@ -102,7 +104,7 @@ const SEGMENTS: {
     icon: "piedi",
     path: PIEDI_PATH,
     pill: { x: 762, y: 220, text: "5' a piedi" },
-    stop: "stop-bus",
+    stop: "stop-stazione",
     at: 1.95,
     dashed: true,
   },
@@ -141,7 +143,7 @@ export function ArrivalMap() {
       viewBox="0 0 1360 450"
       className="h-auto w-full"
       role="img"
-      aria-label="Due modi per arrivare: in treno fino a Lecco e poi in bus fino a Valmadrera, oppure in auto dalla SS36 fino ai parcheggi in centro e cinque minuti a piedi fino al parco di via Leopardi"
+      aria-label="Due modi per arrivare: in treno fino alla stazione di Valmadrera, sulla linea Como-Lecco, oppure in auto dalla SS36 fino ai parcheggi in centro. Da entrambe si prosegue a piedi fino al parco di via Leopardi"
     >
       {/* Route family labels */}
       <text
