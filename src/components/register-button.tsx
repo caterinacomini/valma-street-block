@@ -94,7 +94,7 @@ export function RegisterButton({
         className={`${BASE} ${PADDING[size]} ${CLOSED_VARIANT[variant]} cursor-default ${className}`}
       >
         <Padlock shaking={nudged} />
-        {closedLabel || "Stay tuned"}
+        {closedLabel || "Iscrizioni chiuse"}
       </button>
     );
   }

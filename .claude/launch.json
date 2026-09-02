@@ -4,9 +4,54 @@
     {
       "name": "valma-street-block-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "valma-senza-mappa",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/private/tmp/claude-501/-Users-catcomin-Documents-Progetti-valma-street-block/9ebb7405-5247-4673-b0c6-910e3dd55757/scratchpad/wt-senza-mappa",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3001"
+      ],
+      "port": 3001
+    },
+    {
+      "name": "valma-con-mappa",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/private/tmp/claude-501/-Users-catcomin-Documents-Progetti-valma-street-block/9ebb7405-5247-4673-b0c6-910e3dd55757/scratchpad/wt-con-mappa",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3002"
+      ],
+      "port": 3002
+    },
+    {
+      "name": "valma-nuovo-design",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/private/tmp/claude-501/-Users-catcomin-Documents-Progetti-valma-street-block/9ebb7405-5247-4673-b0c6-910e3dd55757/scratchpad/wt-nuovo-design",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3003"
+      ],
+      "port": 3003
     }
   ]
 }
