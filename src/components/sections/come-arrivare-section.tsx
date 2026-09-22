@@ -105,7 +105,7 @@ export async function ComeArrivareSection({
         {/* Not a third way but a reason, so it is a note and not a column of
             prose — and it spans the pair while there are only two of them. */}
         {info.publicTransportInfo ? (
-          <p className="flex items-start gap-2.5 self-start rounded-3xl bg-yellow px-5 py-4 text-sm leading-snug font-semibold text-ink sm:col-span-2 lg:col-span-1">
+          <p className="flex items-start gap-2.5 self-start rounded-[2rem] rounded-tl-none bg-yellow px-5 py-4 text-sm leading-snug font-semibold text-ink sm:col-span-2 lg:col-span-1">
             <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
             {info.publicTransportInfo}
           </p>
