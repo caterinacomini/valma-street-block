@@ -50,8 +50,11 @@ export async function EdizioniPassateSection({
     };
   });
 
+  /* No white of its own: it takes the page's, which is the same colour until
+     Come arrivare tints it — and then this section has to come along, or the
+     blue stops dead at its top edge. */
   return (
-    <section id="edizioni-passate" className="scroll-mt-20 bg-white">
+    <section id="edizioni-passate" className="scroll-mt-20">
       <EdizioniCarousel editions={cards} eyebrow={eyebrow} heading={heading} />
     </section>
   );
