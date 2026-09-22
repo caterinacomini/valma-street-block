@@ -83,7 +83,7 @@ export function SiteLoader() {
               className={`inline-block ${
                 done ? "loader-letter-out" : "loader-letter"
               }`}
-              style={{ animationDelay: `${i * (done ? 0.14 : 0.18)}s` }}
+              style={{ animationDelay: `${i * (done ? 0.1 : 0.18)}s` }}
             >
               {letter.char}
             </span>
