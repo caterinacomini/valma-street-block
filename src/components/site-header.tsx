@@ -146,33 +146,15 @@ export function SiteHeader({
         darkType ? "text-ink" : "text-white"
       }`}
     >
-      {/* Hero recipe, identical at every scroll position: blur fading
-          downward with grain over it, and nothing else. */}
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-x-0 top-0 -bottom-10 transition-opacity duration-300 ${
-          open ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        {/* Steps, not a gradient. A mask on the same element stops the browser
-            painting its backdrop-filter at all — which is why raising the blur
-            from 6 to 24 over three commits changed nothing. So the fade is four
-            strips of falling height, each filtering what the one above already
-            filtered; the steps are small enough to read as one soft edge. */}
-        <div className="absolute inset-x-0 top-0 h-full backdrop-blur-[3px]" />
-        <div className="absolute inset-x-0 top-0 h-[78%] backdrop-blur-[5px]" />
-        <div className="absolute inset-x-0 top-0 h-[56%] backdrop-blur-[9px]" />
-        <div className="absolute inset-x-0 top-0 h-[34%] backdrop-blur-[14px]" />
-        <div
-          className={`absolute inset-0 transition-colors duration-200 [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)] ${
-            darkType
-              ? "bg-gradient-to-b from-white/55 via-white/20 to-transparent"
-              : "bg-gradient-to-b from-ink/28 via-ink/8 to-transparent"
-          }`}
-        />
-        <div className="grain absolute inset-0 opacity-35 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_52%,transparent_100%)]" />
-      </div>
+      {/* Nothing behind it. The bar used to carry the hero's own recipe —
+          four strips of backdrop-blur under a veil and a layer of grain — and
+          it is all gone: what shows through the header is whatever the page
+          is showing, untouched.
 
+          Which puts the whole weight of legibility on the colour swap below.
+          It samples what has actually been painted behind the bar and flips
+          the type between ink and white; with no veil to lean on, that sample
+          is the only thing keeping the wordmark readable. */}
       <div className="page-x relative flex items-center justify-between gap-3 py-3 sm:py-4">
         <a
           href="#top"
