@@ -1,5 +1,15 @@
 "use client";
 
+/* Kept, though nothing imports it.
+
+   Come arrivare now tells the route in words instead of drawing it, and the
+   drawn version is the road not taken rather than dead weight: Caterina asked
+   for both to stay reachable while she lives with the choice. The wired-up
+   version of this map, with the train going straight to Valmadrera rather than
+   changing at Lecco, is on the branch update-mappa-vera.
+
+   If this is still unreferenced by the 2028 edition, delete it. */
+
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { buildRouteTimeline, Icon, type IconId } from "./arrival-route";
