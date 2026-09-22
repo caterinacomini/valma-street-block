@@ -65,7 +65,7 @@ export async function ComeArrivareSection({
             <h3 className="font-display text-lg tracking-wide text-ink">
               Ritrovo
             </h3>
-            <p className="mt-2 max-w-2xl text-2xl leading-tight font-bold tracking-[-0.01em] text-ink sm:text-3xl">
+            <p className="mt-3 max-w-2xl text-3xl leading-tight font-bold tracking-[-0.015em] text-ink sm:text-4xl">
               {info.address}
             </p>
             {info.mapEmbedUrl ? (
