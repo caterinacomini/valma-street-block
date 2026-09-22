@@ -99,7 +99,6 @@ export async function ComeArrivareSection({
               Con i mezzi
             </h3>
             <p className="mt-2 text-base text-ink/75">{info.transitInfo}</p>
-            <Pill href="https://www.trenord.it">Orari dei treni</Pill>
           </div>
         ) : null}
 
