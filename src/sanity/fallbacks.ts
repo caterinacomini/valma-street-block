@@ -290,6 +290,6 @@ export const FALLBACK_HOW_TO_ARRIVE: HowToArrive = {
   transitInfo:
     "Valmadrera ha una stazione sulla linea Como–Lecco: S7 da Milano, R18 da Como. Da Lecco c’è anche la linea 9 dei bus urbani.",
   publicTransportInfo:
-    "Conserva i biglietti: all’ingresso ti aspetta una sorpresa!",
+    "Conserva i biglietti: ti aspetta una sorpresa!",
   mapEmbedUrl: "https://maps.google.com/?q=Valmadrera+LC",
 };
