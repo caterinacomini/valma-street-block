@@ -56,7 +56,7 @@ body {
 }
 
 @utility loader-shell {
-  animation: loader-out 0.8s cubic-bezier(0.33, 0, 0.2, 1) 4.4s forwards;
+  animation: loader-out 1.3s cubic-bezier(0.33, 0, 0.2, 1) 4.4s forwards;
 }
 
 /* Overlapped with the letters rather than queued behind them. Waiting for the
@@ -65,9 +65,12 @@ body {
 
    The veil starts thinning at 0.4s, while the last letter is still on its way
    out at 0.9s, and it only dissolves: the letters do the moving, the colour
-   simply stops being there. */
+   simply stops being there. It takes 1.3s over it — long enough that the
+   colour is still faintly there after the letters have gone, which is what
+   makes it read as a dissolve rather than a fade. The page underneath is live
+   throughout; the shell never takes pointer events. */
 @utility loader-shell-done {
-  animation: loader-out 0.8s cubic-bezier(0.33, 0, 0.2, 1) 0.4s forwards;
+  animation: loader-out 1.3s cubic-bezier(0.33, 0, 0.2, 1) 0.4s forwards;
 }
 
 @keyframes loader-letter-out {
