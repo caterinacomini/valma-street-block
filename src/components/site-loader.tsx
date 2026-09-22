@@ -70,8 +70,6 @@ export function SiteLoader() {
         done ? "loader-shell-done" : "loader-shell"
       }`}
     >
-      <div className="grain pointer-events-none absolute inset-0 opacity-25 mix-blend-screen" />
-
       {/* Set in the display face rather than placed as an image: the mark has
           to hold up at 30vw, and the bitmap went soft well before that. */}
       <p className="relative -rotate-[7deg] font-display text-[30vw] leading-none text-yellow sm:text-[22vw] lg:text-[16vw]">
