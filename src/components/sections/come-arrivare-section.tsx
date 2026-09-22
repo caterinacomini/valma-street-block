@@ -1,21 +1,41 @@
+import Image from "next/image";
 import { ArrowUpRight, Ticket } from "lucide-react";
 
+import { ScrollTint } from "@/components/scroll-tint";
 import { loadHowToArrive } from "@/sanity/fetch";
 
-/** Outline pill, the shape this design uses for every secondary link. */
+/* Two frames rather than one, the way the reference pairs them: a narrow
+   upright beside a wide one, the same height, each under its own small label.
+   The shoes are the only portrait photograph in the set, so they take the
+   narrow slot. */
+const PHOTOS = [
+  {
+    src: "/content/urban-climbing-shoes-pack.jpg",
+    label: "L’attrezzatura",
+    alt: "Un paio di scarpette da arrampicata appese a un moschettone azzurro, agganciate allo zaino di chi le porta",
+    span: "sm:col-span-4 lg:col-span-3",
+  },
+  {
+    src: "/content/urban-climbing-underpass.jpg",
+    label: "Un blocco in paese",
+    alt: "Un ragazzo appeso a due mani al soffitto di cemento di un sottopasso, con un materasso blu sotto e alcune persone che guardano da un lato",
+    span: "sm:col-span-8 lg:col-span-9",
+  },
+] as const;
+
 function Pill({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
+      className="group/pill mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
     >
       {children}
       <ArrowUpRight
         size={15}
         aria-hidden="true"
-        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+        className="transition-transform duration-300 group-hover/pill:translate-x-0.5 group-hover/pill:-translate-y-0.5 motion-reduce:transition-none"
       />
     </a>
   );
@@ -31,14 +51,20 @@ export async function ComeArrivareSection({
   const info = await loadHowToArrive();
 
   return (
-    <section id="come-arrivare" className="page-x scroll-mt-20 py-16 sm:py-24">
+    <ScrollTint
+      id="come-arrivare"
+      className="group page-x scroll-mt-20 py-16 sm:py-24"
+    >
       {/* Heading + intro */}
       <div
         data-reveal="stagger"
         className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
       >
         <div>
-          <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
+          <p
+            data-tint-label
+            className="font-mono text-sm tracking-[0.2em] text-blue uppercase"
+          >
             {eyebrow}
           </p>
           <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
@@ -102,15 +128,45 @@ export async function ComeArrivareSection({
           </div>
         ) : null}
 
-        {/* Not a third way but a reason, so it is a note and not a column of
-            prose — and it spans the pair while there are only two of them. */}
+        {/* An aside, so it waits to be looked at: on a pointer it appears when
+            the section is hovered, and on a touch screen — where there is no
+            hover to wait for — it is simply always there. Opacity rather than
+            display, so it stays in the accessibility tree either way, and
+            focus-within brings it out for anyone arriving by keyboard. */}
         {info.publicTransportInfo ? (
-          <p className="flex items-start gap-2.5 self-start rounded-[2rem] rounded-tl-none bg-yellow px-4 py-3 text-base leading-snug font-semibold text-ink sm:col-span-2 lg:col-span-1">
+          <p className="flex items-start gap-2.5 self-start rounded-[2rem] rounded-tl-none bg-yellow px-4 py-3 text-base leading-snug font-semibold text-ink transition-opacity duration-300 motion-reduce:transition-none sm:col-span-2 lg:col-span-1 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-within:opacity-100">
             <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
             {info.publicTransportInfo}
           </p>
         ) : null}
       </div>
-    </section>
+
+      {/* The photographs go under the answers rather than beside them: they
+          say what the place looks like, not how to reach it. */}
+      <div
+        data-reveal="stagger"
+        className="mt-14 grid gap-5 sm:mt-20 sm:grid-cols-12 sm:gap-6"
+      >
+        {PHOTOS.map((photo) => (
+          <figure key={photo.src} className={photo.span}>
+            <figcaption
+              data-tint-label
+              className="font-mono text-sm tracking-[0.2em] text-blue uppercase"
+            >
+              {photo.label}
+            </figcaption>
+            <div className="relative mt-3 h-72 overflow-hidden rounded-2xl sm:h-[26rem] lg:h-[32rem]">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                sizes="(min-width: 1024px) 50vw, (min-width: 640px) 60vw, 92vw"
+                className="object-cover"
+              />
+            </div>
+          </figure>
+        ))}
+      </div>
+    </ScrollTint>
   );
 }
