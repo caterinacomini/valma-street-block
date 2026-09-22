@@ -27,6 +27,41 @@ body {
   color: var(--color-ink);
 }
 
+/* Come arrivare sets its type on blue while it holds the page, so everything
+   in it turns over together rather than one marked element at a time. Keyed to
+   the class the tint toggles on the body, and beating Tailwind's own colour
+   utilities on specificity alone — an id plus a class plus an element. The
+   yellow note keeps its own ground, so .tint-keep opts back out. */
+#come-arrivare :where(h2, h3, p, a, figcaption, span) {
+  transition:
+    color 0.45s ease,
+    border-color 0.45s ease,
+    background-color 0.45s ease;
+}
+
+body.tinted #come-arrivare h2,
+body.tinted #come-arrivare h3,
+body.tinted #come-arrivare p,
+body.tinted #come-arrivare figcaption {
+  color: var(--color-white);
+}
+
+body.tinted #come-arrivare a {
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+body.tinted #come-arrivare a:hover {
+  background-color: var(--color-white);
+  color: var(--color-blue);
+}
+
+body.tinted #come-arrivare .tint-keep,
+body.tinted #come-arrivare .tint-keep p,
+body.tinted #come-arrivare .tint-keep span {
+  color: var(--color-ink);
+}
+
 /* Monochrome film grain (Figma: Noise · mono · density 60% · #000 15%) */
 @utility grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");

@@ -26,8 +26,10 @@ const FADE = 0.45;
  * a gradient instead of a decision. Four callbacks, because scrolling back up
  * has to undo it in the same places it was done.
  *
- * Anything marked data-tint-label comes along: the small labels are the site's
- * blue and would disappear into the ground this paints.
+ * The type comes along too, but through CSS rather than through here: the
+ * body gets a class and a stylesheet turns the whole section over at once.
+ * Animating each element from JavaScript meant listing them, and a list like
+ * that goes stale the first time someone adds a paragraph.
  */
 export function ScrollTint({
   id,
@@ -46,17 +48,13 @@ export function ScrollTint({
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
-      const labels = el.querySelectorAll("[data-tint-label]");
-
-      const paint = (ground: string, label: string) => {
+      const paint = (ground: string, tinted: boolean) => {
         gsap.to(document.body, {
           backgroundColor: ground,
           duration: FADE,
           ease: "power2.out",
         });
-        if (labels.length) {
-          gsap.to(labels, { color: label, duration: FADE, ease: "power2.out" });
-        }
+        document.body.classList.toggle("tinted", tinted);
       };
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -64,10 +62,10 @@ export function ScrollTint({
           trigger: el,
           start: "top center",
           end: "bottom center",
-          onEnter: () => paint(BLUE, WHITE),
-          onEnterBack: () => paint(BLUE, WHITE),
-          onLeave: () => paint(WHITE, BLUE),
-          onLeaveBack: () => paint(WHITE, BLUE),
+          onEnter: () => paint(BLUE, true),
+          onEnterBack: () => paint(BLUE, true),
+          onLeave: () => paint(WHITE, false),
+          onLeaveBack: () => paint(WHITE, false),
         });
       });
 
@@ -76,13 +74,14 @@ export function ScrollTint({
          seam and all, which is the honest trade for holding still. */
       mm.add("(prefers-reduced-motion: reduce)", () => {
         gsap.set(el, { backgroundColor: BLUE });
-        if (labels.length) gsap.set(labels, { color: WHITE });
+        document.body.classList.add("tinted");
       });
     }, ref);
 
     return () => {
       ctx.revert();
       gsap.set(document.body, { backgroundColor: WHITE });
+      document.body.classList.remove("tinted");
     };
   }, []);
 
