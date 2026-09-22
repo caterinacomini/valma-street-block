@@ -41,7 +41,6 @@ body {
   to {
     opacity: 0;
     visibility: hidden;
-    transform: scale(1.03);
   }
 }
 
@@ -62,19 +61,13 @@ body {
 
 /* Overlapped with the letters rather than queued behind them. Waiting for the
    last one to land left a beat of empty colour before the fade began, and the
-   exit read as two events — letters, pause, veil. The veil now starts thinning
-   at 0.4s, while the last letter is still on its way out at 0.9s, and the
-   slight scale lets it lift away instead of switching off. */
+   exit read as two events — letters, pause, veil.
+
+   The veil starts thinning at 0.4s, while the last letter is still on its way
+   out at 0.9s, and it only dissolves: the letters do the moving, the colour
+   simply stops being there. */
 @utility loader-shell-done {
   animation: loader-out 0.8s cubic-bezier(0.33, 0, 0.2, 1) 0.4s forwards;
-}
-
-/* Same fade, no movement, for anyone who asked for less of it. */
-@keyframes loader-out-still {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 
 @keyframes loader-letter-out {
@@ -99,11 +92,6 @@ body {
     animation: none;
   }
 
-  /* the veil may still fade, but it must not move */
-  .loader-shell,
-  .loader-shell-done {
-    animation-name: loader-out-still;
-  }
 }
 
 @keyframes site-in {
