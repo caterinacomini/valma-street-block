@@ -28,6 +28,19 @@ body {
 }
 
 /* Monochrome film grain (Figma: Noise · mono · density 60% · #000 15%) */
+/* A dotted rule rather than a hairline, drawn with a repeating gradient so it
+   keeps its rhythm at any width. */
+@utility rule-dotted {
+  background-image: radial-gradient(
+    circle,
+    currentColor 1.4px,
+    transparent 1.6px
+  );
+  background-size: 11px 4px;
+  background-repeat: repeat-x;
+  height: 4px;
+}
+
 @utility grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;

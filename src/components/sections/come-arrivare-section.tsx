@@ -2,22 +2,40 @@ import { ArrowUpRight, Ticket } from "lucide-react";
 
 import { loadHowToArrive } from "@/sanity/fetch";
 
-/** Outline pill, the shape this design uses for every secondary link. */
+/** Filled pill, ranged left: the shape this language uses for every link. */
 function Pill({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group mt-4 inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-ink hover:text-white"
+      className="group mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[11px] font-bold tracking-[0.14em] text-white uppercase transition hover:bg-blue sm:text-xs"
     >
       {children}
       <ArrowUpRight
-        size={15}
+        size={14}
         aria-hidden="true"
         className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
       />
     </a>
+  );
+}
+
+/** A labelled block: a dashed rule, a small blue label, then the answer. */
+function Block({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="border-t border-dashed border-ink/25 pt-6 sm:pt-8">
+      <p className="text-[11px] font-bold tracking-[0.2em] text-blue uppercase sm:text-xs">
+        {label}
+      </p>
+      {children}
+    </div>
   );
 }
 
@@ -30,87 +48,82 @@ export async function ComeArrivareSection({
 }) {
   const info = await loadHowToArrive();
 
-  return (
-    <section id="come-arrivare" className="page-x scroll-mt-20 py-16 sm:py-24">
-      {/* Heading + intro */}
-      <div
-        data-reveal="stagger"
-        className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
-      >
-        <div>
-          <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
-            {eyebrow}
-          </p>
-          <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
-            {heading}
-          </h2>
-        </div>
+  const body =
+    "text-xs leading-relaxed font-bold tracking-[0.05em] text-ink uppercase sm:text-sm";
 
-        {info.intro ? (
-          <p className="max-w-md text-base leading-relaxed font-medium text-ink lg:text-lg">
-            {info.intro}
-          </p>
-        ) : null}
+  return (
+    <section id="come-arrivare" className="scroll-mt-20 bg-white py-16 sm:py-20 lg:py-24">
+      <div className="page-x">
+        <p
+          data-reveal
+          className="text-xs font-bold tracking-[0.22em] text-blue uppercase sm:text-sm"
+        >
+          {eyebrow}
+        </p>
       </div>
 
-      {/* One big thing and three small ones of equal weight, which is what the
-          content actually is. Putting the address in a column left a hole
-          beside it the width of the map that used to be there. */}
-      <div data-reveal="stagger" className="mt-12 sm:mt-16">
-        {info.address ? (
-          <>
-            {/* Labelled like the blocks below, not like a section: in the
-                display face and all caps it read as a second heading, when it
-                is an address. */}
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              Ritrovo
-            </h3>
-            <p className="mt-2 max-w-2xl text-2xl leading-tight font-medium text-ink sm:text-3xl">
+      {/* The rules run the full width rather than stopping at the text column:
+          they are the section's edges, not an underline. */}
+      <div className="rule-dotted mt-6 text-ink/35 sm:mt-8" />
+
+      <h2
+        data-reveal
+        className="page-x py-6 font-sans text-[10.5vw] leading-[0.92] font-bold tracking-[-0.035em] text-ink uppercase sm:py-8 lg:text-[7.6vw]"
+      >
+        {heading}
+      </h2>
+
+      <div className="rule-dotted text-ink/35" />
+
+      <div
+        data-reveal="stagger"
+        className="page-x mt-10 sm:mt-14 lg:grid lg:grid-cols-12 lg:gap-12"
+      >
+        {/* Where it is. Said once, at the size that makes it the answer. */}
+        <div className="lg:col-span-7">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-blue uppercase sm:text-xs">
+            Ritrovo
+          </p>
+          {info.address ? (
+            <p className="mt-3 font-sans text-[9vw] leading-[0.94] font-bold tracking-[-0.03em] text-ink uppercase lg:text-[4.2vw]">
               {info.address}
             </p>
-            {info.mapEmbedUrl ? (
-              <Pill href={info.mapEmbedUrl}>Apri in Google Maps</Pill>
-            ) : null}
-          </>
-        ) : null}
-      </div>
+          ) : null}
+          {info.intro ? (
+            <p className={`mt-5 max-w-md ${body} text-ink/70`}>{info.intro}</p>
+          ) : null}
+          {info.mapEmbedUrl ? (
+            <Pill href={info.mapEmbedUrl}>Apri in Google Maps</Pill>
+          ) : null}
+        </div>
 
-      {/* The ways of getting here, side by side rather than stacked in a
-          column: they are alternatives, and equal widths say so. */}
-      <div
-        data-reveal="stagger"
-        className="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
-      >
-        {info.carInfo ? (
-          <div>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              In auto
-            </h3>
-            <p className="mt-2 text-base text-ink/75">{info.carInfo}</p>
-            <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
-              Scopri i parcheggi
-            </Pill>
-          </div>
-        ) : null}
+        {/* How you get there, and the reason to come without a car. */}
+        <div className="mt-12 flex flex-col gap-8 sm:mt-16 sm:gap-10 lg:col-span-5 lg:mt-2">
+          {info.carInfo ? (
+            <Block label="In auto">
+              <p className={`mt-3 ${body}`}>{info.carInfo}</p>
+              <Pill href="https://www.google.com/maps/search/parcheggi+Valmadrera">
+                Scopri i parcheggi
+              </Pill>
+            </Block>
+          ) : null}
 
-        {info.transitInfo ? (
-          <div>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              Con i mezzi
-            </h3>
-            <p className="mt-2 text-base text-ink/75">{info.transitInfo}</p>
-            <Pill href="https://www.trenord.it">Orari dei treni</Pill>
-          </div>
-        ) : null}
+          {info.transitInfo ? (
+            <Block label="Con i mezzi">
+              <p className={`mt-3 ${body}`}>{info.transitInfo}</p>
+              <Pill href="https://www.trenord.it">Orari dei treni</Pill>
+            </Block>
+          ) : null}
 
-        {/* Not a third way but a reason, so it is a note and not a column of
-            prose — and it spans the pair while there are only two of them. */}
-        {info.publicTransportInfo ? (
-          <p className="flex items-start gap-2.5 self-start rounded-3xl bg-yellow px-5 py-4 text-sm leading-snug font-semibold text-ink sm:col-span-2 lg:col-span-1">
-            <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-            {info.publicTransportInfo}
-          </p>
-        ) : null}
+          {/* Not a direction but a reason, so it keeps its yellow and stays
+              outside the run of labelled blocks. */}
+          {info.publicTransportInfo ? (
+            <p className="flex items-start gap-2.5 rounded-3xl bg-yellow px-5 py-4 text-[11px] leading-relaxed font-bold tracking-[0.05em] text-ink uppercase sm:text-xs">
+              <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+              {info.publicTransportInfo}
+            </p>
+          ) : null}
+        </div>
       </div>
     </section>
   );
