@@ -79,11 +79,13 @@ export function SiteLoader() {
             className="inline-block"
             style={{ transform: `rotate(${letter.tilt}deg)` }}
           >
+            {/* Nothing on the way out. The letters used to leave on their
+                own — down and turning, one after another — and then the veil
+                faded behind them. A dissolve is the whole image going at
+                once, so the exit belongs to the shell alone. */}
             <span
-              className={`inline-block ${
-                done ? "loader-letter-out" : "loader-letter"
-              }`}
-              style={{ animationDelay: `${i * (done ? 0.1 : 0.18)}s` }}
+              className={done ? "" : "loader-letter"}
+              style={done ? undefined : { animationDelay: `${i * 0.18}s` }}
             >
               {letter.char}
             </span>

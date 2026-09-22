@@ -66,7 +66,10 @@ body {
    at 0.4s, while the last letter is still on its way out at 0.9s, and the
    slight scale lets it lift away instead of switching off. */
 @utility loader-shell-done {
-  animation: loader-out 0.8s cubic-bezier(0.33, 0, 0.2, 1) 0.4s forwards;
+  /* A dissolve, so nothing moves and nothing waits: the whole splash — colour
+     and letters together — thins out on the spot the moment the page is
+     ready. */
+  animation: loader-out-still 0.85s cubic-bezier(0.33, 0, 0.2, 1) forwards;
 }
 
 /* Same fade, no movement, for anyone who asked for less of it. */
