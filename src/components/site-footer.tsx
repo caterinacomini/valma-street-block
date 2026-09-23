@@ -81,7 +81,7 @@ export function SiteFooter({
             <p className="text-xs font-semibold tracking-widest text-white/70 uppercase">
               Evento
             </p>
-            <ul className="mt-4 flex flex-col gap-2.5 text-base">
+            <ul className="mt-3 flex flex-col gap-1 text-base sm:mt-4 sm:gap-2.5">
               {eventLinks.map((link) => (
                 <li key={link.href}>
                   <a
@@ -99,7 +99,7 @@ export function SiteFooter({
             <p className="text-xs font-semibold tracking-widest text-white/70 uppercase">
               Social
             </p>
-            <ul className="mt-4 flex flex-col gap-2.5 text-base">
+            <ul className="mt-3 flex flex-col gap-1 text-base sm:mt-4 sm:gap-2.5">
               {social.map((link) => (
                 <li key={link.href}>
                   <a

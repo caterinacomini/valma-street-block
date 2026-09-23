@@ -13,7 +13,12 @@ import { useState } from "react";
 const PADDING = {
   sm: "px-4 py-2 text-sm",
   md: "px-6 py-3 text-base",
-  lg: "px-8 py-4 text-xl sm:text-2xl",
+  /* On a phone the large size is the medium one. At 20px over 32 of side
+     padding it filled most of the screen width, which made it read as a
+     banner rather than a button — the footer, which never asked for lg,
+     was the one getting it right. From the small breakpoint up it grows
+     back to the display size the hero wants. */
+  lg: "px-6 py-3 text-base sm:px-8 sm:py-4 sm:text-2xl",
 } as const;
 
 const VARIANT = {

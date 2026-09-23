@@ -232,7 +232,7 @@ export function SiteHeader({
               closedLabel={registrationClosedLabel}
               variant="dark"
               size="lg"
-              className="mt-2 w-full sm:w-auto sm:self-start"
+              className="mt-2 self-start"
             />
 
             {/* Bottom band, mirroring the footer's own closing row */}
