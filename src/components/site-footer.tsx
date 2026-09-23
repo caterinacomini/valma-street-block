@@ -61,7 +61,7 @@ export function SiteFooter({
         </div>
 
         {/* Link columns */}
-        <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-10 sm:mt-8 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-[3.75rem] sm:mt-8 sm:grid-cols-3 sm:gap-y-10 lg:grid-cols-4">
           <div className="col-span-2 sm:col-span-1 lg:col-span-2">
             <p className="font-display text-2xl leading-tight sm:text-3xl">
               Ci vediamo tra le vie
@@ -128,7 +128,7 @@ export function SiteFooter({
             right. One rhythm for both columns, set by a gap rather than a
             margin per line: written on each paragraph, the two sides drifted
             to eight pixels and six. */}
-        <div className="mt-14 flex flex-col gap-1.5 pt-6 text-xs text-white/70 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+        <div className="mt-9 flex flex-col gap-1.5 pt-6 text-xs text-white/70 sm:mt-14 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
           <div className="flex flex-col gap-1.5">
             {contactEmail && contactEmailVisible ? (
               <a

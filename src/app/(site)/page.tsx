@@ -124,14 +124,26 @@ export default async function HomePage() {
         className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink"
       >
         <Image {...heroPhoto} alt={heroPhoto.alt} fill priority sizes="100vw" />
-        {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the copy sits.
-            Stacked layers because CSS has no native progressive backdrop-filter. */}
+        {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the
+            copy sits. Stacked layers because CSS has no native progressive
+            backdrop-filter.
+
+            On a gradient aimed at the bottom-left corner, the top-left and the
+            bottom-right both sit at the halfway mark — so the top-left was
+            taking most of the first layer for no reason, and the bridge up
+            there went soft. Every ramp starts later now, which keeps the blur
+            in the corner that needs it. */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 backdrop-blur-[1.5px] [mask-image:linear-gradient(to_bottom_left,transparent_34%,black_54%)]" />
-          <div className="absolute inset-0 backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom_left,transparent_51%,black_71%)]" />
-          <div className="absolute inset-0 backdrop-blur-[6px] [mask-image:linear-gradient(to_bottom_left,transparent_67%,black_87%)]" />
-          <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom_left,transparent_82%,black_98%)]" />
+          <div className="absolute inset-0 backdrop-blur-[1.5px] [mask-image:linear-gradient(to_bottom_left,transparent_52%,black_68%)]" />
+          <div className="absolute inset-0 backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom_left,transparent_64%,black_80%)]" />
+          <div className="absolute inset-0 backdrop-blur-[6px] [mask-image:linear-gradient(to_bottom_left,transparent_75%,black_91%)]" />
+          <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom_left,transparent_86%,black_99%)]" />
         </div>
+
+        {/* A shade into the same corner, multiplied so it deepens what is there
+            rather than laying grey over it. It reaches full strength only at
+            the corner itself, which is where the yellow sits. */}
+        <div className="pointer-events-none absolute inset-0 mix-blend-multiply [background-image:linear-gradient(to_bottom_left,transparent_46%,rgba(0,0,0,0.34)_100%)]" />
         {/* Film grain */}
         <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
