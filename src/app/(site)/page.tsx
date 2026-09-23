@@ -268,7 +268,7 @@ export default async function HomePage() {
           >
             {stats.map((stat, i) => (
               <div key={i}>
-                <p className="font-display heading-3 leading-none text-ink">
+                <p className="font-display heading-3 leading-none text-ink lg:heading-2">
                   {stat.value}
                 </p>
                 <p className="mt-1.5 text-sm text-ink/60">{stat.label}</p>

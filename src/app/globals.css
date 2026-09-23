@@ -224,6 +224,10 @@ body.tinted #come-arrivare .tint-keep span {
  * Only the size. Line height and tracking stay at the call site, because a
  * number set solid and a sentence set airy can want the same size.
  *
+ * They take breakpoint prefixes, and that is how something grows at one width
+ * only: lg:heading-2 on a heading-3 leaves the phone and the tablet alone and
+ * climbs a rung on a laptop. The media queries nest and resolve.
+ *
  * The oversized pieces — hero, loader, footer wordmark, menu — are not on this
  * ladder on purpose: they are measured against the viewport, not against each
  * other. */
