@@ -86,7 +86,7 @@ export function SiteFooter({
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
+                    className="font-bold text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
                   >
                     {link.label}
                   </a>
@@ -106,7 +106,7 @@ export function SiteFooter({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1 text-white/85 decoration-2 underline-offset-[6px] transition hover:underline"
+                    className="group inline-flex items-center gap-1 font-bold text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
                   >
                     {link.label}
                     <ArrowUpRight
@@ -134,7 +134,7 @@ export function SiteFooter({
             {contactEmail ? (
               <a
                 href={`mailto:${contactEmail}`}
-                className="block text-sm font-medium text-white decoration-2 underline-offset-[6px] transition hover:underline sm:text-base"
+                className="block text-sm font-bold text-white decoration-2 underline-offset-[6px] transition hover:underline sm:text-base sm:font-medium"
               >
                 {contactEmail}
               </a>
