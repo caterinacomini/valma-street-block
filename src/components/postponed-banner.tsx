@@ -60,7 +60,7 @@ export function PostponedBanner({
         <p className="min-w-0 flex-1 text-sm leading-snug font-bold sm:text-base">
           {note}
           {newDate ? (
-            <span className="block font-display text-lg tracking-wide sm:text-xl">
+ <span className="block font-display heading-5 tracking-wide ">
               Nuova data: {newDate}
             </span>
           ) : null}

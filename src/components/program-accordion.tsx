@@ -64,13 +64,13 @@ export function ProgramAccordion({ items }: { items: ProgramItem[] }) {
               <div className="grain pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply" />
 
               {/* Always on the face of the card */}
-              <p className="relative font-display text-2xl leading-none sm:text-3xl">
+ <p className="relative font-display heading-3 leading-none ">
                 {item.time}
                 {item.endTime ? (
                   <span className="text-white/55"> – {item.endTime}</span>
                 ) : null}
               </p>
-              <h3 className="relative mt-1.5 font-display text-xl tracking-wide sm:text-2xl">
+ <h3 className="relative mt-1.5 font-display heading-4 tracking-wide ">
                 {item.title}
               </h3>
 

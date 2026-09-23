@@ -33,7 +33,7 @@ export async function SponsorSection({
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
           {eyebrow || "Grazie a chi ci sostiene"}
         </p>
-        <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+ <h2 className="mt-3 font-display heading-1 leading-none text-ink ">
           {heading || "I nostri partner"}
         </h2>
       </div>
@@ -67,7 +67,7 @@ export async function SponsorSection({
                     ) : (
                       <span
                         key={`${copy}-${sponsor._id}`}
-                        className="font-display text-2xl whitespace-nowrap text-ink/45 sm:text-3xl"
+ className="font-display heading-3 whitespace-nowrap text-ink/45 "
                       >
                         {sponsor.name}
                       </span>
@@ -76,7 +76,7 @@ export async function SponsorSection({
                 : PLACEHOLDER_PARTNERS.map((name) => (
                     <span
                       key={`${copy}-${name}`}
-                      className="font-display text-2xl whitespace-nowrap text-ink/35 sm:text-3xl"
+ className="font-display heading-3 whitespace-nowrap text-ink/35 "
                     >
                       {name}
                     </span>

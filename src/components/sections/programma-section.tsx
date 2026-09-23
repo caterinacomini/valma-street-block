@@ -24,7 +24,7 @@ export async function ProgrammaSection({
         </p>
         <h2
           data-reveal
-          className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl"
+ className="mt-3 font-display heading-1 leading-none text-ink "
         >
           {heading}
         </h2>

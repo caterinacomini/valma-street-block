@@ -210,6 +210,54 @@ body.tinted #come-arrivare .tint-keep span {
 }
 
 /* Shared horizontal page margin — keep hero, header and every section aligned */
+/* The heading scale.
+ *
+ * One ladder of seven sizes — 18 20 24 30 36 48 60 — and each level climbs it
+ * by one rung at each breakpoint. So a heading-2 on a laptop is exactly a
+ * heading-1 on a tablet, and the whole page shifts together as it widens
+ * rather than every title negotiating its own three numbers.
+ *
+ * Derived rather than invented: heading-1 and heading-3 are what five section
+ * titles and five sub-heads were already using. What was missing was a name,
+ * and a rung at the top end for the smaller three.
+ *
+ * Only the size. Line height and tracking stay at the call site, because a
+ * number set solid and a sentence set airy can want the same size.
+ *
+ * The oversized pieces — hero, loader, footer wordmark, menu — are not on this
+ * ladder on purpose: they are measured against the viewport, not against each
+ * other. */
+
+@utility heading-1 {
+  font-size: 2.25rem;
+  @media (width >= 40rem) { font-size: 3rem; }
+  @media (width >= 64rem) { font-size: 3.75rem; }
+}
+
+@utility heading-2 {
+  font-size: 1.875rem;
+  @media (width >= 40rem) { font-size: 2.25rem; }
+  @media (width >= 64rem) { font-size: 3rem; }
+}
+
+@utility heading-3 {
+  font-size: 1.5rem;
+  @media (width >= 40rem) { font-size: 1.875rem; }
+  @media (width >= 64rem) { font-size: 2.25rem; }
+}
+
+@utility heading-4 {
+  font-size: 1.25rem;
+  @media (width >= 40rem) { font-size: 1.5rem; }
+  @media (width >= 64rem) { font-size: 1.875rem; }
+}
+
+@utility heading-5 {
+  font-size: 1.125rem;
+  @media (width >= 40rem) { font-size: 1.25rem; }
+  @media (width >= 64rem) { font-size: 1.5rem; }
+}
+
 @utility page-x {
   padding-inline: 1rem;
   @media (width >= 40rem) {

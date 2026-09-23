@@ -60,7 +60,7 @@ export function RegulationFaq({ categories }: { categories: FaqCategory[] }) {
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between gap-6 py-5 text-left"
                 >
-                  <span className="font-display text-xl tracking-wide text-ink sm:text-2xl">
+ <span className="font-display heading-4 tracking-wide text-ink ">
                     {item.question}
                   </span>
                   <ChevronDown size={22} aria-hidden="true" />

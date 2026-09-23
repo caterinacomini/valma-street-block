@@ -310,7 +310,7 @@ export function EdizioniCarousel({
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
           {eyebrow || "Edizioni passate"}
         </p>
-        <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl">
+ <h2 className="mt-3 font-display heading-1 leading-none text-ink ">
           {heading || "Le nostre edizioni"}
         </h2>
         <p className="mt-4 max-w-md text-base leading-relaxed font-medium text-ink">
@@ -344,10 +344,10 @@ export function EdizioniCarousel({
           <div className="absolute inset-0 bg-gradient-to-b from-ink/5 to-ink/75" />
           <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
           <div className="absolute right-6 bottom-8 left-6 sm:left-8">
-            <p className="font-display text-3xl leading-none tracking-wide text-white sm:text-4xl lg:text-5xl">
+ <p className="font-display heading-2 leading-none tracking-wide text-white ">
               Dal 2015
             </p>
-            <h2 className="mt-2 font-display text-4xl leading-none text-yellow sm:text-5xl lg:text-6xl">
+ <h2 className="mt-2 font-display heading-1 leading-none text-yellow ">
               {heading || (
                 <>
                   Le nostre

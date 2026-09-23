@@ -63,7 +63,7 @@ export function SiteFooter({
         {/* Link columns */}
         <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-[3.75rem] sm:mt-8 sm:grid-cols-3 sm:gap-y-10 lg:grid-cols-4">
           <div className="col-span-2 sm:col-span-1 lg:col-span-2">
-            <p className="font-display text-2xl leading-tight sm:text-3xl">
+ <p className="font-display heading-3 leading-tight ">
               Ci vediamo tra le vie
               <br />
               di Valmadrera

@@ -41,7 +41,7 @@ export async function ComeArrivareSection({
         <p className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
           {eyebrow}
         </p>
-        <h2 className="mt-3 font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+ <h2 className="mt-3 font-display heading-1 leading-none text-ink ">
           {heading}
         </h2>
       </div>

@@ -166,7 +166,7 @@ export default async function HomePage() {
 
             <div className="flex max-w-xs flex-col items-start gap-4 pb-1 sm:max-w-sm lg:pb-4">
               <p
-                className="font-display text-2xl leading-tight tracking-wide text-white sm:text-3xl"
+ className="font-display heading-3 leading-tight tracking-wide text-white "
                 data-sanity={fieldAttr(preview, "siteSettings", "siteSettings", "eventDate")}
               >
                 {postponed && formattedDate ? (
@@ -189,7 +189,7 @@ export default async function HomePage() {
                 <p className="-rotate-[3deg] rounded-2xl bg-blue px-5 py-3 font-sans text-base leading-tight font-bold tracking-wide text-ink uppercase shadow-lg sm:text-lg">
                   {settings.postponedNote || "Evento rinviato"}
                   {newDate ? (
-                    <span className="mt-1 block font-display text-xl tracking-wide normal-case sm:text-2xl">
+ <span className="mt-1 block font-display heading-4 tracking-wide normal-case ">
                       Nuova data: {newDate}
                     </span>
                   ) : null}
@@ -214,7 +214,7 @@ export default async function HomePage() {
         <div className="grid gap-x-12 gap-y-5 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-16 lg:gap-y-6">
           <h2
             data-reveal
-            className="max-w-2xl font-display text-4xl leading-[0.95] text-ink sm:text-5xl lg:col-start-1 lg:row-start-1 lg:text-6xl"
+ className="max-w-2xl font-display heading-1 leading-[0.95] text-ink lg:col-start-1 lg:row-start-1 "
           >
             {home.introHeading}
           </h2>
@@ -229,7 +229,7 @@ export default async function HomePage() {
           <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-24">
             <p
               data-reveal
-              className="font-display text-3xl leading-none whitespace-nowrap text-ink sm:text-4xl lg:ml-auto lg:max-w-[500px] lg:text-right lg:text-5xl"
+ className="font-display heading-2 leading-none whitespace-nowrap text-ink lg:ml-auto lg:max-w-[500px] lg:text-right "
             >
               {home.claim}
             </p>
@@ -268,7 +268,7 @@ export default async function HomePage() {
           >
             {stats.map((stat, i) => (
               <div key={i}>
-                <p className="font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl">
+                <p className="font-display heading-3 leading-none text-ink">
                   {stat.value}
                 </p>
                 <p className="mt-1.5 text-sm text-ink/60">{stat.label}</p>
