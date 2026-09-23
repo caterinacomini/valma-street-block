@@ -18,7 +18,9 @@ export const MOVABLE_SECTIONS = [
     id: "comeArrivare",
     label: "Come arrivare",
     anchor: "#come-arrivare",
-    eyebrow: "Valmadrera · Lecco",
+    /* The section already answers "where", so the eyebrow says so rather
+       than naming the town twice over. */
+    eyebrow: "Ritrovo",
     heading: "Come arrivare",
   },
   {

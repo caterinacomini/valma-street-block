@@ -34,25 +34,33 @@ function WayCard({
   alt,
   body,
   action,
+  note,
+  span = "",
+  height = "h-[26rem] sm:h-[30rem]",
 }: {
   label: string;
   photo: string;
   alt: string;
   body?: string;
   action?: { href: string; text: string };
+  note?: React.ReactNode;
+  span?: string;
+  height?: string;
 }) {
   return (
-    <figure className="flex flex-col">
+    <figure className={`group/card flex flex-col ${span}`}>
       <figcaption className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
         {label}
       </figcaption>
 
-      <div className="relative mt-3 flex h-[26rem] flex-col justify-end overflow-hidden rounded-3xl bg-ink px-5 py-5 text-white sm:h-[30rem] sm:px-6 sm:py-6">
+      <div
+        className={`relative mt-3 flex ${height} flex-col justify-end overflow-hidden rounded-3xl bg-ink px-5 py-5 text-white sm:px-6 sm:py-6`}
+      >
         <Image
           src={photo}
           alt={alt}
           fill
-          sizes="(min-width: 1024px) 45vw, 92vw"
+          sizes="(min-width: 1024px) 40vw, 92vw"
           className="object-cover"
         />
         <div className="pointer-events-none absolute inset-0 bg-ink/20" />
@@ -84,6 +92,8 @@ function WayCard({
           ) : null}
         </div>
       </div>
+
+      {note}
     </figure>
   );
 }
@@ -117,10 +127,7 @@ export async function ComeArrivareSection({
       <div data-reveal="stagger" className="mt-12 sm:mt-16">
         {info.address ? (
           <>
-            <h3 className="font-display text-lg tracking-wide text-ink">
-              Ritrovo
-            </h3>
-            <p className="mt-3 max-w-2xl text-3xl leading-tight font-bold tracking-[-0.015em] text-ink sm:text-4xl">
+            <p className="max-w-2xl text-3xl leading-tight font-bold tracking-[-0.015em] text-ink sm:text-4xl">
               {info.address}
             </p>
             {info.intro ? (
@@ -138,11 +145,15 @@ export async function ComeArrivareSection({
       {/* The two ways, as a labelled pair. */}
       <div
         data-reveal="stagger"
-        className="mt-14 grid gap-6 sm:mt-20 lg:grid-cols-2 lg:gap-8"
+        className="mt-14 grid items-start gap-6 sm:mt-20 lg:grid-cols-12 lg:gap-8"
       >
         {info.carInfo ? (
           <WayCard
             label="In auto"
+            /* Taller and narrower than its neighbour: the aerial is an upright
+               photograph, and half the row cropped the valley away. */
+            span="lg:col-span-5"
+            height="h-[28rem] sm:h-[36rem] lg:h-[40rem]"
             photo="/content/strada.jpg"
             alt="Veduta dall'alto dei laghi di Annone e Oggiono, con la statale che corre lungo la riva e il paese sul fianco della valle"
             body={info.carInfo}
@@ -156,24 +167,32 @@ export async function ComeArrivareSection({
         {info.transitInfo ? (
           <WayCard
             label="Con i mezzi"
+            span="lg:col-span-7"
             photo="/content/urban-climbing-shoes-pack.jpg"
             alt="Un paio di scarpette da arrampicata appese a un moschettone azzurro, agganciate allo zaino di chi le porta"
             body={info.transitInfo}
+            note={
+              info.publicTransportInfo ? (
+                /* Hung off this card rather than the whole section: the offer
+                   is for whoever arrives by train or bus, so it answers to the
+                   card that talks to them. Opacity rather than display, so it
+                   stays in the accessibility tree; focus-within brings it out
+                   for anyone arriving by keyboard; and on a touch screen,
+                   where there is no hover to wait for, it is simply there. */
+                <p className="tint-keep mt-4 flex items-start gap-2.5 rounded-[2rem] rounded-tl-none bg-yellow px-4 py-3 text-base leading-snug font-semibold text-ink transition-opacity duration-300 motion-reduce:transition-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within/card:opacity-100 [@media(hover:hover)]:group-hover/card:opacity-100">
+                  <Ticket
+                    size={16}
+                    aria-hidden="true"
+                    className="mt-0.5 shrink-0"
+                  />
+                  {info.publicTransportInfo}
+                </p>
+              ) : null
+            }
           />
         ) : null}
       </div>
 
-      {/* An aside, so it waits to be looked at: on a pointer it appears when
-          the section is hovered, and on a touch screen — where there is no
-          hover to wait for — it is simply always there. Opacity rather than
-          display, so it stays in the accessibility tree either way, and
-          focus-within brings it out for anyone arriving by keyboard. */}
-      {info.publicTransportInfo ? (
-        <p className="tint-keep mt-8 flex max-w-xl items-start gap-2.5 rounded-[2rem] rounded-tl-none bg-yellow px-4 py-3 text-base leading-snug font-semibold text-ink transition-opacity duration-300 motion-reduce:transition-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
-          <Ticket size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-          {info.publicTransportInfo}
-        </p>
-      ) : null}
     </ScrollTint>
   );
 }
