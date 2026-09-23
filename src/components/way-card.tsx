@@ -12,9 +12,12 @@ import gsap from "gsap";
  *
  * The note is one element, not two: on a pointer it lifts out of the flow and
  * trails the cursor across the card, and on a touch screen — where there is no
- * cursor to trail and no hover to wait for — it simply sits under the card and
- * stays. Rendering both and hiding one would have said it twice to a screen
- * reader.
+ * cursor to trail and no hover to wait for — it sits under the card and stays.
+ * Rendering both and hiding one would have said it twice to a screen reader.
+ *
+ * It is a sibling of the card rather than a child of it. Inside, a static
+ * element sits below every positioned one in the paint order, so on a phone it
+ * was rendering underneath the photograph — present, correct, and invisible.
  */
 export function WayCard({
   label,
@@ -35,24 +38,30 @@ export function WayCard({
   span?: string;
   height?: string;
 }) {
+  const figure = useRef<HTMLElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const trailing = useRef<HTMLDivElement>(null);
 
   const follow = (event: React.MouseEvent) => {
+    const outer = figure.current;
     const box = frame.current;
     const el = trailing.current;
-    if (!box || !el || !window.matchMedia("(hover: hover)").matches) return;
+    if (!outer || !box || !el || !window.matchMedia("(hover: hover)").matches) return;
 
+    /* Positioned against the figure but kept within the card, so the offsets
+       are measured from one and clamped by the other. Nudged clear of the
+       cursor so the pointer never sits on top of the words. */
+    const o = outer.getBoundingClientRect();
     const r = box.getBoundingClientRect();
-    /* Kept inside the card, and nudged clear of the cursor itself so the
-       pointer is never sitting on top of the words. */
-    const x = Math.min(Math.max(event.clientX - r.left + 18, 12), r.width - el.offsetWidth - 12);
-    const y = Math.min(Math.max(event.clientY - r.top + 18, 12), r.height - el.offsetHeight - 12);
+    const minX = r.left - o.left + 12;
+    const minY = r.top - o.top + 12;
+    const x = Math.min(Math.max(event.clientX - o.left + 18, minX), minX + r.width - el.offsetWidth - 24);
+    const y = Math.min(Math.max(event.clientY - o.top + 18, minY), minY + r.height - el.offsetHeight - 24);
     gsap.to(el, { x, y, duration: 0.45, ease: "power3.out", overwrite: true });
   };
 
   return (
-    <figure className={`group/card flex flex-col ${span}`}>
+    <figure ref={figure} className={`group/card relative flex flex-col ${span}`}>
       <figcaption className="font-mono text-sm tracking-[0.2em] text-blue uppercase">
         {label}
       </figcaption>
@@ -98,12 +107,13 @@ export function WayCard({
           ) : null}
         </div>
 
-        {note ? (
-          <div ref={trailing} className="trailing-note">
-            {note}
-          </div>
-        ) : null}
       </div>
+
+      {note ? (
+        <div ref={trailing} className="trailing-note">
+          {note}
+        </div>
+      ) : null}
     </figure>
   );
 }

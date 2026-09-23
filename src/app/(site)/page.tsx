@@ -143,7 +143,7 @@ export default async function HomePage() {
         {/* A shade into the same corner, multiplied so it deepens what is there
             rather than laying grey over it. It reaches full strength only at
             the corner itself, which is where the yellow sits. */}
-        <div className="pointer-events-none absolute inset-0 mix-blend-multiply [background-image:linear-gradient(to_bottom_left,transparent_46%,rgba(0,0,0,0.34)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 mix-blend-multiply [background-image:linear-gradient(to_bottom_left,transparent_38%,rgba(0,0,0,0.52)_100%)]" />
         {/* Film grain */}
         <div className="grain pointer-events-none absolute inset-0 opacity-60 mix-blend-multiply" />
 
