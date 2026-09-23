@@ -264,7 +264,7 @@ export default async function HomePage() {
 
           <div
             data-reveal="stagger"
-            className="grid grid-cols-2 gap-6 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
+            className="grid gap-6 sm:grid-cols-2 lg:col-start-1 lg:row-start-3 lg:grid-cols-1 lg:gap-7 lg:self-end lg:pt-8"
           >
             {stats.map((stat, i) => (
               <div key={i}>
