@@ -46,7 +46,7 @@ export function SiteFooter({
             7.3 is the measured width/font-size ratio of this string in Koulen;
             overflow-hidden guards the fallback font, which is wider. */}
         <div className="overflow-hidden">
-          <p className="font-display leading-[0.8] tracking-[-0.01em] whitespace-nowrap text-yellow text-[calc((100vw-48px)/7.3)] sm:text-[calc((100vw-96px)/7.3)] lg:text-[calc((100vw-192px)/7.3)]">
+          <p className="font-display leading-[0.8] tracking-[-0.01em] whitespace-nowrap text-yellow text-[calc((100vw-32px)/7.3)] sm:text-[calc((100vw-96px)/7.3)] lg:text-[calc((100vw-192px)/7.3)]">
             VALMA STREET BLOCK
           </p>
         </div>

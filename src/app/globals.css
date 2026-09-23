@@ -211,7 +211,7 @@ body.tinted #come-arrivare .tint-keep span {
 
 /* Shared horizontal page margin — keep hero, header and every section aligned */
 @utility page-x {
-  padding-inline: 1.5rem;
+  padding-inline: 1rem;
   @media (width >= 40rem) {
     padding-inline: 3rem;
   }
