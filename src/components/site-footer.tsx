@@ -57,7 +57,7 @@ export function SiteFooter({
         </div>
 
         {/* Link columns */}
-        <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-10 sm:mt-8 sm:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-2 sm:col-span-1 lg:col-span-2">
             <p className="font-display text-2xl leading-tight sm:text-3xl">
               Ci vediamo tra le vie
