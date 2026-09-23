@@ -10,7 +10,6 @@ export function SiteFooter({
   eventLinks,
   instagramUrl,
   facebookUrl,
-  contactEmail,
   organizers,
   patronage,
   photoCredit,
@@ -22,7 +21,6 @@ export function SiteFooter({
   eventLinks: NavLink[];
   instagramUrl?: string;
   facebookUrl?: string;
-  contactEmail?: string;
   organizers?: string;
   patronage?: string;
   photoCredit?: string;
@@ -86,7 +84,7 @@ export function SiteFooter({
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="font-bold text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
+                    className="inline-flex font-medium text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
                   >
                     {link.label}
                   </a>
@@ -106,7 +104,7 @@ export function SiteFooter({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1 font-bold text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
+                    className="group inline-flex items-center gap-1 font-medium text-white/85 decoration-2 underline-offset-[6px] transition hover:underline sm:font-normal"
                   >
                     {link.label}
                     <ArrowUpRight
@@ -122,30 +120,19 @@ export function SiteFooter({
         </div>
 
         {/* Bottom row */}
-        {/* Who to write to and who runs it on the left, the acknowledgements on
-            the right — three lines stacked on one side left the row lopsided.
-
-            Both columns keep one rhythm, set by a gap rather than a margin on
-            each line: the left had eight pixels between its two and the right
-            six, which is the kind of difference nobody can name and everybody
-            sees. */}
-        <div className="mt-14 flex flex-col gap-4 pt-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-1.5 text-xs text-white/70">
-            {contactEmail ? (
-              <a
-                href={`mailto:${contactEmail}`}
-                className="block text-sm font-bold text-white decoration-2 underline-offset-[6px] transition hover:underline sm:text-base sm:font-medium"
-              >
-                {contactEmail}
-              </a>
-            ) : null}
+        {/* Who runs it and who backs it on the left, the photographers on the
+            right. One rhythm for both columns, set by a gap rather than a
+            margin per line: written on each paragraph, the two sides drifted
+            to eight pixels and six. */}
+        <div className="mt-14 flex flex-col gap-1.5 pt-6 text-xs text-white/70 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <div className="flex flex-col gap-1.5">
             {organizers ? <p>{organizers}</p> : null}
+            {patronage ? <p>{patronage}</p> : null}
           </div>
 
-          <div className="flex flex-col gap-1.5 text-xs text-white/70 sm:text-right">
-            {patronage ? <p>{patronage}</p> : null}
-            {photoCredit ? <p>{photoCredit}</p> : null}
-          </div>
+          {photoCredit ? (
+            <p className="sm:text-right">{photoCredit}</p>
+          ) : null}
         </div>
       </div>
     </footer>
