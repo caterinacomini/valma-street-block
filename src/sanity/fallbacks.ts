@@ -35,6 +35,9 @@ export const FALLBACK_SITE_SETTINGS: SiteSettings = {
   instagramUrl: "https://www.instagram.com/valmastreetblock_/",
   facebookUrl: "https://www.facebook.com/ValmaStreetBlock/",
   contactEmail: "segreteria@caivalmadrera.it",
+  /* Off, which is where Caterina left it: the address stays in the Studio
+     and stays out of the page until someone turns it back on. */
+  contactEmailVisible: false,
   organizers: "Organizzato da CAI Valmadrera e OSA Valmadrera",
   patronage:
     "Con il patrocinio dei Comuni di Valmadrera e Civate",

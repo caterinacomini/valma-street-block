@@ -7,6 +7,8 @@ import { RegisterButton } from "./register-button";
 
 
 export function SiteFooter({
+  contactEmail,
+  contactEmailVisible,
   eventLinks,
   instagramUrl,
   facebookUrl,
@@ -18,6 +20,8 @@ export function SiteFooter({
   registrationLabel,
   registrationClosedLabel,
 }: {
+  contactEmail?: string;
+  contactEmailVisible?: boolean;
   eventLinks: NavLink[];
   instagramUrl?: string;
   facebookUrl?: string;
@@ -126,6 +130,14 @@ export function SiteFooter({
             to eight pixels and six. */}
         <div className="mt-14 flex flex-col gap-1.5 pt-6 text-xs text-white/70 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
           <div className="flex flex-col gap-1.5">
+            {contactEmail && contactEmailVisible ? (
+              <a
+                href={`mailto:${contactEmail}`}
+                className="text-sm font-medium text-white decoration-2 underline-offset-[6px] transition hover:underline sm:text-base"
+              >
+                {contactEmail}
+              </a>
+            ) : null}
             {organizers ? <p>{organizers}</p> : null}
             {patronage ? <p>{patronage}</p> : null}
           </div>

@@ -68,6 +68,8 @@ export default async function SiteLayout({
           registrationUrl={settings.registrationUrl ?? undefined}
           registrationOpen={settings.registrationOpen}
           registrationLabel={settings.registrationLabel}
+          contactEmail={settings.contactEmail ?? undefined}
+          contactEmailVisible={settings.contactEmailVisible ?? false}
           registrationClosedLabel={settings.registrationClosedLabel}
         />
         {/* Last child, so its effect runs once every section is mounted */}

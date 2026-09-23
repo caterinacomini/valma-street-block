@@ -33,6 +33,7 @@ export interface SiteSettings {
   instagramUrl?: string;
   facebookUrl?: string;
   contactEmail?: string;
+  contactEmailVisible?: boolean;
   organizers?: string;
   patronage?: string;
   photoCredit?: string;

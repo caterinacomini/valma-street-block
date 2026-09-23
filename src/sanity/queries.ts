@@ -18,6 +18,7 @@ export const siteSettingsQuery = defineQuery(`
     instagramUrl,
     facebookUrl,
     contactEmail,
+    contactEmailVisible,
     organizers,
     patronage,
     photoCredit,

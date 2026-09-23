@@ -135,6 +135,14 @@ export const siteSettings = defineType({
       type: "url",
     }),
     defineField({
+      name: "contactEmailVisible",
+      title: "Mostra l'email nel footer",
+      type: "boolean",
+      initialValue: false,
+      description:
+        "Spenta, l'indirizzo resta salvato qui ma non compare sul sito.",
+    }),
+    defineField({
       name: "contactEmail",
       title: "Email di contatto",
       type: "string",
