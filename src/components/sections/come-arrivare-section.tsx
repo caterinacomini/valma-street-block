@@ -105,7 +105,7 @@ export async function ComeArrivareSection({
                    stays in the accessibility tree; focus-within brings it out
                    for anyone arriving by keyboard; and on a touch screen,
                    where there is no hover to wait for, it is simply there. */
-                <p className="tint-keep inline-flex w-fit items-start gap-2.5 rounded-[2rem] rounded-tl-none bg-yellow px-4 py-3 text-base leading-snug font-semibold text-ink">
+                <p className="tint-keep inline-flex w-fit items-start gap-2.5 rounded-[2rem] rounded-tl-none bg-yellow px-4 py-2.5 text-base leading-snug font-semibold text-ink">
                   <Ticket
                     size={19}
                     aria-hidden="true"
