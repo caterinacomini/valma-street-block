@@ -124,7 +124,7 @@ export async function ComeArrivareSection({
       {/* Where it is, and what it is, together: the line about the gara used to
           sit off on the right beside the heading, a screen away from the
           address it describes. */}
-      <div data-reveal="stagger" className="mt-12 sm:mt-16">
+      <div data-reveal="stagger" className="mt-7 sm:mt-9">
         {info.address ? (
           <>
             <p className="max-w-2xl text-3xl leading-tight font-bold tracking-[-0.015em] text-ink sm:text-4xl">
