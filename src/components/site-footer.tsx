@@ -123,9 +123,14 @@ export function SiteFooter({
 
         {/* Bottom row */}
         {/* Who to write to and who runs it on the left, the acknowledgements on
-            the right — three lines stacked on one side left the row lopsided. */}
+            the right — three lines stacked on one side left the row lopsided.
+
+            Both columns keep one rhythm, set by a gap rather than a margin on
+            each line: the left had eight pixels between its two and the right
+            six, which is the kind of difference nobody can name and everybody
+            sees. */}
         <div className="mt-14 flex flex-col gap-4 pt-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="text-xs text-white/70">
+          <div className="flex flex-col gap-1.5 text-xs text-white/70">
             {contactEmail ? (
               <a
                 href={`mailto:${contactEmail}`}
@@ -134,12 +139,12 @@ export function SiteFooter({
                 {contactEmail}
               </a>
             ) : null}
-            {organizers ? <p className="mt-2">{organizers}</p> : null}
+            {organizers ? <p>{organizers}</p> : null}
           </div>
 
-          <div className="text-xs text-white/70 sm:text-right">
+          <div className="flex flex-col gap-1.5 text-xs text-white/70 sm:text-right">
             {patronage ? <p>{patronage}</p> : null}
-            {photoCredit ? <p className="mt-1.5">{photoCredit}</p> : null}
+            {photoCredit ? <p>{photoCredit}</p> : null}
           </div>
         </div>
       </div>
