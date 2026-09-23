@@ -18,7 +18,9 @@
   --color-yellow: var(--color-yellow);
   --color-blue: var(--color-blue);
   --color-accent: var(--color-accent);
-  --font-display: var(--font-koulen);
+  /* On trial: Rubik in place of Koulen. Every heading on the site reads
+     this one variable, so putting it back is this line. */
+  --font-display: var(--font-rubik);
   --font-sans: var(--font-space-grotesk);
 }
 
@@ -96,6 +98,14 @@ body.tinted #come-arrivare .tint-keep span {
   .trailing-note {
     transition: none;
   }
+}
+
+/* Koulen came in one heavy weight, so nothing ever had to ask for it. Rubik
+   is a text family and defaults to regular, which left the headings looking
+   thin. :where() keeps this at zero specificity, so an explicit font-bold or
+   font-medium on an element still wins. */
+:where(.font-display) {
+  font-weight: 700;
 }
 
 /* Monochrome film grain (Figma: Noise · mono · density 60% · #000 15%) */

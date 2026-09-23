@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Rubik, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { siteUrl } from "@/lib/site-url";
 import { urlForImage } from "@/sanity/image";
@@ -17,6 +17,14 @@ const koulen = localFont({
   src: "./fonts/KoulenVSB.woff2",
   variable: "--font-koulen",
   display: "swap",
+});
+
+/* On trial in place of Koulen. Where Koulen had one heavy weight and no
+   choice, Rubik is a text family with the full range, so the display size is
+   asked for rather than inherited. */
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin"],
 });
 
 const spaceGrotesk = Space_Grotesk({
@@ -84,7 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="it"
-      className={`${koulen.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${koulen.variable} ${rubik.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
