@@ -76,7 +76,10 @@ body.tinted #come-arrivare .tint-keep span {
     top: 0;
     left: 0;
     margin-top: 0;
-    max-width: min(22rem, 80%);
+    /* One line while it trails: wrapped, it changed shape as it moved and read
+       as a paragraph following the cursor rather than a tag. In the flow on a
+       touch screen it wraps as it must. */
+    white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
