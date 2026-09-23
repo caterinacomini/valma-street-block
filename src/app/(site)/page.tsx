@@ -76,8 +76,8 @@ export default async function HomePage() {
   const introPhotos = [
     { src: "/content/urban-climbing-bench-detail.jpg", pos: "object-center" },
     { src: "/content/urban-climbing-wall-kid.jpg", pos: "object-[center_30%]" },
-    { src: "/content/urban-climbing-hand.png", pos: "object-center" },
-    { src: "/content/urban-climbing-1.png", pos: "object-[center_25%]" },
+    { src: "/content/urban-climbing-hand.jpg", pos: "object-center" },
+    { src: "/content/urban-climbing-1.jpg", pos: "object-[center_25%]" },
   ].map((local, i) =>
     photoProps(
       home.introPhotos?.[i],

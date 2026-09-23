@@ -3,11 +3,11 @@ import { urlForImage } from "@/sanity/image";
 import { loadPastEditions } from "@/sanity/fetch";
 
 const FALLBACK_COVERS = [
-  "/content/urban-climbing-hero.png",
-  "/content/urban-climbing-2.png",
-  "/content/urban-climbing-shoe.png",
-  "/content/urban-climbing-hand.png",
-  "/content/urban-climbing-beam.png",
+  "/content/urban-climbing-hero.jpg",
+  "/content/urban-climbing-2.jpg",
+  "/content/urban-climbing-shoe.jpg",
+  "/content/urban-climbing-hand.jpg",
+  "/content/urban-climbing-beam.jpg",
   "/content/urban-climbing-wall-kid.jpg",
 ];
 

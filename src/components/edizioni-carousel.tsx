@@ -333,7 +333,7 @@ export function EdizioniCarousel({
           className="relative hidden shrink-0 lg:block lg:h-full lg:w-[42%]"
         >
           <Image
-            src="/content/urban-climbing-hero-2.png"
+            src="/content/urban-climbing-hero-2.jpg"
             alt="Climber su un muro nelle vie di Valmadrera"
             fill
             className="object-cover object-center"

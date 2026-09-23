@@ -15,8 +15,8 @@ import { MapPin } from "lucide-react";
 const BACKDROPS = [
   { src: "/content/urban-climbing-shoes-pack.jpg", pos: "object-center" },
   { src: "/content/urban-climbing-bench-full.jpg", pos: "object-[25%_45%]" },
-  { src: "/content/urban-climbing-hero.png", pos: "object-[center_35%]" },
-  { src: "/content/urban-climbing-beam.png", pos: "object-[center_45%]" },
+  { src: "/content/urban-climbing-hero.jpg", pos: "object-[center_35%]" },
+  { src: "/content/urban-climbing-beam.jpg", pos: "object-[center_45%]" },
 ];
 
 /**
