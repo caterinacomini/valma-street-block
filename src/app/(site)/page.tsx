@@ -124,21 +124,40 @@ export default async function HomePage() {
         className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink"
       >
         <Image {...heroPhoto} alt={heroPhoto.alt} fill priority sizes="100vw" />
-        {/* Progressive blur (0 → 9px) fading in toward the bottom-left, where the
-            copy sits. Stacked layers because CSS has no native progressive
-            backdrop-filter.
+        {/* The progressive blur, as a photograph rather than a filter.
 
-            On a gradient aimed at the bottom-left corner, the top-left and the
-            bottom-right both sit at the halfway mark — so the top-left was
-            taking most of the first layer for no reason, and the bridge up
-            there went soft. Every ramp starts later now, which keeps the blur
-            in the corner that needs it. */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 backdrop-blur-[1.5px] [mask-image:linear-gradient(to_bottom_left,transparent_52%,black_68%)]" />
-          <div className="absolute inset-0 backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom_left,transparent_64%,black_80%)]" />
-          <div className="absolute inset-0 backdrop-blur-[6px] [mask-image:linear-gradient(to_bottom_left,transparent_75%,black_91%)]" />
-          <div className="absolute inset-0 backdrop-blur-[9px] [mask-image:linear-gradient(to_bottom_left,transparent_86%,black_99%)]" />
-        </div>
+            It used to be four stacked backdrop-filter layers, and measured on
+            the published site that was the only thing on the page dropping
+            frames: fifty milliseconds each while the hero was on screen —
+            twenty a second — against a flat seventeen everywhere else.
+
+            The cost is the blurring, not the way it is applied: four layers,
+            one layer, backdrop-filter, a plain filter on a copy, promoted to
+            its own compositor layer or not, all measured the same. A
+            photograph that arrives already blurred costs nothing, so
+            scripts/build-hero-blur.py does it once and this composites it.
+
+            One mask instead of four steps, which also makes the ramp smoother
+            than the thing it replaces.
+
+            Only when the hero is the file we shipped: an editor who uploads
+            their own in the Studio has no blurred twin, and a soft layer of
+            the wrong photograph would be worse than none. */}
+        {!settings.heroImage ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom_left,transparent_46%,rgba(0,0,0,0.55)_72%,black_96%)]"
+          >
+            <Image
+              src="/content/urban-climbing-bridge-dyno-blur.jpg"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[80%_45%] sm:object-[65%_45%] lg:object-[center_45%]"
+            />
+          </div>
+        ) : null}
 
         {/* A shade into the same corner, multiplied so it deepens what is there
             rather than laying grey over it. It reaches full strength only at
